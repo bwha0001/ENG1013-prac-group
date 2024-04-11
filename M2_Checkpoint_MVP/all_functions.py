@@ -25,7 +25,8 @@ while True:
             'pedCounterReset' : ""
         }
         
-        trafficStage = 1
+        trafficStage = 1   
+        print("   ")
 
         main.main_menu()
         print("hi")
