@@ -29,8 +29,10 @@ while True:
         
         trafficStage = 1   
         
+        trafficStage = 1
 
         main.main_menu(intersectionData, changeableConditions)
-        print("hi")
+        
     except KeyboardInterrupt:
+        print("program end")
         break
