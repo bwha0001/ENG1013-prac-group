@@ -1,6 +1,6 @@
 import time
 import math as mth
-#ST. from pymata4 import pymata4 
+from pymata4 import pymata4 
 import module_scripts as ms
 import to_7_segment_display as to_7_seg
 import maintenance_mode as m_m
@@ -11,6 +11,8 @@ import main_menu as main
 import normal_operation as n_o
 import data_observation_mode as DOM
 
+
+
 while True:
     try:
         global intersectionData
@@ -20,9 +22,8 @@ while True:
         global pollingRate
         pollingRate = 2
         changableConditions = {
-            'trafficStage' : 1,
             'pollingRate' : pollingRate,
-            'pedCounterReset' : ""
+            'distToVehicle' : []
         }
         
         trafficStage = 1
