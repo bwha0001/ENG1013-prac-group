@@ -1,6 +1,6 @@
 import time
 import math as mth
-from pymata4 import pymata4 
+#ST. from pymata4 import pymata4 
 import module_scripts as ms
 import to_7_segment_display as to_7_seg
 import maintenance_mode as m_m
@@ -11,24 +11,26 @@ import main_menu as main
 import normal_operation as n_o
 import data_observation_mode as DOM
 
-
-
 while True:
     try:
         global intersectionData
+        global changeableConditions 
+
         #Creates a dictonary of records if one doesnt exist
         intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[], "pedCounterReset":""}
-        global changableConditions 
+        
         global pollingRate
         pollingRate = 2
-        changableConditions = {
+        changeableConditions = {
+            'trafficStage' : 1,
             'pollingRate' : pollingRate,
-            'distToVehicle' : []
+            'pedCounterReset' : ""
         }
         
-        trafficStage = 1
+        trafficStage = 1   
+        
 
-        main.main_menu()
+        main.main_menu(intersectionData, changeableConditions)
         print("hi")
     except KeyboardInterrupt:
         break

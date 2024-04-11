@@ -3,7 +3,7 @@
 #Last Edit: 10 April 2024
 #Version: 2
 
-def maintenance_mode():
+def maintenance_mode(intersectionData, changeableConditions):
     '''
     Maintenance mode allows the user, with the correct PIN to edit conditons and reaction for the intersection
     Parameters: None
@@ -13,6 +13,10 @@ def maintenance_mode():
     Returns: 
             Alters conditions dictonary
     '''
+
+    # Globals
+    
+
     try:
         #Initalisations, what is avaible to change, what acceptable values are
         changesCodes = {"PLR":"polling rate"}
@@ -68,16 +72,17 @@ def maintenance_mode():
                 pass
             elif contInput == "N":
                 break    
+        return intersectionData, changeableConditions
     except KeyboardInterrupt:
         #exit button activation
         print("Exit button activated, returning to main menu")
-        return
+        return intersectionData, changeableConditions
     
-if __name__ == "__main__":
-    global changeableConditions
-    changeableConditions = {
-        "trafficStage" : 1,
-        "pollingRate" : 2, 
-        "pedCounterReset":""}
+# if __name__ == "__main__":
+#     global changeableConditions
+#     changeableConditions = {
+#         "trafficStage" : 1,
+#         "pollingRate" : 2, 
+#         "pedCounterReset":""}
     
-    maintenance_mode()
+#     maintenance_mode()

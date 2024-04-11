@@ -1,5 +1,6 @@
 import time
 from pymata4 import pymata4
+import polling_loop as pl
 def traffic_light_sequence():
     trafficStage = []
 
@@ -41,61 +42,52 @@ def traffic_light_sequence():
 
 
     while True:
+    #each stage needs a time stamp
         trafficStage.append('stage1')
         if 'stage1' in trafficStage:
             print('Current stage: stage 1')
             print(f" {stage1}")
+            # print(pl.polling_loop())
             time.sleep(30)
-        trafficStage.pop(0)
-        trafficStage.append('stage2')
-        return trafficStage
+            trafficStage.pop(0)
+            trafficStage.append('stage2')
         
-
         if 'stage2' in trafficStage:
             print('Current stage: stage 2')
             print(f" {stage2}")
             time.sleep(3)
-        trafficStage.pop(0)
-        trafficStage.append('stage3')
-        return trafficStage
-
+            trafficStage.pop(0)
+            trafficStage.append('stage3')
 
         if 'stage3' in trafficStage:
             print('Current stage: stage 3')
             print(f" {stage3}")
             time.sleep(3)
-        trafficStage.pop(0)
-        trafficStage.append('stage4')
-        return trafficStage
-
+            trafficStage.pop(0)
+            trafficStage.append('stage4')
 
         if 'stage4' in trafficStage:
             print('Current stage: stage 4')
             print(f"{stage4}")
             time.sleep(30)
-        trafficStage.pop(0)
-        trafficStage.append('stage5')
-        return trafficStage
-
+            trafficStage.pop(0)
+            trafficStage.append('stage5')
 
         if 'stage5' in trafficStage:
             print('Current stage: stage 5')
             print(f"{stage5}")
             time.sleep(3)
-        trafficStage.pop(0)
-        trafficStage.append('stage6')
-        return trafficStage
-
+            trafficStage.pop(0)
+            trafficStage.append('stage6')
 
         if 'stage6' in trafficStage:
             print('Current stage: stage 6')
             print(f"{stage6}")
             time.sleep(3)
-        trafficStage.pop(0)
-        trafficStage.append('stage1')
+            trafficStage.pop(0)
+            trafficStage.append('stage1')
         return trafficStage
-    
-    
+
 ##figure out how to use the time module for having the colours 'print' for the correct amount of time 
 ##need to figure out how to conect the colour name to the LEDs in reality (and how to do the FLASHING)
 ##i think it needs to go into a while loop so that it can continue to run... might need more if statements?

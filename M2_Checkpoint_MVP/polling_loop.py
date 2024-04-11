@@ -6,7 +6,8 @@
 import time
 import random
 
-def polling_loop(trafficStage, pollingRate = 2):
+
+def polling_loop(intersectionData, changeableConditions):
     '''
     Polling loop gets and stores data from sensors in intersection
     Arg:
@@ -15,10 +16,10 @@ def polling_loop(trafficStage, pollingRate = 2):
         if suspended [distance to next vechile list, pedestrian count]
     '''
     #globals
-    global intersectionData
-    global changeableConditions
+    pollingRate = changeableConditions['pollingRate']
+    trafficStage = changeableConditions['trafficStage']
     #required for MVP Checkpoint
-    import random
+
     
     #polling loop to read sensors for traffic control
     #inputs: trafficStage, pollingRate which defaults to 2
@@ -38,7 +39,7 @@ def polling_loop(trafficStage, pollingRate = 2):
 
     if intersectionData['pedCountRecord'] == [] or changeableConditions["pedCounterReset"]=="stage1Reset":
         pedCount = 0
-        changeableConditions["pedCounterReset"]==""
+        # changeableConditions["pedCounterReset"]==""
     elif not intersectionData['pedCountRecord'] == []:
         pedCount = intersectionData['pedCountRecord'][-1]
     
@@ -89,33 +90,33 @@ def polling_loop(trafficStage, pollingRate = 2):
     return [distToVehicle, pedCount, pollingTime]
 
 
-if __name__ == "__main__":
-    #external initalisations
-    #Creates a dictonary of records for data collected
+# if __name__ == "__main__":
+#     #external initalisations
+#     #Creates a dictonary of records for data collected
     
-    intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[]}
-    pollingRate = 2
-    changeableConditions = {
-        "trafficStage":1,
-        "pollingRate" : pollingRate, 
-        "pedCounterReset":""}
+#     intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[]}
+#     pollingRate = 2
+#     changeableConditions = {
+#         "trafficStage":1,
+#         "pollingRate" : pollingRate, 
+#         "pedCounterReset":""}
     
-    for i in range(0,25):
-        if i < 5:
-            trafficStage = 1
-        elif i == 5 :
-            trafficStage = 2
-        elif i==15:
-            trafficStage = 7
-        elif i==20:
-            changeableConditions["pedCounterReset"]="stage1Reset"
-            trafficStage=1
-        print(f"i={i}, trafficStage={trafficStage}")
-        pollingReturn = polling_loop(trafficStage)
-        if pollingReturn == "None":
-            pass
-        else:
-            print(pollingReturn)
-        time.sleep(1)
-    print(intersectionData)
+#     for i in range(0,25):
+#         if i < 5:
+#             trafficStage = 1
+#         elif i == 5 :
+#             trafficStage = 2
+#         elif i==15:
+#             trafficStage = 7
+#         elif i==20:
+#             changeableConditions["pedCounterReset"]="stage1Reset"
+#             trafficStage=1
+#         print(f"i={i}, trafficStage={trafficStage}")
+#         pollingReturn = polling_loop(trafficStage)
+#         if pollingReturn == "None":
+#             pass
+#         else:
+#             print(pollingReturn)
+#         time.sleep(1)
+#     print(intersectionData)
     

@@ -4,7 +4,7 @@ import data_observation_mode as DOM
 
 #Not current main menu - 
 
-def main_menu():
+def main_menu(intersectionData, changeableConditions):
     """ 
     Used to select a mode 
         Parameters: 
@@ -13,6 +13,7 @@ def main_menu():
         Returns: 
             Displays mode then quits or reselects mode
     """
+    
 
     while True:
         while True:  
@@ -21,15 +22,15 @@ def main_menu():
             try: 
                 if modeSelection == "1":
                     print("Entering Data Observation Mode...")
-                    DOM.data_observation_mode(pollingRate)
+                    DOM.data_observation_mode(intersectionData, changeableConditions)
                     break
                 elif modeSelection == "2": 
                     print("Entering Normal Operation Mode...")
-                    n_o.normal_operating(trafficStage, pollingRate)
+                    n_o.normal_operating(intersectionData, changeableConditions)
                     break
                 elif modeSelection == "3":
                     print("Entering Maintenance Mode...")
-                    m_m.maintenance_mode()
+                    m_m.maintenance_mode(changeableConditions, changeableConditions)
                     break
                 else:
                     print("Invalid Mode Input. Re-enter mode option.")
@@ -50,9 +51,9 @@ def main_menu():
                 print("Invalid Input. Options available as 'Y' to continue to main menu and 'N' to end program.")
 
 
-# Running program
-if __name__ == "__main__":
-    pollingRate = 2
-    trafficStage = 1
-    print("working")
-    main_menu()
+# # Running program
+# if __name__ == "__main__":
+#     pollingRate = 2
+#     trafficStage = 1
+#     print("working")
+#     main_menu()

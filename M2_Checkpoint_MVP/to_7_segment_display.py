@@ -61,22 +61,28 @@ def convertion_dict(value: str):
     """
     # ms.Validate(value, 'p') # class type validation to ensure input is string
     dictionary = {
-        '0' : '1111110', 
-        '1' : '0000110',
-        '2' : '1101101',
-        '3' : '1111001',
-        '4' : '0110011',
-        '5' : '1011011',
-        '6' : '0011111',
-        '7' : '1110000',
-        '8' : '1111111',
-        '9' : '1111011',
-        'a' : '1110110',
-        'n' : '0010101',
-        'm' : '0001101',
-        'd' : '0111101', 
-        'c' : '0001101',
-        'g' : '1011111'
+        '0' : '11111100', 
+        '1' : '00001100',
+        '2' : '11011010',
+        '3' : '11110010',
+        '4' : '01100110',
+        '5' : '10110110',
+        '6' : '00111110',
+        '7' : '11100000',
+        '8' : '11111110',
+        '9' : '11110110',
+        'a' : '11101100',
+        'n' : '00101010',
+        'm' : '00011010',
+        'd' : '01111010', 
+        'c' : '00011010',
+        'g' : '10111110', 
+        '.' : '00000001',
+        'n.' : '00101011',
+        'm.' : '00011011',
+        'd.' : '01111011', 
+        'c.' : '00011011',
+        'g.' : '10111111', 
     }
 
     key = value
@@ -92,6 +98,8 @@ def sevenSeg(mode : str, pedCounter = 0):
         mode (str): determine whether 'd'(data obs), 'c'(maintenance mode), 'n' (normal operating) or just 'g' (general) message to display
         pedCounter (int): number to be displayed, defaults to 0
     """
+
+   
     validated1, message1 = valid_7seg(mode) # validate operating mode input
     
 
@@ -126,48 +134,24 @@ def sevenSeg(mode : str, pedCounter = 0):
     return dig4, digitNum         
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    # board = pymata4.Pymata4() TODO
-    #tries to find polling data infomation
-    # try:
-    #     intersectionData
-    # except NameError:
-    #     intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[], "pedCounterReset":""}
+#     segE = 1+2
+#     segD = 2+2
+#     DP = 3+2
+#     segC = 4+2
+#     segG = 5+2
+#     dig4 = 6+2
+#     segB = 7+2
+#     dig3 = 8+2
+#     dig2 = 9+2
+#     segF = 10+2
+#     segA = 11+2
+#     dig1 = 12+2
+#     segments = [segA, segB,segC,segD,segE,segG]
+#     digits = [dig4,dig3,dig2,dig1]
 
-    # Pin assignments for 7 seg display
-    # pin on 7 seg +2 = pin on arduino
-    segE = 1+2
-    segD = 2+2
-    DP = 3+2
-    segC = 4+2
-    segG = 5+2
-    dig4 = 6+2
-    segB = 7+2
-    dig3 = 8+2
-    dig2 = 9+2
-    segF = 10+2
-    segA = 11+2
-    dig1 = 12+2
-    segments = [segA, segB,segC,segD,segE,segG]
-    digits = [dig4,dig3,dig2,dig1]
-
-    # message = 4455
-    # validated, listMessage = valid_7seg(message)
-    # if  validated != 'valid':
-    #     print("nope terminate")
-    #     # break
-    # print(f"returns from valid {valid_7seg(message)}")
-    # value = valid_7seg('c')
-    # print(value)
-
-    [dig4, digitNum] = sevenSeg('c', 345)
-    # print(f"dig4 :{dig4}, dig 3 2 1 : {digitNum}")
-    
-    
-    # now we want to start messing with the LEDs
-    # board.shutdown()
-
-
+    # [dig4, digitNum] = sevenSeg('c', 35)
+  
     
 

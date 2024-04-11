@@ -20,26 +20,26 @@ ledPins = {
 }
 
 #function for flashing to turn LED on and off every 0.5 seconds (2Hz)
-def flashing_led(pin):
-    """
-    Used to make LED flash
-        Parameters:
-            pin
-        Returns:
-            function has no returns
-    """
-    try:
-        while True:
-            board.digital_write(pin, 1)
-            time.sleep(0.5)
-            board.digital_write(pin, 0)
-            time.sleep(0.5)
-    except KeyboardInterrupt:
-        pass
+# def flashing_led(pin):
+#     """
+#     Used to make LED flash
+#         Parameters:
+#             pin
+#         Returns:
+#             function has no returns
+#     """
+#     try:
+#         while True:
+#             board.digital_write(pin, 1)
+#             time.sleep(0.5)
+#             board.digital_write(pin, 0)
+#             time.sleep(0.5)
+#     except KeyboardInterrupt:
+#         pass
 
 
 #function to convert traffic light state into LED state
-def light_setting_state(mainState, sideState, pedestrianState):
+def light_setting_state(changableConditions):
     """
     Used to set traffic light state to on/off/flashing for each LED on the Arduino
         Parameters:
@@ -49,8 +49,11 @@ def light_setting_state(mainState, sideState, pedestrianState):
         Returns:
             main LED red, main LED yellow, main LED green, main LED flashing, side LED red, side LED yellow, side LED green, side LED flashing, pedestrian LED red, pedestrian LED green, pedestrian LED flashing
     """
-
+    # importing the globals
     print("test line entered led_setting_state")
+    mainState = 'red'
+    sideState = 'red'
+    pedCountRecord = changableConditions['pedCountRecord']
 
     ledStates = {
         "mainRed": 0,
@@ -133,7 +136,7 @@ def light_setting_state(mainState, sideState, pedestrianState):
 
     return ledStates
 
-if __name__ == 'main':
-    light_setting_state("red", "green", "flashing")
+# if __name__ == 'main':
+#     light_setting_state("red", "green", "flashing")
     # do we demo without arduino? cause then we need to comment out all of the elite programming and save it 
     # for mpv3

@@ -4,6 +4,10 @@ import time
 # input ultrasonic sensor list and time list 
 # voltage to distance calculation 
 def plotting_function(timeRecorded, distance):
+
+    # globals
+    global intersectionData
+    global changeableConditions
     #Convert time record to number of seconds since
     timeSince = []
     for i in range(0, len(timeRecorded), 1):
