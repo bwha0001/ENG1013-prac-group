@@ -1,7 +1,8 @@
 import time
 from pymata4 import pymata4
 import polling_loop as pl
-def traffic_light_sequence():
+def traffic_light_sequence(changeableConditions):
+    pollingRate = changeableConditions['pollingRate']
     trafficStage = []
 
     stage1 = {
@@ -48,42 +49,42 @@ def traffic_light_sequence():
             print('Current stage: stage 1')
             print(f" {stage1}")
             # print(pl.polling_loop())
-            time.sleep(30)
+            time.sleep(pollingRate)
             trafficStage.pop(0)
             trafficStage.append('stage2')
         
         if 'stage2' in trafficStage:
             print('Current stage: stage 2')
             print(f" {stage2}")
-            time.sleep(3)
+            time.sleep(pollingRate)
             trafficStage.pop(0)
             trafficStage.append('stage3')
 
         if 'stage3' in trafficStage:
             print('Current stage: stage 3')
             print(f" {stage3}")
-            time.sleep(3)
+            time.sleep(pollingRate)
             trafficStage.pop(0)
             trafficStage.append('stage4')
 
         if 'stage4' in trafficStage:
             print('Current stage: stage 4')
             print(f"{stage4}")
-            time.sleep(30)
+            time.sleep(pollingRate)
             trafficStage.pop(0)
             trafficStage.append('stage5')
 
         if 'stage5' in trafficStage:
             print('Current stage: stage 5')
             print(f"{stage5}")
-            time.sleep(3)
+            time.sleep(pollingRate)
             trafficStage.pop(0)
             trafficStage.append('stage6')
 
         if 'stage6' in trafficStage:
             print('Current stage: stage 6')
             print(f"{stage6}")
-            time.sleep(3)
+            time.sleep(pollingRate)
             trafficStage.pop(0)
             trafficStage.append('stage1')
         return trafficStage

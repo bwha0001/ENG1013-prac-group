@@ -54,9 +54,9 @@ def arduino_setup(myBoard, action:str,  wait: int, pin = []):
             # a specified time, then return to low
             # So if there is a known sequence of outputs
             myBoard.set_pin_mode_digital_output(pin[i])
-            myBoard.digital_pin_write(pin[i], 1)
-            time.sleep(wait)
-            myBoard.digital_pin_write(pin[i],0)
+            # myBoard.digital_pin_write(pin[i], 1)
+            # time.sleep(wait)
+            # myBoard.digital_pin_write(pin[i],0)
 
         if(action == 'digital read'):
             myBoard.set_pin_mode_digital_input(pin[i])

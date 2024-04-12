@@ -48,12 +48,12 @@ def polling_loop(intersectionData, changeableConditions):
         pass
     elif  trafficStage == "suspended":
         #return distToVechile and current pedestrian count from prior loop
-        return [intersectionData['distToVehicleRecord'], intersectionData['pedCountRecord'][-1]]
+        return [intersectionData, changeableConditions]
     
     if intersectionData["timeRecord"] == []:
         pass
     elif time.time() - intersectionData["timeRecord"][-1] <= pollingRate:
-        return
+        return [intersectionData, changeableConditions]
     elif time.time() - intersectionData["timeRecord"][-1] >= pollingRate:
         pass
         
@@ -86,8 +86,9 @@ def polling_loop(intersectionData, changeableConditions):
     #Set polling time to the time it took to execute
     pollingEndTime = time.time()
     pollingTime = pollingEndTime - pollingStartTime
+    print(pollingTime)
 
-    return [distToVehicle, pedCount, pollingTime]
+    return [intersectionData, changeableConditions]
 
 
 # if __name__ == "__main__":
@@ -112,11 +113,10 @@ def polling_loop(intersectionData, changeableConditions):
 #             changeableConditions["pedCounterReset"]="stage1Reset"
 #             trafficStage=1
 #         print(f"i={i}, trafficStage={trafficStage}")
-#         pollingReturn = polling_loop(trafficStage)
+#         pollingReturn = polling_loop(intersectionData, changeableConditions)
 #         if pollingReturn == "None":
 #             pass
 #         else:
 #             print(pollingReturn)
 #         time.sleep(1)
 #     print(intersectionData)
-    

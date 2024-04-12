@@ -18,13 +18,17 @@ def data_observation_mode(intersectionData, changeableConditions):
         #Stop polling loop, set traffic stage to suspended
         changeableConditions['trafficStage'] = "suspended"
         #Show polling loop time from normal operating mode
-        print(f"Current Polling Interval is {changeableConditions['pollingRate']} seconds")
+        print(f"Current Polling Interval is {changeableConditions['pollingRate']} seconds") 
         #get polling loop infomation 
-        [distToVehicleRecord, pedCount] = polling_loop.polling_loop(changeableConditions['trafficStage'], changeableConditions['pollingRate'])
+        [distToVehicleRecord, pedCount] = polling_loop.polling_loop(intersectionData, changeableConditions)
 #test line        [distToVehicleRecord, pedCount] = [intersectionData['distToVehicleRecord'], intersectionData['pedCountRecord'][-1]] #logic testing line
         #Show user pedestrian counter value
 #        print(f"The current Pedestrian Count is {pedCount}")
-        print(f"The current Pedestrian Count is {intersectionData['pedCountRecord'][-1]}")
+        if len(intersectionData['pedCountRecord']) > 0:
+                print(f"The current Pedestrian Count is {intersectionData['pedCountRecord'][-1]}")
+        else:
+                print(f"The current Pedestrian Count is {0}")
+
 
         #Check if there is enough recorded data, if so plot, if not notify user and plot sample?
         if changeableConditions['pollingRate'] * len(distToVehicleRecord) >= 20:

@@ -51,8 +51,13 @@ def light_setting_state(changableConditions):
     """
     # importing the globals
     print("test line entered led_setting_state")
-    mainState = 'red'
+    mainState = changableConditions['trafficStage']
+    if mainState == 1:
+        mainState = 'red' #currently should start as red
+    else:
+        mainState = 'green'
     sideState = 'red'
+    pedestrianState = 'red'
     pedCountRecord = changableConditions['pedCountRecord']
 
     ledStates = {

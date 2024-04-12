@@ -15,14 +15,16 @@ while True:
     try:
         global intersectionData
         global changeableConditions 
+        global pollingRate
 
         #Creates a dictonary of records if one doesnt exist
         intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[], "pedCounterReset":""}
         
-        global pollingRate
+        
+
         pollingRate = 2
         changeableConditions = {
-            'trafficStage' : 1,
+            'trafficStage' : 1, # in the led state we need a case switching so we can assign the correct R,Y,G states from traffic stage 
             'pollingRate' : pollingRate,
             'pedCounterReset' : ""
         }

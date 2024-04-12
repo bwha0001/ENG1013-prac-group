@@ -20,10 +20,15 @@ def normal_operating(intersectionData, changeableConditions):
     pollingRate = changeableConditions['pollingRate']
     trafficStage = changeableConditions['trafficStage']
     while True:
-        [distToVehicle, pedCount, pollingTime] = pl.polling_loop(intersectionData, changeableConditions)
-        TLS.traffic_light_sequence()
+        [intersectionData, changeableConditions] = pl.polling_loop(intersectionData, changeableConditions)
+
+        distToVehicle = intersectionData['distToVehicleRecord'][-1]
+        pedCount = intersectionData['pedCountRecord'][-1]
+        pollingTime = changeableConditions['pollingRate']
         to_7_seg.sevenSeg('n', pedCount)
-        time.sleep(pollingTime)
+        TLS.traffic_light_sequence(changeableConditions)
+        
+        
 
 
 

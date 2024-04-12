@@ -1,6 +1,6 @@
 import time
 import math as mth
-# from pymata4 import pymata4 
+from pymata4 import pymata4 
 import module_scripts as ms
 
 
@@ -38,7 +38,7 @@ def valid_7seg(message: any):
             return 'valid', message
                 
         elif len(message)>=length:
-            print("ensure input is d or c or n or g, or less then 3 digit number")
+            print("Ensure input is d or c or n or g, or less then 3 digit number")
             return 'invalid', message
         else:
             print("how did you get here")
@@ -88,29 +88,36 @@ def convertion_dict(value: str):
     key = value
     sevSegKey = dictionary[key] 
     return sevSegKey
-    
-def sevenSeg(mode : str, pedCounter = 0):
+
+def convert_to_three_digits(number):
+    # Using string formatting to ensure the number is represented with leading zeros
+    return '{:03d}'.format(number)
+
+def sevenSeg(mode : str, pedCounter = '000'):
     """sevenSeg outputs the value of the pedestrian counter across the first three digits
         and the operating mode in the 4th digit.
         It could be updated easily so that any value edited in the maintenance mode is displayed on the 7 seg
 
     Args:
         mode (str): determine whether 'd'(data obs), 'c'(maintenance mode), 'n' (normal operating) or just 'g' (general) message to display
-        pedCounter (int): number to be displayed, defaults to 0
+        pedCounter (3 digit number)(str): number to be displayed, defaults to 0. e.g inputing 3 = '003'
     """
 
    
     validated1, message1 = valid_7seg(mode) # validate operating mode input
-    
 
-    #Determine first digit output
+    if type(pedCounter) is not type('jdf') or len(pedCounter)!= 2:  # converting any input to 3 digit string
+        pedCounter = convert_to_three_digits(pedCounter)
+
+    #Determine the output as strings
     if validated1 == 'valid' :
         # converting the pedestrian counter to the LED displays
+
         #digitNum is the corresponding segments from 1-3 and contains the string to be converted to integer list to be output to digital outputs
-        listMessage = [str(d) for d in str(pedCounter)] 
+        listMessage = [str(d) for d in str(pedCounter)] # makes the all integers a string, so 555 = '5''5''5'
         digitNum = [0,0,0]
         for i in range(0,len(listMessage)):
-            digitNum[i] = convertion_dict(listMessage[i])
+            digitNum[i] = convertion_dict(listMessage[i]) # passes each number through conversion to get sevSeg equivelents
 
         # digit 4 dispays the state of operation
         if message1 == 'd' :
@@ -128,10 +135,28 @@ def sevenSeg(mode : str, pedCounter = 0):
         if message1 == 'g':
             dig4 = convertion_dict('g')
             print(f"dig4 :{dig4}, dig 3 : {digitNum[0]}, dig 2 : {digitNum[1]}, dig 3  {digitNum[2]}")   
-    else:
-        print(' invalid input')
 
-    return dig4, digitNum         
+        # seperating the segments from number digits
+        # digits read right to left
+        segment0 = [str(d) for d in str(digitNum[0])]
+        segment1 = [str(d) for d in str(digitNum[1])]
+        segment2 = [str(d) for d in str(digitNum[2])]
+        segment4 = [str(d) for d in str(dig4)] # mode display digit
+        segments = [segment0, segment1, segment2, segment4]
+
+        
+    else:
+        print('Invalid input')
+
+    return dig4, digitNum, segments         
+
+# def outputSevSeg(myBoard, segments, segs, digs):
+#     ms.arduino_setup(myBoard, 'digital write', [segs, digs])
+#     for i in range(0,len(segments)):
+#         for j in range(0,len(segments[i])):
+
+
+
 
 
 # if __name__ == "__main__":
@@ -141,17 +166,20 @@ def sevenSeg(mode : str, pedCounter = 0):
 #     DP = 3+2
 #     segC = 4+2
 #     segG = 5+2
-#     dig4 = 6+2
+#     dig3 = 6+2
 #     segB = 7+2
-#     dig3 = 8+2
-#     dig2 = 9+2
+#     dig2 = 8+2
+#     dig1 = 9+2
 #     segF = 10+2
 #     segA = 11+2
-#     dig1 = 12+2
-#     segments = [segA, segB,segC,segD,segE,segG]
-#     digits = [dig4,dig3,dig2,dig1]
-
-    # [dig4, digitNum] = sevenSeg('c', 35)
-  
+#     dig0 = 12+2
+#     segs = [segA, segB,segC,segD,segE,segG, DP]
+#     digs = [dig3,dig2,dig1, dig0]
+#     board = pymata4.Pymata4
     
+
+
+#     [dig4, digitNum, segments] = sevenSeg('c', 35)
+
+
 
