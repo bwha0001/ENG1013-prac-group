@@ -91,23 +91,71 @@ def convertion_dict(value: str):
 
 def convert_to_three_digits(number):
     # Using string formatting to ensure the number is represented with leading zeros
+    # number returns as decimal
     return '{:03d}'.format(number)
 
-def sevenSeg(mode : str, pedCounter = '000'):
+def to_arduino(myBoard, digDisplay):
+    segA = 2
+    segB = 3
+    segC = 4 
+    segD = 5
+    segE = 6
+    segF = 7
+    segG = 8
+    segDP = 9
+    digGround = [11,12,13,10 ]#dig 0 ... dig 4 
+    segmentID = [segA, segB, segC, segD, segE, segF, segDP]
+    for pin in segmentID:
+        myBoard.set_pin_to_digital_output(pin)
+    # set digit that is desired to be grounded
+    #turning off all digits
+
+    #there should be some way to for loop this but i get an error every time
+    for digit in digDisplay:
+        myBoard.digital_write(digGround[digit], 1)
+    
+    while True:
+        #outputing to digit 0
+        
+        myBoard.digital_write(digGround[0], 0)
+        #printing to the pins
+        for i in range(0,len(digDisplay)):
+            myBoard.digital_write(segmentID[i], int(digDisplay[0][i]))
+
+        # myBoard.digital_write(segmentID[1], int(digDisplay[0][1]))
+        # myBoard.digital_write(segmentID[2], int(digDisplay[0][2]))
+        # myBoard.digital_write(segmentID[3], int(digDisplay[0][3]))
+        # myBoard.digital_write(segmentID[4], int(digDisplay[0][4]))
+        # myBoard.digital_write(segmentID[5], int(digDisplay[0][5]))
+        # myBoard.digital_write(segmentID[6], int(digDisplay[0][6]))
+        # myBoard.digital_write(segmentID[7], int(digDisplay[0][7]))
+        # myBoard.digital_write(segmentID[8], int(digDisplay[0][8]))
+
+        # clear pins
+        for pin in segmentID:
+            myBoard.digital_write(segmentID[i], 0)
+        myBoard.digital_write()
+
+
+
+
+def sevenSeg(myBoard, mode : str, pedCounter = '000'):
     """sevenSeg outputs the value of the pedestrian counter across the first three digits
         and the operating mode in the 4th digit.
         It could be updated easily so that any value edited in the maintenance mode is displayed on the 7 seg
 
     Args:
+        myBoard: board = pymata4.pymata4()
         mode (str): determine whether 'd'(data obs), 'c'(maintenance mode), 'n' (normal operating) or just 'g' (general) message to display
         pedCounter (3 digit number)(str): number to be displayed, defaults to 0. e.g inputing 3 = '003'
     """
 
    
-    validated1, message1 = valid_7seg(mode) # validate operating mode input
+    validated1, message1 = valid_7seg(mode) # validate operating mode input\
 
     if type(pedCounter) is not type('jdf') or len(pedCounter)!= 2:  # converting any input to 3 digit string
         pedCounter = convert_to_three_digits(pedCounter)
+        pedCounter = str(pedCounter)
 
     #Determine the output as strings
     if validated1 == 'valid' :
@@ -138,17 +186,17 @@ def sevenSeg(mode : str, pedCounter = '000'):
 
         # seperating the segments from number digits
         # digits read right to left
-        segment0 = [str(d) for d in str(digitNum[0])]
-        segment1 = [str(d) for d in str(digitNum[1])]
-        segment2 = [str(d) for d in str(digitNum[2])]
-        segment4 = [str(d) for d in str(dig4)] # mode display digit
-        segments = [segment0, segment1, segment2, segment4]
+        digit0 = [str(d) for d in str(digitNum[0])]
+        digit1 = [str(d) for d in str(digitNum[1])]
+        digit2 = [str(d) for d in str(digitNum[2])]
+        digit3 = [str(d) for d in str(dig4)] # mode display digit
+        digDisplay = [digit0, digit1, digit2, digit3]
 
-        
+
     else:
         print('Invalid input')
 
-    return dig4, digitNum, segments         
+    return dig4, digitNum, digDisplay         
 
 # def outputSevSeg(myBoard, segments, segs, digs):
 #     ms.arduino_setup(myBoard, 'digital write', [segs, digs])
@@ -159,27 +207,27 @@ def sevenSeg(mode : str, pedCounter = '000'):
 
 
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
 
-#     segE = 1+2
-#     segD = 2+2
-#     DP = 3+2
-#     segC = 4+2
-#     segG = 5+2
-#     dig3 = 6+2
-#     segB = 7+2
-#     dig2 = 8+2
-#     dig1 = 9+2
-#     segF = 10+2
-#     segA = 11+2
-#     dig0 = 12+2
-#     segs = [segA, segB,segC,segD,segE,segG, DP]
-#     digs = [dig3,dig2,dig1, dig0]
-#     board = pymata4.Pymata4
+    segE = 1+2
+    segD = 2+2
+    DP = 3+2
+    segC = 4+2
+    segG = 5+2
+    dig3 = 6+2
+    segB = 7+2
+    dig2 = 8+2
+    dig1 = 9+2
+    segF = 10+2
+    segA = 11+2
+    dig0 = 12+2
+    segs = [segA, segB,segC,segD,segE,segG, DP]
+    digs = [dig3,dig2,dig1, dig0]
+    board = pymata4.Pymata4
     
 
 
-#     [dig4, digitNum, segments] = sevenSeg('c', 35)
+    [dig4, digitNum, segments] = sevenSeg('c', 35)
 
 
 
