@@ -94,47 +94,6 @@ def convert_to_three_digits(number):
     # number returns as decimal
     return '{:03d}'.format(number)
 
-def to_arduino(myBoard, digDisplay):
-    segA = 2
-    segB = 3
-    segC = 4 
-    segD = 5
-    segE = 6
-    segF = 7
-    segG = 8
-    segDP = 9
-    digGround = [11,12,13,10 ]#dig 0 ... dig 4 
-    segmentID = [segA, segB, segC, segD, segE, segF, segDP]
-    for pin in segmentID:
-        myBoard.set_pin_to_digital_output(pin)
-    # set digit that is desired to be grounded
-    #turning off all digits
-
-    #there should be some way to for loop this but i get an error every time
-    for digit in digDisplay:
-        myBoard.digital_write(digGround[digit], 1)
-    
-    while True:
-        #outputing to digit 0
-        
-        myBoard.digital_write(digGround[0], 0)
-        #printing to the pins
-        for i in range(0,len(digDisplay)):
-            myBoard.digital_write(segmentID[i], int(digDisplay[0][i]))
-
-        # myBoard.digital_write(segmentID[1], int(digDisplay[0][1]))
-        # myBoard.digital_write(segmentID[2], int(digDisplay[0][2]))
-        # myBoard.digital_write(segmentID[3], int(digDisplay[0][3]))
-        # myBoard.digital_write(segmentID[4], int(digDisplay[0][4]))
-        # myBoard.digital_write(segmentID[5], int(digDisplay[0][5]))
-        # myBoard.digital_write(segmentID[6], int(digDisplay[0][6]))
-        # myBoard.digital_write(segmentID[7], int(digDisplay[0][7]))
-        # myBoard.digital_write(segmentID[8], int(digDisplay[0][8]))
-
-        # clear pins
-        for pin in segmentID:
-            myBoard.digital_write(segmentID[i], 0)
-        myBoard.digital_write()
 
 
 
@@ -203,6 +162,73 @@ def sevenSeg(myBoard, mode : str, pedCounter = '000'):
 #     for i in range(0,len(segments)):
 #         for j in range(0,len(segments[i])):
 
+
+def to_arduino(myBoard, digDisplay):
+    segA = 2
+    segB = 3
+    segC = 4 
+    segD = 5
+    segE = 6
+    segF = 7
+    segG = 8
+    segDP = 9
+    digGround = [11,12,13,10 ]#dig 0 ... dig 4 
+    segmentID = [segA, segB, segC, segD, segE, segF, segDP]
+    for pin in segmentID:
+        myBoard.set_pin_to_digital_output(pin)
+    # set digit that is desired to be grounded
+    #turning off all digits
+
+    #there should be some way to for loop this but i get an error every time
+    for digit in digDisplay:
+        myBoard.digital_write(digGround[digit], 1)
+    
+    while True:
+        try:
+            #INTIALISING to digit 0
+            myBoard.digital_write(digGround[0], 0)
+            #printing to the pins
+            for i in range(0,len(digDisplay)):
+                myBoard.digital_write(segmentID[i], int(digDisplay[0][i]))
+            # clear pins
+            for pin in segmentID:
+                myBoard.digital_write(segmentID[i], 0)
+            #turn off digit
+            myBoard.digital_write(digGround[1],1)
+            
+            # INITIALISING digit 1
+            myBoard.digital_write(digGround[1],0)
+            #printing to the pins
+            for i in range(0,len(digDisplay)):
+                myBoard.digital_write(segmentID[i], int(digDisplay[1][i]))
+            # clear pins
+            for pin in segmentID:
+                myBoard.digital_write(segmentID[i], 0)
+            #turn off digit
+            myBoard.digital_write(digGround[1],1)
+
+            # INITIALISING digit 2
+            myBoard.digital_write(digGround[2],0)
+            #printing to the pins
+            for i in range(0,len(digDisplay)):
+                myBoard.digital_write(segmentID[i], int(digDisplay[2][i]))
+            # clear pins
+            for pin in segmentID:
+                myBoard.digital_write(segmentID[i], 0)
+            myBoard.digital_write(digGround[2],1)
+
+            # INITIALISING digit 3
+            myBoard.digital_write(digGround[3],0)
+            #printing to the pins
+            for i in range(0,len(digDisplay)):
+                myBoard.digital_write(segmentID[i], int(digDisplay[3][i]))
+            # clear pins
+            for pin in segmentID:
+                myBoard.digital_write(segmentID[i], 0)
+            myBoard.digital_write(digGround[3],1)
+        except KeyboardInterrupt:
+            print('need to figure out a condition to end this program, also do i turn this into a fintite state machine?')
+            break
 
 
 
