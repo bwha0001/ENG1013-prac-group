@@ -1,6 +1,6 @@
 import time
 import math as mth
-#ST. from pymata4 import pymata4 
+from pymata4 import pymata4 
 import module_scripts as ms
 import to_7_segment_display as to_7_seg
 import maintenance_mode as m_m
@@ -39,8 +39,20 @@ while True:
         }
         
         trafficStage = 1   
-        
-        trafficStage = 1
+
+        #Set up arduino
+        board = pymata4.Pymata4()
+
+        #set arduino pins
+        board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainRed"])
+        board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["mainYellow"])
+        board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainGreen"])
+        board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideRed"])
+        board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["sideYellow"])
+        board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideGreen"])
+        board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianRed"])
+        board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
+
 
         main.main_menu(intersectionData, changeableConditions)
         

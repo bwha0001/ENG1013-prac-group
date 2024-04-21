@@ -6,6 +6,7 @@
 import time
 import random
 
+ 
 
 def polling_loop(intersectionData, changeableConditions):
     '''
@@ -91,6 +92,7 @@ def polling_loop(intersectionData, changeableConditions):
     return [intersectionData, changeableConditions]
 
 
+#sOFTWARE TEST
 # if __name__ == "__main__":
 #     #external initalisations
 #     #Creates a dictonary of records for data collected

@@ -1,5 +1,5 @@
 # This converts the LED's into on/off/flashing and converts the traffic light setting to Arduino commands
-# Author: Hayley Dusting
+# Author: Hayley Dusting 
 # Date: 10/4/2024
 # Version ='3.0' Hardware testing, software checks still included
 
@@ -17,6 +17,7 @@ def flashing_led(pin):
             function has no returns
     """ 
 
+#TODO change flashing opperation, this gets stuck in infinate loop - change to do with hardware 555 timer?
     try:
         while True:
             board.digital_write(pin, 1)
@@ -72,26 +73,27 @@ def light_setting_state(changableConditions, mainState, sideState, pedestrianSta
     if mainState == "red":
         ledStates["mainRed"] = 1
         board.digital_write(ledPins["mainRed"], 1)
-        board.digital_write(ledPins["mainYellow"], 0)
+        board.pwm_write(ledPins["mainYellow"], 0)
         board.digital_write(ledPins["mainGreen"], 0)
         print("main red on")
         print("main yellow off\nmain green off")
     elif mainState == "yellow":
         ledStates["mainYellow"] = 1
         board.digital_write(ledPins["mainRed"], 0)
-        board.digital_write(ledPins["mainYellow"], 1)
+        board.pwm_write(ledPins["mainYellow"], 255)
         board.digital_write(ledPins["mainGreen"], 0)
         print("main red off \nmain yellow on\nmain green off")
     elif mainState == "green":
         ledStates["mainGreen"] = 1
         board.digital_write(ledPins["mainRed"], 0)
-        board.digital_write(ledPins["mainYellow"], 0)
+        board.pwm_write(ledPins["mainYellow"], 0)
         board.digital_write(ledPins["mainGreen"], 1)
         print("main red off \nmain yellow off\n main green on")
     elif mainState == "flashing":
         ledStates["mainYellow"] = -1
         board.digital_write(ledPins["mainRed"], 0)
-        flashing_led(ledPins["mainYellow"])
+        board.pwm_write(ledPins["mainYellow"], 125)
+        #flashing_led(ledPins["mainYellow"])
         board.digital_write(ledPins["mainGreen"], 0)
         print("main red off \nmain yellow flashing\n main green off")
     elif mainState == "off":
@@ -99,7 +101,7 @@ def light_setting_state(changableConditions, mainState, sideState, pedestrianSta
         ledStates["mainYellow"] = 0
         ledStates["mainGreen"] = 0
         board.digital_write(ledPins["mainRed"], 0)
-        board.digital_write(ledPins["mainYellow"], 0)
+        board.pwm_write(ledPins["mainYellow"], 0)
         board.digital_write(ledPins["mainGreen"], 0)
         print("main red off \nmain yellow off\n main green off")
 # side state
@@ -155,10 +157,9 @@ def light_setting_state(changableConditions, mainState, sideState, pedestrianSta
         ledStates["pedestrianYellow"] = 0
         ledStates["pedestrianGreen"] = 0
         board.digital_write(ledPins["pedestrianRed"], 0)
-        board.digital_write(ledPins["pedestrianYellow"], 0)
         board.digital_write(ledPins["pedestrianGreen"], 0)
         print("pedestrian red off \n pedestrian green off")
-    return ledStates
+    return ledStates                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
 
 if __name__ == '__main__':
 
@@ -181,14 +182,22 @@ if __name__ == '__main__':
     
     #set arduino pins
     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainRed"])
-    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainYellow"])
+    board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["mainYellow"])
     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainGreen"])
     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideRed"])
-    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideYellow"])
+    board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["sideYellow"])
     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideGreen"])
     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianRed"])
-    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
+    board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
 
-    light_setting_state(changeableConditions, "yellow", "green", "flashing")
-    # do we demo without arduino? cause then we need to comment out all of the elite programming and save it 
-    # for mpv3
+    light_setting_state(changeableConditions, "yellow", "green", "green")
+    time.sleep(3)
+    light_setting_state(changeableConditions, "red", "green", "red")
+    time.sleep(3)
+    light_setting_state(changeableConditions, "green", "green", "off")
+    time.sleep(3)
+    light_setting_state(changeableConditions, "off", "green", "green")
+    time.sleep(3)
+    light_setting_state(changeableConditions, "flashing", "green", "red")
+    time.sleep(10)
+    light_setting_state(changeableConditions, "off", "green", "green")
