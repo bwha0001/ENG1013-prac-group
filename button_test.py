@@ -3,18 +3,22 @@
 from pymata4 import pymata4
 import time
 
+
 def receive_data(data):
     """
     :param data: a list containing pin type, pin number, 
                  data value and time-stamp
     """
     # Print the value out (code goes here to do something with the data)
+    time1 = time.time()
     global counter
     counter = 0
-    if data[2] >500:
+    if time1- data[3] <0.2:
         counter += 1
-        print(counter)
-    print(data)
+    else:
+        data[2]=0
+        # print(counter)
+    # print(data)
 
 
 board=pymata4.Pymata4()
@@ -29,6 +33,7 @@ startTime = time.time()
 counter = 0
 
 while startTime + 10 >= time.time():
+    receive_data(board.analog_read(5))
     pass
 
 print("closing")

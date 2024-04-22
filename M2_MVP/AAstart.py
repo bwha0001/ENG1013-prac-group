@@ -1,6 +1,6 @@
 import time
 import math as mth
-
+from pymata4 import pymata4
 import module_scripts as ms
 import to_7_segment_display as to_7_seg
 import maintenance_mode as m_m
@@ -78,5 +78,5 @@ while True:
         print("program end")
          # Remember to close the boards when you're done
         board.close()
-        board2.close()
+        # board2.close()
         break
