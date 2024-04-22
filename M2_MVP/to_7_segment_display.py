@@ -31,7 +31,7 @@ def valid_7seg(message: any):
         else:
             return 'invalid', message
 
-        str(message) # convert any data type into string to take length
+        message = str(message) # convert any data type into string to take length
            
         if(len(message)<length):
             # print('valid')
@@ -94,47 +94,6 @@ def convert_to_three_digits(number):
     # number returns as decimal
     return '{:03d}'.format(number)
 
-def to_arduino(myBoard, digDisplay):
-    segA = 2
-    segB = 3
-    segC = 4 
-    segD = 5
-    segE = 6
-    segF = 7
-    segG = 8
-    segDP = 9
-    digGround = [11,12,13,10 ]#dig 0 ... dig 4 
-    segmentID = [segA, segB, segC, segD, segE, segF, segDP]
-    for pin in segmentID:
-        myBoard.set_pin_to_digital_output(pin)
-    # set digit that is desired to be grounded
-    #turning off all digits
-
-    #there should be some way to for loop this but i get an error every time
-    for digit in digDisplay:
-        myBoard.digital_write(digGround[digit], 1)
-    
-    while True:
-        #outputing to digit 0
-        
-        myBoard.digital_write(digGround[0], 0)
-        #printing to the pins
-        for i in range(0,len(digDisplay)):
-            myBoard.digital_write(segmentID[i], int(digDisplay[0][i]))
-
-        # myBoard.digital_write(segmentID[1], int(digDisplay[0][1]))
-        # myBoard.digital_write(segmentID[2], int(digDisplay[0][2]))
-        # myBoard.digital_write(segmentID[3], int(digDisplay[0][3]))
-        # myBoard.digital_write(segmentID[4], int(digDisplay[0][4]))
-        # myBoard.digital_write(segmentID[5], int(digDisplay[0][5]))
-        # myBoard.digital_write(segmentID[6], int(digDisplay[0][6]))
-        # myBoard.digital_write(segmentID[7], int(digDisplay[0][7]))
-        # myBoard.digital_write(segmentID[8], int(digDisplay[0][8]))
-
-        # clear pins
-        for pin in segmentID:
-            myBoard.digital_write(segmentID[i], 0)
-        myBoard.digital_write()
 
 
 
@@ -152,9 +111,8 @@ def sevenSeg(myBoard, mode : str, pedCounter = '000'):
 
    
     validated1, message1 = valid_7seg(mode) # validate operating mode input\
-
     if type(pedCounter) is not type('jdf') or len(pedCounter)!= 2:  # converting any input to 3 digit string
-        pedCounter = convert_to_three_digits(pedCounter)
+        pedCounter = convert_to_three_digits(int(pedCounter))
         pedCounter = str(pedCounter)
 
     #Determine the output as strings
@@ -175,14 +133,14 @@ def sevenSeg(myBoard, mode : str, pedCounter = '000'):
 
         if message1 == 'c' :
             dig4 = convertion_dict('c')
-            print(f"dig4 :{dig4}, dig 3 : {digitNum[0]}, dig 2 : {digitNum[1]}, dig 3 : {digitNum[2]}")
+            print(f"dig4 :{dig4}, dig 0 : {digitNum[0]}, dig 1 : {digitNum[1]}, dig 2 : {digitNum[2]}")
             
         if message1 == 'n':
             dig4 = convertion_dict('n')
-        print(f"dig4 :{dig4}, dig 3 : {digitNum[0]}, dig 2 : {digitNum[1]}, dig 3 : {digitNum[2]}")            
+        print(f"dig4 :{dig4}, dig 0 : {digitNum[0]}, dig 1 : {digitNum[1]}, dig 2 : {digitNum[2]}")            
         if message1 == 'g':
             dig4 = convertion_dict('g')
-            print(f"dig4 :{dig4}, dig 3 : {digitNum[0]}, dig 2 : {digitNum[1]}, dig 3  {digitNum[2]}")   
+            print(f"dig4 :{dig4}, dig 0 : {digitNum[0]}, dig 1 : {digitNum[1]}, dig 2 :  {digitNum[2]}")   
 
         # seperating the segments from number digits
         # digits read right to left
@@ -195,8 +153,8 @@ def sevenSeg(myBoard, mode : str, pedCounter = '000'):
 
     else:
         print('Invalid input')
-
-    return dig4, digitNum, digDisplay         
+    to_arduino(myBoard, digDisplay, mode, pedCounter)
+    return digDisplay, mode, pedCounter         
 
 # def outputSevSeg(myBoard, segments, segs, digs):
 #     ms.arduino_setup(myBoard, 'digital write', [segs, digs])
@@ -204,10 +162,81 @@ def sevenSeg(myBoard, mode : str, pedCounter = '000'):
 #         for j in range(0,len(segments[i])):
 
 
+def to_arduino(myBoard, digDisplay, mode, pedCounter):
+    segA = 2
+    segB = 3
+    segC = 4 
+    segD = 5
+    segE = 6
+    segF = 7
+    segG = 8
+    segDP = 9
+    digGround = [11,12,13,10 ]#dig 0 ... dig 4 
+    segmentID = [segA, segB, segC, segD, segE, segF, segG, segDP]
+
+    wakeTime = 2
+    for pin in segmentID:
+        myBoard.set_pin_to_digital_output(pin)
+    # set digit that is desired to be grounded
+    #turning off all digits
+    for digit in digDisplay:
+        myBoard.digital_write(digGround[digit], 1)
+    
+
+    if pedCounter != '000':
+        time1 = time.time()
+        time2 = time.time()
+        while mth.floor(time2-time1)<wakeTime: #Keep LEDs on for wakeTime seconds
+            #INTIALISING to digit 0
+            myBoard.digital_write(digGround[0], 0)
+            #printing to the pins
+            for i in range(0,len(digDisplay)):
+                myBoard.digital_write(segmentID[i], int(digDisplay[0][i]))
+            # clear pins
+            for pin in segmentID:
+                myBoard.digital_write(segmentID[i], 0)
+            #turn off digit
+            myBoard.digital_write(digGround[0],1)
+            
+            # INITIALISING digit 1
+            myBoard.digital_write(digGround[1],0)
+            #printing to the pins
+            for i in range(0,len(digDisplay)):
+                myBoard.digital_write(segmentID[i], int(digDisplay[1][i]))
+            # clear pins
+            for pin in segmentID:
+                myBoard.digital_write(segmentID[i], 0)
+            #turn off digit
+            myBoard.digital_write(digGround[1],1)
+
+            # INITIALISING digit 2
+            myBoard.digital_write(digGround[2],0)
+            #printing to the pins
+            for i in range(0,len(digDisplay)):
+                myBoard.digital_write(segmentID[i], int(digDisplay[2][i]))
+            # clear pins
+            for pin in segmentID:
+                myBoard.digital_write(segmentID[i], 0)
+            myBoard.digital_write(digGround[2],1)
+            time2 = time.time() #update current time to update condition
+
+    else: # writing operating mode status
+        # INITIALISING digit 3
+        myBoard.digital_write(digGround[3],0)
+        #printing to the pins
+        for i in range(0,len(digDisplay)):
+            myBoard.digital_write(segmentID[i], int(digDisplay[3][i]))
+        time.sleep(wakeTime)
+        # clear pins
+        for pin in segmentID:
+            myBoard.digital_write(segmentID[i], 0)
+        myBoard.digital_write(digGround[3],1)
+    
 
 
 
-if __name__ == "__main__":
+
+if __name__ == "__main__": # need to initialise in a seperate file
 
     segE = 1+2
     segD = 2+2
@@ -227,7 +256,7 @@ if __name__ == "__main__":
     
 
 
-    [dig4, digitNum, segments] = sevenSeg('c', 35)
+    [dig4, digitNum, segments] = sevenSeg(board, 'c', 35)
 
 
 
