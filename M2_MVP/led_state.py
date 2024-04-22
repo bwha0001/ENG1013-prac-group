@@ -15,9 +15,15 @@ def flashing_led(pin):
         Returns:
             function has no returns
     """ 
+    board.digital_write(pin,1)
+    time.sleep(0.5)
+    board.digital_write(pin,0)
+    time.sleep(0.5)
 
 #TODO change flashing opperation, this gets stuck in infinate loop - change to do with hardware 555 timer?
-    try:
+
+
+"""    try:
         while True:
             board.digital_write(pin, 1)
             time.sleep(0.5)
@@ -25,10 +31,10 @@ def flashing_led(pin):
             time.sleep(0.5)
     except KeyboardInterrupt:
         pass
-
+"""
 
 #function to convert traffic light state into LED state
-def light_setting_state(changeableConditions, mainState, sideState, pedestrianState):
+def light_setting_state(board, changeableConditions, mainState, sideState, pedestrianState):
     #readded modes to function call based on the function header
     """
     Used to set traffic light state to on/off/flashing for each LED on the Arduino
@@ -91,8 +97,8 @@ def light_setting_state(changeableConditions, mainState, sideState, pedestrianSt
     elif mainState == "flashing":
         ledStates["mainYellow"] = -1
         board.digital_write(ledPins["mainRed"], 0)
-        board.pwm_write(ledPins["mainYellow"], 30)
-        #flashing_led(ledPins["mainYellow"])
+        #board.pwm_write(ledPins["mainYellow"], 30)
+        flashing_led(ledPins["mainYellow"])
         board.digital_write(ledPins["mainGreen"], 0)
         print("main red off \nmain yellow flashing\n main green off")
     elif mainState == "off":
@@ -175,15 +181,15 @@ if __name__ == '__main__':
             "pedestrianGreen": 9,
             "trigger":0
             },
-            'ardinoPins7Seg': {},
-            'trafficStage' : 1, # in the led state we need a case switching so we can assign the correct R,Y,G states from traffic stage, not neccercarily, was originally designed to have individual states entered within function call
-            'pollingRate' : 2,
-            'pedCounterReset' : ""
+        'ardinoPins7Seg': {},
+        'trafficStage' : 1, # in the led state we need a case switching so we can assign the correct R,Y,G states from traffic stage, not neccercarily, was originally designed to have individual states entered within function call
+        'pollingRate' : 2,
+        'pedCounterReset' : ""
         }
     
     #set arduino pins
     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainRed"])
-    board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["mainYellow"])
+    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainYellow"])
     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainGreen"])
     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideRed"])
     board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["sideYellow"])
@@ -191,7 +197,7 @@ if __name__ == '__main__':
     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianRed"])
     board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
 
-    light_setting_state(changeableConditions, "yellow", "green", "green")
+    light_setting_state(board, changeableConditions, "yellow", "green", "green")
     time.sleep(3)
     '''
     light_setting_state(changeableConditions, "red", "green", "red")
@@ -201,6 +207,7 @@ if __name__ == '__main__':
     light_setting_state(changeableConditions, "off", "green", "green")
     time.sleep(3)
     '''
-    light_setting_state(changeableConditions, "flashing", "green", "red")
-    time.sleep(10)
-    light_setting_state(changeableConditions, "off", "green", "green")
+    light_setting_state(board, changeableConditions, "flashing", "green", "red")
+    light_setting_state(board, changeableConditions, "flashing", "green", "red")
+    light_setting_state(board, changeableConditions, "flashing", "green", "red")
+    light_setting_state(board, changeableConditions, "off", "green", "green")
