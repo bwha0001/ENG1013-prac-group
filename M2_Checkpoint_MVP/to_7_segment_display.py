@@ -154,7 +154,6 @@ def sevenSeg(myBoard, mode : str, pedCounter = '000'):
 
     else:
         print('Invalid input')
-    to_arduino(myBoard, digDisplay, mode, pedCounter)
     return digDisplay, mode, pedCounter         
 
 # def outputSevSeg(myBoard, segments, segs, digs):
@@ -164,6 +163,7 @@ def sevenSeg(myBoard, mode : str, pedCounter = '000'):
 
 
 def to_arduino(myBoard, digDisplay, mode, pedCounter):
+    
     segA = 2
     segB = 3
     segC = 4 
@@ -175,14 +175,20 @@ def to_arduino(myBoard, digDisplay, mode, pedCounter):
     digGround = [11,12,13,10 ]#dig 0 ... dig 4 
     segmentID = [segA, segB, segC, segD, segE, segF, segG, segDP]
 
+
+
+
     wakeTime = 2
+    # board.set_pin_mode_digital_output(segF)
+    for pin in digGround:
+        myBoard.set_pin_mode_digital_output(pin)
     for pin in segmentID:
-        myBoard.set_pin_to_digital_output(pin)
+        myBoard.set_pin_mode_digital_output(pin)
+    # myBoard.set_pin_mode_digital_output()
     # set digit that is desired to be grounded
     #turning off all digits
-    for digit in digDisplay:
-        myBoard.digital_write(digGround[digit], 1)
-    
+    for i in range(0,len(digGround)):
+        myBoard.digital_write(digGround[i], 1)
 
     if pedCounter != '000':
         time1 = time.time()
@@ -191,10 +197,10 @@ def to_arduino(myBoard, digDisplay, mode, pedCounter):
             #INTIALISING to digit 0
             myBoard.digital_write(digGround[0], 0)
             #printing to the pins
-            for i in range(0,len(digDisplay)):
+            for i in range(0,len(digDisplay[0])):
                 myBoard.digital_write(segmentID[i], int(digDisplay[0][i]))
             # clear pins
-            for pin in segmentID:
+            for i in range(0,len(segmentID)):
                 myBoard.digital_write(segmentID[i], 0)
             #turn off digit
             myBoard.digital_write(digGround[0],1)
@@ -206,7 +212,7 @@ def to_arduino(myBoard, digDisplay, mode, pedCounter):
                 myBoard.digital_write(segmentID[i], int(digDisplay[1][i]))
             # clear pins
             for pin in segmentID:
-                myBoard.digital_write(segmentID[i], 0)
+                myBoard.digital_write(pin, 0)
             #turn off digit
             myBoard.digital_write(digGround[1],1)
 
@@ -217,7 +223,7 @@ def to_arduino(myBoard, digDisplay, mode, pedCounter):
                 myBoard.digital_write(segmentID[i], int(digDisplay[2][i]))
             # clear pins
             for pin in segmentID:
-                myBoard.digital_write(segmentID[i], 0)
+                myBoard.digital_write(pin, 0)
             myBoard.digital_write(digGround[2],1)
             time2 = time.time() #update current time to update condition
 
@@ -230,34 +236,34 @@ def to_arduino(myBoard, digDisplay, mode, pedCounter):
         time.sleep(wakeTime)
         # clear pins
         for pin in segmentID:
-            myBoard.digital_write(segmentID[i], 0)
+            myBoard.digital_write(pin, 0)
         myBoard.digital_write(digGround[3],1)
     
 
 
 
 
-if __name__ == "__main__": # need to initialise in a seperate file
+# if __name__ == "__main__": # need to initialise in a seperate file
 
-    segE = 1+2
-    segD = 2+2
-    DP = 3+2
-    segC = 4+2
-    segG = 5+2
-    dig3 = 6+2
-    segB = 7+2
-    dig2 = 8+2
-    dig1 = 9+2
-    segF = 10+2
-    segA = 11+2
-    dig0 = 12+2
-    segs = [segA, segB,segC,segD,segE,segG, DP]
-    digs = [dig3,dig2,dig1, dig0]
-    board = pymata4.Pymata4
+#     segE = 1+2
+#     segD = 2+2
+#     DP = 3+2
+#     segC = 4+2
+#     segG = 5+2
+#     dig3 = 6+2
+#     segB = 7+2
+#     dig2 = 8+2
+#     dig1 = 9+2
+#     segF = 10+2
+#     segA = 11+2
+#     dig0 = 12+2
+#     segs = [segA, segB,segC,segD,segE,segG, DP]
+#     digs = [dig3,dig2,dig1, dig0]
+#     board = pymata4.Pymata4
     
 
 
-    [dig4, digitNum, segments] = sevenSeg(board, 'c', 35)
+#     [dig4, digitNum, segments] = sevenSeg(board, 'c')
 
 
 
