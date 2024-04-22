@@ -37,12 +37,26 @@ board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideGreen
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianRed"])
 board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
 # Configure pin to sonar
-board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], timeout=20000)
 
-try:
+def the_callback(data):
+    print(f'distance in cm {data[DISTANCE_CM]}')
+
+def sonar(myBoard, changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"]):
+    myBoard.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], the_callback)
+
     while True:
-        reading, timeStamp = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
-        print(reading)
-        time.sleep(1)
-except KeyboardInterrupt:
+        try:
+            reading, timeStamp = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
+            print(reading)
+            time.sleep(0.5)
+        except KeyboardInterrupt:
+            board.shutdown()
+            break
+
+board = pymata4.Pymata4()
+try:
+    sonar(board, changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], the_callback)
     board.shutdown()
+except (KeyboardInterrupt, RuntimeError):
+    board.shutdown()
+    
