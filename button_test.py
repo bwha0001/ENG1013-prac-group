@@ -10,7 +10,7 @@ def receive_data(data):
     """
     # Print the value out (code goes here to do something with the data)
     global counter
-    if data[2] == 1023:
+    if data[2] >900:
         counter += 1
         print(counter)
     print(data)

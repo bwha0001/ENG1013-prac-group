@@ -21,7 +21,7 @@ def maintenance_mode(intersectionData, changeableConditions):
         changesToVaribles = {"PLR":"pollingRate"}
         #Suspend polling loop, set mode infomation
         changeableConditions["trafficStage"] = "suspended"
-        mode = "c."
+        mode = "c"
         #PIN - Checks if pin matches stored. If matches enter maintenance mode, if it doesnt match determine whether the user has any more attempts avaible to them
         pin = "1234"
         triesAllowed = 3
@@ -38,7 +38,7 @@ def maintenance_mode(intersectionData, changeableConditions):
                 return None
 
         #As properly entered mode now change 7 segment display
-        to_7_segment_display(mode)
+        to_7_segment_display(board, mode)
         
         while True:
             while True:

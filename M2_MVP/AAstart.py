@@ -24,9 +24,8 @@ while True:
         # Do something with board2
 
        
-
         #Create a dictonary of records
-        intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[], "pedCounterReset":""}
+        intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[]}
 
         pollingRate = 2
         changeableConditions = {
@@ -39,16 +38,23 @@ while True:
                 "sideGreen": 7,
                 "pedestrianRed": 8,
                 "pedestrianGreen": 9,
-                "triggerPin":11,
-                "echoPin":12
+                "triggerPin":0,
+                "echoPin":1
                 },
             'ardinoPins7seg': [],
-            'trafficStage' : 1, # in the led state we need a case switching so we can assign the correct R,Y,G states from traffic stage, not neccercarily, was originally designed to have individual states entered within function call
+            'stageLengths':{
+                1:30,
+                2:3,
+                3:3,
+                4:3,
+                5:3,
+                6:3
+            },
+            'trafficStage' :"suspended",
             'pollingRate' : pollingRate,
             'pedCounterReset' : ""
         }
         
-        trafficStage = 1   
 
         #Set up arduino
         board = pymata4.Pymata4()

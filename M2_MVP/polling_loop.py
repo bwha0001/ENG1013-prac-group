@@ -91,7 +91,7 @@ def polling_loop(intersectionData, changeableConditions):
     #Print the distnace to the nearest vechile
     print(f"Distance to nearest vechile: {distToVehicle} cm")
 
-    return [intersectionData, changeableConditions]
+    return intersectionData, changeableConditions
 
 #Hardware Test
 if __name__ == "__main__":

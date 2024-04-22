@@ -2,46 +2,79 @@
 import to_7_segment_display
 import polling_loop
 import time
+import led_state
 
-# function traffic stage change
-# 	inputs:  current traffic stage
-#      This function takes care of the repeated processes of a change in traffic stage in the traffic control system and the tasks that occur at particular stages. Displaying stage specific outputs to console. 
-# 	Outputs: current traffic stage
+def traffic_stage_change(intersectionData, changeableConditions, trafficStage):
+    """
+    This function takes care of the repeated processes of a change in traffic stage in the traffic control system and 
+    the tasks that occur at particular stages. Displaying stage specific outputs to console.
+    parameters:  current traffic stage
+    outputs: current traffic stage
+    """
 
-# Reset stage start time to current time
-# What is the current stage
-# if current stage is 1, 3, 4, 5
-# Increase the traffic stage by 1
-# Display “Commencing Traffic Stage <traffic stage>” on console
-# If the current stage is 3
-# Increase the traffic stage by 1
-# Display “Commencing Traffic Stage <traffic stage>” on console
-# Display “The current pedestrian count is <pedestrian counter>” on console
-# If the current stage is 6
-# Set the traffic stage to 1
-# Display “Commencing Traffic Stage <traffic stage>” on console
-# set  pedestrian counter to 0
+    if trafficStage == "suspended" or trafficStage == 1:
+        #initalise stage 1
+        #reset ped counter on next poll
+        changeableConditions["pedCountReset"] = "stage1Reset"
+        #update traffic stage
+        changeableConditions["trafficStage"] = 1
+        #set stage end time to be x number of seconds from now determined by set value in changeable conditions
+            #go to key of the current traffic stage in the lengths dictonary which is within changeable conditons
+        stageEndTime = time.time() + changeableConditions["stageLengths"][changeableConditions["trafficStage"]]
+    elif trafficStage in {1,2,3,4,5}:
+        #increase stage by one
+        #update traffic stage
+        trafficStage += 1
+        changeableConditions["trafficStage"] = trafficStage
+        #set stage end time to be x number of seconds from now determined by set value in changeable conditions
+            #go to key of the current traffic stage in the lengths dictonary which is within changeable conditons
+        stageEndTime = time.time() + changeableConditions["stageLengths"][changeableConditions["trafficStage"]]   
+    else:
+        print("How did you get here?")
+    
+    #Display traffic stage commencing on console
+    print(f"Commencing Traffic Stage {trafficStage}")
+    #display pedestrian count if entered stage 3
+    if changeableConditions["trafficStage"] == 3:
+        #print message and last value in the list stored in intersection data
+        pedCount = intersectionData["pedCountRecord"][-1]
+        print(f"Pedestrian Count: {[pedCount]}")
+    return stageEndTime
 
 def normal_operation(intersectionData,changeableConditions):
     """
     normal opperation mode
     """
 #TODO add function header
-    # Begin normal operation\
-    mode = 'c'
-    to_7_segment_display(board, mode)
-    # Initialize traffic stage to 1
-    changeableConditions["trafficStage"] = 1
+    #define dictonary of traffic light colours to stage
+    lightForStage = {
+        1: ["green", "red", "red"],
+        2: ["yellow", "red", "red"],
+        3: ["red", "red", "red"],
+        4: ["red", "green", "green"],
+        5: ["red", "yellow", "flashing"],
+        6: ["red", "red", "red"]
+        } 
 
-    # Initialize pedestrian count to 0
-    pedCount = 0
+    # Begin normal operation
+    mode = 'n'
+#    to_7_segment_display(board, mode)
+    #pull traffic stage from dictonary
+    trafficStage = changeableConditions['trafficStage']
+
+    #use changeable conditions to start operation from suspended stage, restarts at stage 1
+    if trafficStage == "suspended":
+        stageTimeEnd = traffic_stage_change(intersectionData, changeableConditions, trafficStage,)
 
     try:
-        while True:    
-            # Initialize stage start time current time
-            stageStart = time.time()
-            stageEndTime = time.time() + 30
-
+        while True:           
+            # Does the traffic stage need changing?
+            if time.time()>=stageTimeEnd:
+                traffic_stage_change(intersectionData, changeableConditions, trafficStage,)
+                #set light colours
+                [mainState, sideState, pedestrianState] = lightForStage[changeableConditions["trafficStage"]]
+                #output lights to arduino
+                led_state(changeableConditions, mainState, sideState, pedestrianState)
             # Run function polling loop, inputting polling rate, output of polling time, current distance and pedestrian count
             [intersectionData, changeableConditions] = polling_loop(intersectionData, changeableConditions)
                 #Happens within function 
@@ -49,59 +82,22 @@ def normal_operation(intersectionData,changeableConditions):
                     # Display polling time on console, “Polling loop took <polling time> to complete”
                     # If polling start time plus polling time taken equals the current time
                     # Display the current distance, “The distance to the closest vehicle is <current distance> cm.”
-            # Does the traffic stage need changing?
             
-            # if stage matches ‘1’ and current time minus stage start time is less than or equal to 30 seconds
-            if changeableConditions["trafficStage"] == 1 and time.time()<stageEndTime:
-                pass
-            # if stage matches ‘1’ and current time minus stage start time is more than 30 seconds
-            elif changeableConditions["trafficStage"] == 1 and time.time()>=stageEndTime:
-                trafficStageChange(changeableConditions["trafficStage"])
-            # traffic stage change inputting traffic stage, output is updated traffic stage
-            # Continue to step 9
-            elif changeableConditions["trafficStage"] == {2,3,4,5,6} and time.time()<stageEndTime:
-                pass
-            # if stage matches ‘1’ and current time minus stage start time is more than 30 seconds
-            elif changeableConditions["trafficStage"] == 1 and time.time()>=stageEndTime:
-                trafficStageChange(changeableConditions["trafficStage"])
-            # if stage matches ‘2’ and current time minus stage start time is less than or equal to 3 seconds
-            # Continue to step 9
-            # if stage matches ‘2’ and current time minus stage start time is more than 3 seconds
-            # traffic stage change inputting traffic stage, output is updated traffic stage
-            # Continue to step 9
-            # if stage matches ‘3’ and current time minus stage start time is less than or equal to 3 seconds
-            # Continue to step 9
-            # if stage matches ‘3’ and current time minus stage start time is more than 3 seconds
-            # traffic stage change inputting traffic stage, output is updated traffic stage
-            # Continue to step 9
-            # if stage matches ‘4’ and current time minus stage start time is less than or equal to 30 seconds
-            # Continue to step 9
-            # if stage matches ‘4’ and current time minus stage start time is more than 30 seconds
-            # traffic stage change inputting traffic stage, output is updated traffic stage
-            # Continue to step 9
-            # if stage matches ‘5’ and current time minus stage start time is less than or equal to 3 seconds
-            # Continue to step 9
-            # if stage matches ‘5’ and current time minus stage start time is more than 3 seconds
-            # traffic stage change inputting traffic stage, output is updated traffic stage
-            # Continue to step 9
-            # if stage matches ‘6’ and current time minus stage start time is less than or equal to 3 seconds
-            # Continue to step 9
-            # if stage matches ‘6’ and current time minus stage start time is more than 3 seconds
-            # traffic stage change inputting traffic stage, output is updated traffic stage
-            # Continue to step 9
-        # light state for stage, input; current stage, output; main light state, side light state, pedestrian light state
-        # Light set state to led state input;  main light state side light state, pedestrian light state, output; main red, main yellow, main green, side red, side yellow, side green, pedestrian red, pedestrian green
-        # Output light states to Arduino
-        # Has the exit button been pressed?
-        # If yes, return to main menu, step 3 of ‘Opening and Mode Selection’
-        # If no, continue to step 5
-
+            #Due to need to continue flashing while polling loop still runs
+            #trigger light setting again (ped green flashing) if in stage 5
+            if trafficStage == 5:
+                led_state(changeableConditions, mainState, sideState, pedestrianState)
+    except KeyboardInterrupt:
+        #exit button activation
+        print("Exit button activated, returning to main menu")
+        return intersectionData, changeableConditions
+    
 
 #Create a dictonary of records
 if __name__ == "__main__":     
-    intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[], "pedCounterReset":""}
+#   Create a dictonary of records
+    intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[]}
 
-    pollingRate = 2
     changeableConditions = {
         'arduinoPins' : {
             "mainRed": 2,
@@ -116,7 +112,17 @@ if __name__ == "__main__":
             "echoPin":1
             },
         'ardinoPins7seg': [],
-        'trafficStage' : 1, # in the led state we need a case switching so we can assign the correct R,Y,G states from traffic stage, not neccercarily, was originally designed to have individual states entered within function call
-        'pollingRate' : pollingRate,
+        'stageLengths':{
+            1:30,
+            2:3,
+            3:3,
+            4:3,
+            5:3,
+            6:3
+        },
+        'trafficStage' : 'suspended',
+        'pollingRate' : 2,
         'pedCounterReset' : ""
     }
+    
+    normal_operation(intersectionData, changeableConditions)
