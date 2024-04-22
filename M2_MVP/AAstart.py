@@ -30,7 +30,9 @@ while True:
                 "sideYellow": 6,
                 "sideGreen": 7,
                 "pedestrianRed": 8,
-                "pedestrianGreen": 9
+                "pedestrianGreen": 9,
+                "triggerPin":0,
+                "echoPin":1
                 },
             'ardinoPins7seg': {},
             'trafficStage' : 1, # in the led state we need a case switching so we can assign the correct R,Y,G states from traffic stage, not neccercarily, was originally designed to have individual states entered within function call
@@ -52,6 +54,11 @@ while True:
         board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideGreen"])
         board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianRed"])
         board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
+        # Configure pin to sonar
+        board.set_pin_mode_sonar(triggerPin, echoPin, timeout=200000)
+ 
+# read the sonar value 
+data = board.sonar_read(triggerPin)
 
 
         main.main_menu(intersectionData, changeableConditions)
