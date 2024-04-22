@@ -16,6 +16,14 @@ while True:
         global intersectionData
         global changeableConditions 
         global pollingRate
+        # Board 1
+        board = pymata4.Pymata4()        # Do something with board1
+
+        # Board 2
+        board2 = pymata4.Pymata4()
+        # Do something with board2
+
+       
 
         #Create a dictonary of records
         intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[], "pedCounterReset":""}
@@ -58,4 +66,7 @@ while True:
         
     except KeyboardInterrupt:
         print("program end")
+         # Remember to close the boards when you're done
+        board.close()
+        board2.close()
         break

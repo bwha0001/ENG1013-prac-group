@@ -63,7 +63,7 @@ def convertion_dict(value: str):
     dictionary = {
         '0' : '11111100', 
         '1' : '00001100',
-        '2' : '10110110',
+        '2' : '11011010',
         '3' : '10011110',
         '4' : '01101110',
         '5' : '10110110',
@@ -160,6 +160,7 @@ def to_arduino(myBoard, digDisplay, mode, pedCounter):
             for pin in segmentID:
                 myBoard.digital_write(pin, 0)
             myBoard.digital_write(digGround[2],1)
+            
             time2 = time.time() #update current time to update condition
 
     else: # writing operating mode status
@@ -219,14 +220,14 @@ def sevenSeg(myBoard, mode : str, pedCounter = '000'):
 
         if message1 == 'c' :
             dig4 = convertion_dict('c')
-            print(f"dig4 :{dig4}, dig 0 : {digitNum[0]}, dig 1 : {digitNum[1]}, dig 2 : {digitNum[2]}")
+            # print(f"dig4 :{dig4}, dig 0 : {digitNum[0]}, dig 1 : {digitNum[1]}, dig 2 : {digitNum[2]}")
             
         if message1 == 'n':
             dig4 = convertion_dict('n')
         print(f"dig4 :{dig4}, dig 0 : {digitNum[0]}, dig 1 : {digitNum[1]}, dig 2 : {digitNum[2]}")            
         if message1 == 'g':
             dig4 = convertion_dict('g')
-            print(f"dig4 :{dig4}, dig 0 : {digitNum[0]}, dig 1 : {digitNum[1]}, dig 2 :  {digitNum[2]}")   
+            # print(f"dig4 :{dig4}, dig 0 : {digitNum[0]}, dig 1 : {digitNum[1]}, dig 2 :  {digitNum[2]}")   
 
     # if message1 == 'c.' :
     #     dig4 = convertion_dict('c.')
@@ -260,8 +261,9 @@ def sevenSeg(myBoard, mode : str, pedCounter = '000'):
 
 
 
-# if __name__ == "__main__": # need to initialise in a seperate file
-
+if __name__ == "__main__": # need to initialise in a seperate file
+    board = pymata4.Pymata4()
+    sevenSeg(board, 'c', '123')
 #     segE = 1+2
 #     segD = 2+2
 #     DP = 3+2
