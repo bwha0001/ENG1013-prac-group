@@ -55,10 +55,7 @@ while True:
         board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianRed"])
         board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
         # Configure pin to sonar
-        board.set_pin_mode_sonar(triggerPin, echoPin, timeout=200000)
- 
-# read the sonar value 
-data = board.sonar_read(triggerPin)
+        board.set_pin_mode_sonar(changeableConditions["triggerPin"], changeableConditions["echoPin"], timeout=200000)
 
 
         main.main_menu(intersectionData, changeableConditions)

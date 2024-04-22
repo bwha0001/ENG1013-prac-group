@@ -92,7 +92,7 @@ def light_setting_state(changableConditions, mainState, sideState, pedestrianSta
     elif mainState == "flashing":
         ledStates["mainYellow"] = -1
         board.digital_write(ledPins["mainRed"], 0)
-        board.pwm_write(ledPins["mainYellow"], 125)
+        board.pwm_write(ledPins["mainYellow"], 30)
         #flashing_led(ledPins["mainYellow"])
         board.digital_write(ledPins["mainGreen"], 0)
         print("main red off \nmain yellow flashing\n main green off")
@@ -192,12 +192,14 @@ if __name__ == '__main__':
 
     light_setting_state(changeableConditions, "yellow", "green", "green")
     time.sleep(3)
+    '''
     light_setting_state(changeableConditions, "red", "green", "red")
     time.sleep(3)
     light_setting_state(changeableConditions, "green", "green", "off")
     time.sleep(3)
     light_setting_state(changeableConditions, "off", "green", "green")
     time.sleep(3)
+    '''
     light_setting_state(changeableConditions, "flashing", "green", "red")
     time.sleep(10)
     light_setting_state(changeableConditions, "off", "green", "green")
