@@ -107,7 +107,7 @@ def to_arduino(myBoard, digDisplay, mode, number):
     segF = 7
     segG = 8
     segDP = 9
-    digGround = [11,12,13, 10 ]#dig 0 ... dig 4 
+    digGround = [11,12,13, 10]#dig 0 ... dig 4 
     segmentID = [segA, segB, segC, segD, segE, segF, segG, segDP]
     # digDisplay = digDisplay[::-1] # reverse the digits cause i messed up
     # digGround = digGround[::-1]
@@ -134,7 +134,7 @@ def to_arduino(myBoard, digDisplay, mode, number):
             #printing to the pins
             for i in range(0,len(digDisplay[0])):
                 myBoard.digital_write(segmentID[i], int(digDisplay[0][i]))
-            time.sleep(0.004)
+            time.sleep(0.002)
             # clear pins
             for i in range(0,len(segmentID)):
                 myBoard.digital_write(segmentID[i], 0)
@@ -146,7 +146,7 @@ def to_arduino(myBoard, digDisplay, mode, number):
             #printing to the pins
             for i in range(0,len(digDisplay[1])):
                 myBoard.digital_write(segmentID[i], int(digDisplay[1][i]))
-            time.sleep(0.004)
+            time.sleep(0.002)
             # clear pins
             for pin in segmentID:
                 myBoard.digital_write(pin, 0)
@@ -158,7 +158,7 @@ def to_arduino(myBoard, digDisplay, mode, number):
             #printing to the pins
             for i in range(0,len(digDisplay)):
                 myBoard.digital_write(segmentID[i], int(digDisplay[2][i]))
-            time.sleep(0.004)
+            time.sleep(0.002)
             # clear pins
             for pin in segmentID:
                 myBoard.digital_write(pin, 0)
@@ -179,6 +179,8 @@ def to_arduino(myBoard, digDisplay, mode, number):
         myBoard.digital_write(digGround[3],1)
     
     #Make sure pins turn off
+    for i in range(0,len(digGround)):
+        myBoard.digital_write(digGround[i], 1)
     for i in range(0,len(digGround)):
         myBoard.digital_write(digGround[i], 1)
     print("Value sent to arduino without fail")
@@ -265,8 +267,11 @@ def sevenSeg(myBoard, mode : str, number = '000'):
 
 
 if __name__ == "__main__": # need to initialise in a seperate file
+    
     board = pymata4.Pymata4()
-    sevenSeg(board, 'c', '123')
+    sevenSeg(board, 'c', '333')
+
+    board.shutdown()
 #     segE = 1+2
 #     segD = 2+2
 #     DP = 3+2
