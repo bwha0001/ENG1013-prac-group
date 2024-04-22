@@ -17,8 +17,9 @@ def receive_data(data):
 
 board=pymata4.Pymata4()
 #code to set pin mode to analog input and set up the callback 
-board.set_pin_mode_digital_input(13, callback=receive_data)
-#board.set_pin_mode_analog_input(5, callback=receive_data)
+#TODO digital or analog
+#board.set_pin_mode_digital_input(13, callback=receive_data)
+board.set_pin_mode_analog_input(5, callback=receive_data, differential=200)
 
 startTime = time.time()
 counter = 0
