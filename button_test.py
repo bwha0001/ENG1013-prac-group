@@ -1,6 +1,7 @@
 #Hardware Test button
 
 from pymata4 import pymata4
+import time
 
 def receive_data(data):
     """
@@ -16,5 +17,11 @@ def receive_data(data):
 
 board=pymata4.Pymata4()
 #code to set pin mode to analog input and set up the callback 
+board.set_pin_mode_digital_input(13, callback=receive_data)
+#board.set_pin_mode_analog_input(5, callback=receive_data)
+
+startTime = time.time()
 counter = 0
-board.set_pin_mode_analog_input(10, callback=receive_data)
+
+while startTime + 10 >= time.time():
+    pass
