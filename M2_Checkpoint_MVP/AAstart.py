@@ -10,9 +10,10 @@ import traffic_light_sequence as TLS
 import main_menu as main
 import normal_operation as n_o
 import data_observation_mode as DOM
-
+from pymata4 import pymata4
 while True:
     try:
+        board = pymata4.pymata4() # initialise the arduino
         global intersectionData
         global changeableConditions 
         global pollingRate

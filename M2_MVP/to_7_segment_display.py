@@ -183,9 +183,11 @@ def to_arduino(myBoard, digDisplay, mode, pedCounter):
 
 def sevenSeg(myBoard, mode : str, pedCounter = '000'):
     """IMPORTANT: if you want to display operating mode leave third input empty
-        sevenSeg outputs the value of the pedestrian counter across the first three digits
-        and the operating mode in the 4th digit.
-        It could be updated easily so that any value edited in the maintenance mode is displayed on the 7 seg
+        sevenSeg outputs either the mode or the current pedestrian counter value.
+        Input '000' or leave ped counter blank to display mode and input a number as a string
+        to print a number. There is failsafe inbuilt to make sure it works with integers but easier to just input it properly
+        Display holds for wakeTime variable found in to_arduino function then dissapears 
+
 
     Args:
         myBoard: board = pymata4.pymata4()
