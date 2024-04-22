@@ -77,5 +77,5 @@ while True:
         print("program end")
          # Remember to close the boards when you're done
         board.close()
-        board2.close()
+        # board2.close()
         break

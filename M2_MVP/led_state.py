@@ -5,7 +5,6 @@
 
 import time
 from pymata4 import pymata4
-board = pymata4.Pymata4()
 
 #function for flashing to turn LED on and off every 0.5 seconds (2Hz)
 def flashing_led(pin):
@@ -168,6 +167,7 @@ def light_setting_state(board, changeableConditions, mainState, sideState, pedes
     return ledStates                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
 
 if __name__ == '__main__':
+    board = pymata4.Pymata4()
 
     changeableConditions = {
         'arduinoPins' : {
