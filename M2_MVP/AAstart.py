@@ -1,6 +1,6 @@
 import time
 import math as mth
-from pymata4 import pymata4
+
 import module_scripts as ms
 import to_7_segment_display as to_7_seg
 import maintenance_mode as m_m
@@ -19,9 +19,9 @@ while True:
         # Board 1
         board = pymata4.Pymata4()        # Do something with board1
 
-        # Board 2
-        board2 = pymata4.Pymata4()
-        # Do something with board2
+        # # Board 2
+        # board2 = pymata4.Pymata4()
+        # # Do something with board2
 
        
         #Create a dictonary of records
@@ -38,8 +38,8 @@ while True:
                 "sideGreen": 7,
                 "pedestrianRed": 8,
                 "pedestrianGreen": 9,
-                "triggerPin":0,
-                "echoPin":1
+                "triggerPin":12,
+                "echoPin":13
                 },
             'ardinoPins7seg': [],
             'stageLengths':{

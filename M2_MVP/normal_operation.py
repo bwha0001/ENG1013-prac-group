@@ -99,7 +99,7 @@ def normal_operation(intersectionData,changeableConditions):
             #Due to need to continue flashing while polling loop still runs
             #trigger light setting again (ped green flashing) if in stage 5
             if trafficStage == 5:
-                led.led_state(changeableConditions, mainState, sideState, pedestrianState)
+                led.light_setting_state(changeableConditions, mainState, sideState, pedestrianState)
     except KeyboardInterrupt:
         #exit button activation
         print("Exit button activated, returning to main menu")
