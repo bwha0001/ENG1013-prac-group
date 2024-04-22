@@ -10,7 +10,7 @@ def receive_data(data):
     """
     # Print the value out (code goes here to do something with the data)
     global counter
-    if data[2] >900:
+    if data[2] >600:
         counter += 1
         print(counter)
     print(data)
@@ -27,7 +27,7 @@ print("ped button read started")
 startTime = time.time()
 counter = 0
 
-while startTime + 10 >= time.time():
+while startTime + 20 >= time.time():
     pass
 
 print("closing")

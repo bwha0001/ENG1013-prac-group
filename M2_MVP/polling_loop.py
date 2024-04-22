@@ -8,7 +8,7 @@ import random
 from pymata4 import pymata4
  
 
-def polling_loop(intersectionData, changeableConditions):
+def polling_loop(board, intersectionData, changeableConditions):
     '''
     Polling loop gets and stores data from sensors in intersection
     Arg:
@@ -63,7 +63,7 @@ def polling_loop(intersectionData, changeableConditions):
 
     #Take readings for distance to next vehcile (ultrosonic sensor reading) and pedestrian button pressed
     #Placeholder generation for MVP Checkpoint
-    distToVehicle = random.randint(1,10)
+    distToVehicle = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
 
     #Has the pedestrian been pressed 
     #.....  (input of pedButton) = 1?
@@ -109,8 +109,8 @@ if __name__ == "__main__":
         "sideGreen": 7,
         "pedestrianRed": 8,
         "pedestrianGreen": 9,
-        "triggerPin":0,
-        "echoPin":1
+        "triggerPin":13,
+        "echoPin":12
         },
     'ardinoPins7seg': {},
     'trafficStage' : 1, # in the led state we need a case switching so we can assign the correct R,Y,G states from traffic stage, not neccercarily, was originally designed to have individual states entered within function call            'pollingRate' : pollingRate,
@@ -130,6 +130,8 @@ if __name__ == "__main__":
     # Configure pin to sonar
     board.set_pin_mode_sonar(changeableConditions["triggerPin"], changeableConditions["echoPin"], timeout=200000)
 
+    polling_loop(board, intersectionData, changeableConditions)
+    
 
 #sOFTWARE TEST
 # if __name__ == "__main__":

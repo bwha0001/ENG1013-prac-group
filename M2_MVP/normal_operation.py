@@ -13,7 +13,7 @@ import normal_operation as n_o
 import data_observation_mode as DOM
 
 
-def traffic_stage_change(intersectionData, changeableConditions, trafficStage):
+def traffic_stage_change(board, intersectionData, changeableConditions, trafficStage):
     """
     This function takes care of the repeated processes of a change in traffic stage in the traffic control system and 
     the tasks that occur at particular stages. Displaying stage specific outputs to console.
@@ -73,23 +73,23 @@ def normal_operation(intersectionData,changeableConditions):
 
     #use changeable conditions to start operation from suspended stage, restarts at stage 1
     if trafficStage == "suspended":
-        trafficStage, stageTimeEnd = traffic_stage_change(intersectionData, changeableConditions, trafficStage,)
+        trafficStage, stageTimeEnd = traffic_stage_change(board, intersectionData, changeableConditions, trafficStage)
         #set light colours
         [mainState, sideState, pedestrianState] = lightForStage[changeableConditions["trafficStage"]]
         #output lights to arduino
-        led.light_setting_state(changeableConditions, mainState, sideState, pedestrianState)
+        led.light_setting_state(board, changeableConditions, mainState, sideState, pedestrianState)
 
     try:
         while True:           
             # Does the traffic stage need changing?
             if time.time()>=stageTimeEnd:
-                trafficStage, stageTimeEnd = traffic_stage_change(intersectionData, changeableConditions, trafficStage,)
+                trafficStage, stageTimeEnd = traffic_stage_change(board, intersectionData, changeableConditions, trafficStage,)
                 #set light colours
                 [mainState, sideState, pedestrianState] = lightForStage[changeableConditions["trafficStage"]]
                 #output lights to arduino
-                led.light_setting_state(changeableConditions, mainState, sideState, pedestrianState)
+                led.light_setting_state(board, changeableConditions, mainState, sideState, pedestrianState)
             # Run function polling loop, inputting polling rate, output of polling time, current distance and pedestrian count
-            [intersectionData, changeableConditions] = pl.polling_loop(intersectionData, changeableConditions)
+            [intersectionData, changeableConditions] = pl.polling_loop(board, intersectionData, changeableConditions)
                 #Happens within function 
                     #If polling start time plus polling time taken equals the current time
                     # Display polling time on console, “Polling loop took <polling time> to complete”
@@ -137,5 +137,6 @@ if __name__ == "__main__":
         'pollingRate' : 2,
         'pedCounterReset' : ""
     }
-    
-    normal_operation(intersectionData, changeableConditions)
+    board = pymata4.Pymata4()
+
+    normal_operation(board, intersectionData, changeableConditions)
