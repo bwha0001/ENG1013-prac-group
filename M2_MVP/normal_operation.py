@@ -1,8 +1,17 @@
 #TODO File header
-import to_7_segment_display
-import polling_loop
 import time
-import led_state
+import math as mth
+from pymata4 import pymata4
+import module_scripts as ms
+import to_7_segment_display as to_7_seg
+import maintenance_mode as m_m
+import led_state as led
+import polling_loop as pl
+import traffic_light_sequence as TLS
+import main_menu as main
+import normal_operation as n_o
+import data_observation_mode as DOM
+
 
 def traffic_stage_change(intersectionData, changeableConditions, trafficStage):
     """
@@ -39,7 +48,7 @@ def traffic_stage_change(intersectionData, changeableConditions, trafficStage):
         #print message and last value in the list stored in intersection data
         pedCount = intersectionData["pedCountRecord"][-1]
         print(f"Pedestrian Count: {[pedCount]}")
-    return stageEndTime
+    return trafficStage, stageEndTime
 
 def normal_operation(intersectionData,changeableConditions):
     """
@@ -64,19 +73,23 @@ def normal_operation(intersectionData,changeableConditions):
 
     #use changeable conditions to start operation from suspended stage, restarts at stage 1
     if trafficStage == "suspended":
-        stageTimeEnd = traffic_stage_change(intersectionData, changeableConditions, trafficStage,)
+        trafficStage, stageTimeEnd = traffic_stage_change(intersectionData, changeableConditions, trafficStage,)
+        #set light colours
+        [mainState, sideState, pedestrianState] = lightForStage[changeableConditions["trafficStage"]]
+        #output lights to arduino
+        led.light_setting_state(changeableConditions, mainState, sideState, pedestrianState)
 
     try:
         while True:           
             # Does the traffic stage need changing?
             if time.time()>=stageTimeEnd:
-                traffic_stage_change(intersectionData, changeableConditions, trafficStage,)
+                trafficStage, stageTimeEnd = traffic_stage_change(intersectionData, changeableConditions, trafficStage,)
                 #set light colours
                 [mainState, sideState, pedestrianState] = lightForStage[changeableConditions["trafficStage"]]
                 #output lights to arduino
-                led_state(changeableConditions, mainState, sideState, pedestrianState)
+                led.light_setting_state(changeableConditions, mainState, sideState, pedestrianState)
             # Run function polling loop, inputting polling rate, output of polling time, current distance and pedestrian count
-            [intersectionData, changeableConditions] = polling_loop(intersectionData, changeableConditions)
+            [intersectionData, changeableConditions] = pl.polling_loop(intersectionData, changeableConditions)
                 #Happens within function 
                     #If polling start time plus polling time taken equals the current time
                     # Display polling time on console, “Polling loop took <polling time> to complete”
@@ -86,7 +99,7 @@ def normal_operation(intersectionData,changeableConditions):
             #Due to need to continue flashing while polling loop still runs
             #trigger light setting again (ped green flashing) if in stage 5
             if trafficStage == 5:
-                led_state(changeableConditions, mainState, sideState, pedestrianState)
+                led.led_state(changeableConditions, mainState, sideState, pedestrianState)
     except KeyboardInterrupt:
         #exit button activation
         print("Exit button activated, returning to main menu")
