@@ -10,8 +10,9 @@ def receive_data(data):
     """
     # Print the value out (code goes here to do something with the data)
     global counter
-    counter += 1
-    print(counter)
+    if data[2] == 1023:
+        counter += 1
+        print(counter)
     print(data)
 
 
@@ -19,10 +20,15 @@ board=pymata4.Pymata4()
 #code to set pin mode to analog input and set up the callback 
 #TODO digital or analog
 #board.set_pin_mode_digital_input(13, callback=receive_data)
-board.set_pin_mode_analog_input(5, callback=receive_data, differential=200)
+board.set_pin_mode_analog_input(5, callback=receive_data, differential=100)
+
+print("ped button read started")
 
 startTime = time.time()
 counter = 0
 
 while startTime + 10 >= time.time():
     pass
+
+print("closing")
+board.shutdown()

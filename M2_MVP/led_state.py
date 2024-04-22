@@ -29,7 +29,7 @@ def flashing_led(pin):
 
 
 #function to convert traffic light state into LED state
-def light_setting_state(changableConditions, mainState, sideState, pedestrianState):
+def light_setting_state(changeableConditions, mainState, sideState, pedestrianState):
     #readded modes to function call based on the function header
     """
     Used to set traffic light state to on/off/flashing for each LED on the Arduino
@@ -57,7 +57,7 @@ def light_setting_state(changableConditions, mainState, sideState, pedestrianSta
     pedCountRecord = changableConditions['pedCountRecord']
     '''
 
-#TODO what is the purpose of this?
+#TODO what is the purpose of this? Nothing?
     ledStates = {
         "mainRed": 0,
         "mainYellow": 0,
@@ -172,7 +172,8 @@ if __name__ == '__main__':
             "sideYellow": 6,
             "sideGreen": 7,
             "pedestrianRed": 8,
-            "pedestrianGreen": 9
+            "pedestrianGreen": 9,
+            "trigger":0
             },
             'ardinoPins7Seg': {},
             'trafficStage' : 1, # in the led state we need a case switching so we can assign the correct R,Y,G states from traffic stage, not neccercarily, was originally designed to have individual states entered within function call
