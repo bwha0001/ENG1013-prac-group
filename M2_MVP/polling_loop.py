@@ -87,12 +87,13 @@ def polling_loop(intersectionData, changeableConditions):
     #Set polling time to the time it took to execute
     pollingEndTime = time.time()
     pollingTime = pollingEndTime - pollingStartTime
-    print(pollingTime)
+    print(f"Time taken to poll: {pollingTime}")
+    #Print the distnace to the nearest vechile
+    print(f"Distance to nearest vechile: {distToVehicle} cm")
 
     return [intersectionData, changeableConditions]
 
 #Hardware Test
-
 if __name__ == "__main__":
     #Create a dictonary of records
     intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[], "pedCounterReset":""}
