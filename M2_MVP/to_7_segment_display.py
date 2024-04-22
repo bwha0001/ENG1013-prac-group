@@ -63,8 +63,8 @@ def convertion_dict(value: str):
     dictionary = {
         '0' : '11111100', 
         '1' : '00001100',
-        '2' : '10110110',
-        '3' : '10011110',
+        '2' : '11011010',
+        '3' : '11110010',
         '4' : '01101110',
         '5' : '10110110',
         '6' : '00111110',
@@ -97,7 +97,7 @@ def convert_to_three_digits(number):
 
 
 
-def to_arduino(myBoard, digDisplay, mode, pedCounter):
+def to_arduino(myBoard, digDisplay, mode, number):
     
     segA = 2
     segB = 3
@@ -107,10 +107,10 @@ def to_arduino(myBoard, digDisplay, mode, pedCounter):
     segF = 7
     segG = 8
     segDP = 9
-    digGround = [11,12,13,10 ]#dig 0 ... dig 4 
+    digGround = [11,12,13, 10 ]#dig 0 ... dig 4 
     segmentID = [segA, segB, segC, segD, segE, segF, segG, segDP]
     # digDisplay = digDisplay[::-1] # reverse the digits cause i messed up
-    digGround = digGround[::-1]
+    # digGround = digGround[::-1]
 
 
     wakeTime = 3
@@ -125,7 +125,7 @@ def to_arduino(myBoard, digDisplay, mode, pedCounter):
     for i in range(0,len(digGround)):
         myBoard.digital_write(digGround[i], 1)
 
-    if pedCounter != '000':
+    if number != '000':
         time1 = time.time()
         time2 = time.time()
         while mth.floor(time2)-mth.floor(time1)<=wakeTime: #Keep LEDs on for wakeTime seconds
@@ -134,6 +134,7 @@ def to_arduino(myBoard, digDisplay, mode, pedCounter):
             #printing to the pins
             for i in range(0,len(digDisplay[0])):
                 myBoard.digital_write(segmentID[i], int(digDisplay[0][i]))
+            time.sleep(0.004)
             # clear pins
             for i in range(0,len(segmentID)):
                 myBoard.digital_write(segmentID[i], 0)
@@ -145,6 +146,7 @@ def to_arduino(myBoard, digDisplay, mode, pedCounter):
             #printing to the pins
             for i in range(0,len(digDisplay[1])):
                 myBoard.digital_write(segmentID[i], int(digDisplay[1][i]))
+            time.sleep(0.004)
             # clear pins
             for pin in segmentID:
                 myBoard.digital_write(pin, 0)
@@ -156,10 +158,12 @@ def to_arduino(myBoard, digDisplay, mode, pedCounter):
             #printing to the pins
             for i in range(0,len(digDisplay)):
                 myBoard.digital_write(segmentID[i], int(digDisplay[2][i]))
+            time.sleep(0.004)
             # clear pins
             for pin in segmentID:
                 myBoard.digital_write(pin, 0)
             myBoard.digital_write(digGround[2],1)
+            
             time2 = time.time() #update current time to update condition
 
     else: # writing operating mode status
@@ -181,7 +185,7 @@ def to_arduino(myBoard, digDisplay, mode, pedCounter):
 
 
 
-def sevenSeg(myBoard, mode : str, pedCounter = '000'):
+def sevenSeg(myBoard, mode : str, number = '000'):
     """IMPORTANT: if you want to display operating mode leave third input empty
         sevenSeg outputs either the mode or the current pedestrian counter value.
         Input '000' or leave ped counter blank to display mode and input a number as a string
@@ -192,21 +196,21 @@ def sevenSeg(myBoard, mode : str, pedCounter = '000'):
     Args:
         myBoard: board = pymata4.pymata4()
         mode (str): determine whether 'd'(data obs), 'c'(maintenance mode), 'n' (normal operating) or just 'g' (general) message to display
-        pedCounter (3 digit number)(str): number to be displayed, defaults to 0. e.g inputing 3 = '003'
+        number (3 digit number)(str): number to be displayed, defaults to 0. e.g inputing 3 = '003'
     """
 
    
     validated1, message1 = valid_7seg(mode) # validate operating mode input\
-    if type(pedCounter) is not type('jdf') or len(pedCounter)!= 2:  # converting any input to 3 digit string
-        pedCounter = convert_to_three_digits(int(pedCounter))
-        pedCounter = str(pedCounter)
+    if type(number) is not type('jdf') or len(number)!= 2:  # converting any input to 3 digit string
+        number = convert_to_three_digits(int(number))
+        number = str(number)
 
     #Determine the output as strings
     if validated1 == 'valid' :
         # converting the pedestrian counter to the LED displays
 
         #digitNum is the corresponding segments from 1-3 and contains the string to be converted to integer list to be output to digital outputs
-        listMessage = [str(d) for d in str(pedCounter)] # makes the all integers a string, so 555 = '5''5''5'
+        listMessage = [str(d) for d in str(number)] # makes the all integers a string, so 555 = '5''5''5'
         digitNum = [0,0,0]
         for i in range(0,len(listMessage)):
             digitNum[i] = convertion_dict(listMessage[i]) # passes each number through conversion to get sevSeg equivelents
@@ -219,14 +223,14 @@ def sevenSeg(myBoard, mode : str, pedCounter = '000'):
 
         if message1 == 'c' :
             dig4 = convertion_dict('c')
-            print(f"dig4 :{dig4}, dig 0 : {digitNum[0]}, dig 1 : {digitNum[1]}, dig 2 : {digitNum[2]}")
+            # print(f"dig4 :{dig4}, dig 0 : {digitNum[0]}, dig 1 : {digitNum[1]}, dig 2 : {digitNum[2]}")
             
         if message1 == 'n':
             dig4 = convertion_dict('n')
         print(f"dig4 :{dig4}, dig 0 : {digitNum[0]}, dig 1 : {digitNum[1]}, dig 2 : {digitNum[2]}")            
         if message1 == 'g':
             dig4 = convertion_dict('g')
-            print(f"dig4 :{dig4}, dig 0 : {digitNum[0]}, dig 1 : {digitNum[1]}, dig 2 :  {digitNum[2]}")   
+            # print(f"dig4 :{dig4}, dig 0 : {digitNum[0]}, dig 1 : {digitNum[1]}, dig 2 :  {digitNum[2]}")   
 
     # if message1 == 'c.' :
     #     dig4 = convertion_dict('c.')
@@ -250,8 +254,8 @@ def sevenSeg(myBoard, mode : str, pedCounter = '000'):
 
     else:
         print('Invalid input')
-    to_arduino(myBoard, digDisplay, mode, pedCounter)
-    return digDisplay, mode, pedCounter         
+    to_arduino(myBoard, digDisplay, mode, number)
+    return digDisplay, mode, number         
 
 # def outputSevSeg(myBoard, segments, segs, digs):
 #     ms.arduino_setup(myBoard, 'digital write', [segs, digs])
@@ -260,8 +264,9 @@ def sevenSeg(myBoard, mode : str, pedCounter = '000'):
 
 
 
-# if __name__ == "__main__": # need to initialise in a seperate file
-
+if __name__ == "__main__": # need to initialise in a seperate file
+    board = pymata4.Pymata4()
+    sevenSeg(board, 'c', '123')
 #     segE = 1+2
 #     segD = 2+2
 #     DP = 3+2

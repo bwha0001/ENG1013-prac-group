@@ -25,7 +25,7 @@ def normal_operating(intersectionData, changeableConditions):
         distToVehicle = intersectionData['distToVehicleRecord'][-1]
         pedCount = intersectionData['pedCountRecord'][-1]
         pollingTime = changeableConditions['pollingRate']
-        to_7_seg.sevenSeg('n', pedCount)
+        to_7_seg.sevenSeg(board2, 'n', pedCount)
         TLS.traffic_light_sequence(changeableConditions)
         
         

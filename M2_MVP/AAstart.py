@@ -11,48 +11,66 @@ import main_menu as main
 import normal_operation as n_o
 import data_observation_mode as DOM
 
-global intersectionData
-global changeableConditions 
-global pollingRate
+while True:
+    try:
+        global intersectionData
+        global changeableConditions 
+        global pollingRate
+        # Board 1
+        board = pymata4.Pymata4()        # Do something with board1
 
-#Create a dictonary of records
-intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[], "pedCounterReset":""}
+        # Board 2
+        board2 = pymata4.Pymata4()
+        # Do something with board2
 
-pollingRate = 2
-changeableConditions = {
-    'arduinoPins' : {
-        "mainRed": 2,
-        "mainYellow": 3,
-        "mainGreen": 4,
-        "sideRed": 5,
-        "sideYellow": 6,
-        "sideGreen": 7,
-        "pedestrianRed": 8,
-        "pedestrianGreen": 9,
-        "triggerPin":0,
-        "echoPin":1
-        },
-    'trafficStage' : 1, # in the led state we need a case switching so we can assign the correct R,Y,G states from traffic stage, not neccercarily, was originally designed to have individual states entered within function call
-    'pollingRate' : pollingRate,
-    'pedCounterReset' : ""
-}
+       
 
-trafficStage = 1   
+        #Create a dictonary of records
+        intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[], "pedCounterReset":""}
 
-#Set up arduino
-board = pymata4.Pymata4()
+        pollingRate = 2
+        changeableConditions = {
+            'arduinoPins' : {
+                "mainRed": 2,
+                "mainYellow": 3,
+                "mainGreen": 4,
+                "sideRed": 5,
+                "sideYellow": 6,
+                "sideGreen": 7,
+                "pedestrianRed": 8,
+                "pedestrianGreen": 9,
+                "triggerPin":0,
+                "echoPin":1
+                },
+            'ardinoPins7seg': [],
+            'trafficStage' : 1, # in the led state we need a case switching so we can assign the correct R,Y,G states from traffic stage, not neccercarily, was originally designed to have individual states entered within function call
+            'pollingRate' : pollingRate,
+            'pedCounterReset' : ""
+        }
+        
+        trafficStage = 1   
 
-#set arduino pins
-board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainRed"])
-board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["mainYellow"])
-board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainGreen"])
-board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideRed"])
-board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["sideYellow"])
-board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideGreen"])
-board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianRed"])
-board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
-# Configure pin to sonar
-board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], timeout=200000)
+        #Set up arduino
+        board = pymata4.Pymata4()
+
+        #set arduino pins
+        board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainRed"])
+        board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["mainYellow"])
+        board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainGreen"])
+        board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideRed"])
+        board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["sideYellow"])
+        board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideGreen"])
+        board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianRed"])
+        board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
+        # Configure pin to sonar
+        board.set_pin_mode_sonar(changeableConditions["triggerPin"], changeableConditions["echoPin"], timeout=200000)
 
 
-main.main_menu(intersectionData, changeableConditions)
+        main.main_menu(intersectionData, changeableConditions)
+        
+    except KeyboardInterrupt:
+        print("program end")
+         # Remember to close the boards when you're done
+        board.close()
+        board2.close()
+        break
