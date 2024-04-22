@@ -5,6 +5,7 @@
 
 import time
 from pymata4 import pymata4
+board = pymata4.Pymata4()
 
 #function for flashing to turn LED on and off every 0.5 seconds (2Hz)
 def flashing_led(pin):
@@ -167,7 +168,6 @@ def light_setting_state(board, changeableConditions, mainState, sideState, pedes
     return ledStates                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
 
 if __name__ == '__main__':
-    board = pymata4.Pymata4()
 
     changeableConditions = {
         'arduinoPins' : {
@@ -192,10 +192,10 @@ if __name__ == '__main__':
     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainYellow"])
     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainGreen"])
     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideRed"])
-    board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["sideYellow"])
+    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideYellow"])
     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideGreen"])
     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianRed"])
-    board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
+    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
 
     light_setting_state(board, changeableConditions, "yellow", "green", "green")
     time.sleep(3)
