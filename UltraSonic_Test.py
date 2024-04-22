@@ -43,6 +43,6 @@ try:
     while True:
         reading, timeStamp = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
         print(reading)
-        time.sleep(2)
+        time.sleep(1)
 except KeyboardInterrupt:
     board.shutdown()
