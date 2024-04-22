@@ -32,7 +32,7 @@ while True:
                 "pedestrianRed": 8,
                 "pedestrianGreen": 9
                 },
-            'ardinoPins7seg': {},
+            'ardinoPins7seg': [],
             'trafficStage' : 1, # in the led state we need a case switching so we can assign the correct R,Y,G states from traffic stage, not neccercarily, was originally designed to have individual states entered within function call
             'pollingRate' : pollingRate,
             'pedCounterReset' : ""
