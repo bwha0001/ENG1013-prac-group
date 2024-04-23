@@ -1,0 +1,48 @@
+#The pedestrian push button is used to interrupt the traffic sequence.
+# If the traffic sequence is in Stage One, then this will reduce the time left
+#in sequence to a maximum of 5 seconds.
+# If the traffic sequence is in other stages, no change is effected
+## ^^^criteria from 4.2.2 Inputs Subsystems
+
+from pymata4 import pymata4
+import time
+import math
+from TrafficLightSequence import trafficStage
+
+'''this time writing should be from the traffic light sequence, 
+it's just here to give a framework of how it could look.'''
+
+def ped_push_button_2(count):
+    board = pymata4.Pymata4
+
+    start = time.time()
+    end = time.time()
+    elapsed = float(end) - float(start) 
+    float(elapsed)
+
+    pins = [2, 7, 8, 12, 13]
+
+    for pin in pins:
+        board.set_pin_mode_pwm_output(pin)
+
+    while True: 
+        count = 0
+        pedButton = []
+        '''loop will act within traffic loop, so if there is a signal from the pushbutton, it will alter the time left
+        if the traffic sequence is in stage one'''
+        board.set_pin_mode_digital_input(pin)
+        result = board.digital_read(pin)
+        for item in result:
+            print(result)
+            if item is 1:
+                pedButton.append(count + 1)
+            time.sleep(0.15)
+        try:
+            if trafficStage == stage1:
+                elapsed = 5
+            else:
+                pass
+        except KeyboardInterrupt:
+            break
+
+    return(count)
