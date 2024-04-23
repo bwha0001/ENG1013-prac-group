@@ -98,7 +98,14 @@ def convert_to_three_digits(number):
 
 
 def to_arduino(myBoard, digDisplay, mode, number):
-    
+    """prints values from sevenSeg to the seven segment display
+
+    Args:
+        myBoard (object): pymata4.Pymata4()
+        digDisplay (list): digits to be displayed
+        mode (list): letter to be displayed
+        number (list): number to be displayed
+    """
     segA = 2
     segB = 3
     segC = 4 
@@ -188,11 +195,9 @@ def to_arduino(myBoard, digDisplay, mode, number):
 
 
 def sevenSeg(myBoard, mode : str, number = '000'):
-    """IMPORTANT: if you want to display operating mode leave third input empty
-        sevenSeg outputs either the mode or the current pedestrian counter value.
-        Input '000' or leave ped counter blank to display mode and input a number as a string
-        to print a number. There is failsafe inbuilt to make sure it works with integers but easier to just input it properly
-        Display holds for wakeTime variable found in to_arduino function then dissapears 
+    """display numbers or letters to the seven segment display
+    to display numbers input which operating mode you are in and the number --> it will ONLY print the number
+    to display letter, input operating mode letter and leave number blank
 
 
     Args:
