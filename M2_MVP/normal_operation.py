@@ -48,7 +48,7 @@ def traffic_stage_change(board, intersectionData, changeableConditions, trafficS
         #print message and last value in the list stored in intersection data
         pedCount = intersectionData["pedCountRecord"][-1]
         print(f"Pedestrian Count: {[pedCount]}")
-    return trafficStage, stageEndTime
+    return intersectionData,changeableConditions, trafficStage, stageEndTime
 
 def normal_operation(intersectionData,changeableConditions):
     """
@@ -73,7 +73,7 @@ def normal_operation(intersectionData,changeableConditions):
 
     #use changeable conditions to start operation from suspended stage, restarts at stage 1
     if trafficStage == "suspended":
-        trafficStage, stageTimeEnd = traffic_stage_change(board, intersectionData, changeableConditions, trafficStage)
+        intersectionData, changeableConditions, trafficStage, stageTimeEnd = traffic_stage_change(board, intersectionData, changeableConditions, trafficStage)
         #set light colours
         [mainState, sideState, pedestrianState] = lightForStage[changeableConditions["trafficStage"]]
         #output lights to arduino
@@ -83,7 +83,7 @@ def normal_operation(intersectionData,changeableConditions):
         while True:           
             # Does the traffic stage need changing?
             if time.time()>=stageTimeEnd:
-                trafficStage, stageTimeEnd = traffic_stage_change(board, intersectionData, changeableConditions, trafficStage,)
+                intersectionData,changeableConditions, trafficStage, stageTimeEnd = traffic_stage_change(board, intersectionData, changeableConditions, trafficStage,)
                 #set light colours
                 [mainState, sideState, pedestrianState] = lightForStage[changeableConditions["trafficStage"]]
                 #output lights to arduino

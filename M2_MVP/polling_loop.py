@@ -26,16 +26,17 @@ def polling_loop(board, intersectionData, changeableConditions):
         :param data: a list containing pin type, pin number, 
                     data value and time-stamp
         """
+        '''
         # Print the value out (code goes here to do something with the data)
         global pedCount
         global lastButtonPress
-        
+    
         if data[2] ==1 and time.time()-lastButtonPress>0.1:
             pedCount += 1
             print(pedCount)
-        
+        '''
         print(data)
-        lastButtonPress = time.time()
+        #lastButtonPress = time.time()
 
     #required for MVP Checkpoint
 
@@ -55,12 +56,15 @@ def polling_loop(board, intersectionData, changeableConditions):
     distToVehicleRecord = intersectionData['distToVehicleRecord']
     pedCountRecord = intersectionData['pedCountRecord']
 
+    #maybe
+    global pedCount
+
     if intersectionData['pedCountRecord'] == [] or changeableConditions["pedCounterReset"]=="stage1Reset":
         pedCount = 0
         # changeableConditions["pedCounterReset"]==""
     elif not intersectionData['pedCountRecord'] == []:
         pedCount = intersectionData['pedCountRecord'][-1]
-    
+
     #Start ped button checker
     board.set_pin_mode_digital_input(10, callback=ped_button)
 
