@@ -199,15 +199,15 @@ if __name__ == '__main__':
 
     light_setting_state(board, changeableConditions, "yellow", "green", "green")
     time.sleep(3)
-    '''
     light_setting_state(changeableConditions, "red", "green", "red")
     time.sleep(3)
     light_setting_state(changeableConditions, "green", "green", "off")
     time.sleep(3)
     light_setting_state(changeableConditions, "off", "green", "green")
     time.sleep(3)
-    '''
     light_setting_state(board, changeableConditions, "flashing", "green", "red")
     light_setting_state(board, changeableConditions, "flashing", "green", "red")
     light_setting_state(board, changeableConditions, "flashing", "green", "red")
     light_setting_state(board, changeableConditions, "off", "green", "green")
+
+    board.shutdown()
