@@ -6,22 +6,39 @@
 import time
 import random
 from pymata4 import pymata4
- 
+
 
 def polling_loop(board, intersectionData, changeableConditions):
     '''
     Polling loop gets and stores data from sensors in intersection
     Arg:
-        Traffic Stage {1,2,3,4,5,6,"suspended"}, polling rate
+        board, Traffic Stage {1,2,3,4,5,6,"suspended"}, polling rate
     Returns:
         if suspended [distance to next vechile list, pedestrian count]
     '''
     #globals
     pollingRate = changeableConditions['pollingRate']
     trafficStage = changeableConditions['trafficStage']
+    
+    #function for pedButton
+    def ped_button(data):
+        """
+        :param data: a list containing pin type, pin number, 
+                    data value and time-stamp
+        """
+        # Print the value out (code goes here to do something with the data)
+        global pedCount
+        global lastButtonPress
+        
+        if data[2] ==1 and time.time()-lastButtonPress>0.1:
+            pedCount += 1
+            print(pedCount)
+        
+        print(data)
+        lastButtonPress = time.time()
+
     #required for MVP Checkpoint
 
-    
     #polling loop to read sensors for traffic control
     #inputs: trafficStage, pollingRate which defaults to 2
     #outputs: Current distance to next vehicle, Distance to vehicle record, Pedestrian Counter, Time taken for polling
@@ -44,6 +61,9 @@ def polling_loop(board, intersectionData, changeableConditions):
     elif not intersectionData['pedCountRecord'] == []:
         pedCount = intersectionData['pedCountRecord'][-1]
     
+    #Start ped button checker
+    board.set_pin_mode_digital_input(10, callback=ped_button)
+
     #Traffic Stage approprite for new readings? ie Not suspended stage and enough time has passed
     if trafficStage in {1,2,3,4,5,6}:
         pass
@@ -63,14 +83,15 @@ def polling_loop(board, intersectionData, changeableConditions):
 
     #Take readings for distance to next vehcile (ultrosonic sensor reading) and pedestrian button pressed
     #Placeholder generation for MVP Checkpoint
-    distToVehicle = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
+    distToVehicle, distReadingTime = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
 
     #Has the pedestrian been pressed 
     #.....  (input of pedButton) = 1?
-    pedButton = random.randint(0,1)
+    
+    """pedButton = random.randint(0,1)
 
     if pedButton == 1:
-        pedCount += 1
+        pedCount += 1"""
 
     #Store record of time of readings, ultrasonic sensor reading and pedestrian count, all stored with same list index
     timeRecord.append(pollingStartTime)
@@ -90,6 +111,8 @@ def polling_loop(board, intersectionData, changeableConditions):
     print(f"Time taken to poll: {pollingTime}")
     #Print the distnace to the nearest vechile
     print(f"Distance to nearest vechile: {distToVehicle} cm")
+    #test line
+    print(pedCount)
 
     return intersectionData, changeableConditions
 
@@ -100,37 +123,46 @@ if __name__ == "__main__":
 
     pollingRate = 2
     changeableConditions = {
-    'arduinoPins' : {
-        "mainRed": 2,
-        "mainYellow": 3,
-        "mainGreen": 4,
-        "sideRed": 5,
-        "sideYellow": 6,
-        "sideGreen": 7,
-        "pedestrianRed": 8,
-        "pedestrianGreen": 9,
-        "triggerPin":13,
-        "echoPin":12
-        },
-    'ardinoPins7seg': {},
-    'trafficStage' : 1, # in the led state we need a case switching so we can assign the correct R,Y,G states from traffic stage, not neccercarily, was originally designed to have individual states entered within function call            'pollingRate' : pollingRate,
-    'pedCounterReset' : ""
-    }
-        
-    board = pymata4.Pymata4
+        'arduinoPins' : {
+            "mainRed": 2,
+            "mainYellow": 3,
+            "mainGreen": 4,
+            "sideRed": 5,
+            "sideYellow": 6,
+            "sideGreen": 7,
+            "pedestrianRed": 8,
+            "pedestrianGreen": 9,
+            "triggerPin":13,
+            "echoPin":12
+            },
+        'ardinoPins7Seg': {},
+        'trafficStage' : 1, # in the led state we need a case switching so we can assign the correct R,Y,G states from traffic stage, not neccercarily, was originally designed to have individual states entered within function call
+        'pollingRate' : 2,
+        'pedCounterReset' : ""
+        }
+    
+    board =pymata4.Pymata4()
+
     #set arduino pins
     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainRed"])
-    board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["mainYellow"])
+    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainYellow"])
     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainGreen"])
     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideRed"])
-    board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["sideYellow"])
+    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideYellow"])
     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideGreen"])
     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianRed"])
-    board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
+    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
     # Configure pin to sonar
-    board.set_pin_mode_sonar(changeableConditions["triggerPin"], changeableConditions["echoPin"], timeout=200000)
+    board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], timeout=200000)
+    
+    lastButtonPress = time.time() - 0.1
 
-    polling_loop(board, intersectionData, changeableConditions)
+    while True:
+        try:
+            polling_loop(board, intersectionData, changeableConditions)
+        except KeyboardInterrupt:
+            print("Close")
+            board.shutdown()
     
 
 #sOFTWARE TEST
