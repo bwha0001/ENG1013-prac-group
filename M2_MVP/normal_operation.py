@@ -83,9 +83,9 @@ def normal_operation(intersectionData,changeableConditions):
         while True:           
             # Does the traffic stage need changing?
             if time.time()>=stageTimeEnd:
-                intersectionData,changeableConditions, trafficStage, stageTimeEnd = traffic_stage_change(board, intersectionData, changeableConditions, trafficStage,)
+                intersectionData,changeableConditions, trafficStage, stageTimeEnd = traffic_stage_change(board, intersectionData, changeableConditions, trafficStage)
                 #set light colours
-                [mainState, sideState, pedestrianState] = lightForStage[changeableConditions["trafficStage"]]
+                [mainState, sideState, pedestrianState] = lightForStage[changeableConditions["trafficStage"]] 
                 #output lights to arduino
                 led.light_setting_state(board, changeableConditions, mainState, sideState, pedestrianState)
             # Run function polling loop, inputting polling rate, output of polling time, current distance and pedestrian count
