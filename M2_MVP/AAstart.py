@@ -12,6 +12,25 @@ import main_menu as main
 import normal_operation as n_o
 import data_observation_mode as DOM
 
+def ped_button(data):
+        """
+        :param data: a list containing pin type, pin number, 
+                    data value and time-stamp
+        """
+        
+        # Print the value out (code goes here to do something with the data)
+        global pedsPresent
+        global lastButtonPress
+
+        if data[2] ==1 and time.time() > lastButtonPress+0.0001:
+            pedsPresent += 1
+            lastButtonPress = time.time()
+            print(f"Peds present: {pedsPresent}")
+
+        print(f"Test line button data: {data}")
+        #lastButtonPress = time.time()
+
+
 while True:
     try:
         global intersectionData
@@ -39,6 +58,7 @@ while True:
                 "sideGreen": 7,
                 "pedestrianRed": 8,
                 "pedestrianGreen": 9,
+                "pedButton":10,
                 "triggerPin":12,
                 "echoPin":13
                 },
@@ -78,5 +98,5 @@ while True:
         print("program end")
          # Remember to close the boards when you're done
         board.shutdown()
-        # board2.close()
+        # board2.shutdown()
         break
