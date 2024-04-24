@@ -4,7 +4,8 @@
 # If the traffic sequence is in other stages, no change is effected
 ## ^^^criteria from 4.2.2 Inputs Subsystems
 
-from pymata4 import pymata4
+#if this is here it imports twice, hence looks for two arduinos when run from another file
+#from pymata4 import pymata4
 import time
 import math
 from traffic_light_sequence import trafficStage
@@ -38,7 +39,7 @@ def ped_push_button_2(count):
                 pedButton.append(count + 1)
             time.sleep(0.15)
         try:
-            if trafficStage == stage1:
+            if trafficStage == 1: #trafffic stage now saved as {1,2,3,4,5,6, "suspended"}
                 elapsed = 5
             else:
                 pass
@@ -46,3 +47,6 @@ def ped_push_button_2(count):
             break
 
     return(count)
+
+if __name__ == "__main__":
+    from pymata4 import pymata4

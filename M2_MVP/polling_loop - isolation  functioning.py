@@ -5,6 +5,25 @@
 
 import time
 
+#function for pedButton
+def ped_button(data):
+    """
+    :param data: a list containing pin type, pin number, 
+                data value and time-stamp
+    """
+    
+    # Print the value out (code goes here to do something with the data)
+    global pedsPresent
+    global lastButtonPress
+
+    if data[2] ==1 and time.time() > lastButtonPress+0.0001:
+        pedsPresent += 1
+        lastButtonPress = time.time()
+        print(f"Peds present: {pedsPresent}")
+
+    print(f"Test line button data: {data}")
+    #lastButtonPress = time.time()
+
 def polling_loop(board, intersectionData, changeableConditions):
     '''
     Polling loop gets and stores data from sensors in intersection
@@ -108,25 +127,6 @@ if __name__ == "__main__":
     import random
     from pymata4 import pymata4
     
-    #function for pedButton
-    def ped_button(data):
-        """
-        :param data: a list containing pin type, pin number, 
-                    data value and time-stamp
-        """
-        
-        # Print the value out (code goes here to do something with the data)
-        global pedsPresent
-        global lastButtonPress
-
-        if data[2] ==1 and time.time() > lastButtonPress+0.0001:
-            pedsPresent += 1
-            lastButtonPress = time.time()
-            print(f"Peds present: {pedsPresent}")
-
-        print(f"Test line button data: {data}")
-        #lastButtonPress = time.time()
-
     #Create a dictonary of records
     intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[], "pedCounterReset":""}
 
@@ -164,7 +164,6 @@ if __name__ == "__main__":
     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
     # Configure pin to sonar
     board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], timeout=200000)
-    
     #Start ped button checker
     pedsPresent = 0
     lastButtonPress = time.time() - 0.1

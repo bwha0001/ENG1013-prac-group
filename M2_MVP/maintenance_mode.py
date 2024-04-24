@@ -40,7 +40,7 @@ def maintenance_mode(board, intersectionData, changeableConditions):
                 return None
 
         #As properly entered mode now change 7 segment display
-        to_7_seg.to_7_segment_display(board, mode)
+#        to_7_seg.to_7_segment_display(board2, mode)
         
         while True:
             while True:

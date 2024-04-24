@@ -30,7 +30,7 @@ def main_menu(board, intersectionData, changeableConditions):
                     break
                 elif modeSelection == "3":
                     print("Entering Maintenance Mode...")
-                    m_m.maintenance_mode(changeableConditions, changeableConditions)
+                    m_m.maintenance_mode(board, intersectionData, changeableConditions)
                     break
                 else:
                     print("Invalid Mode Input. Re-enter mode option.")

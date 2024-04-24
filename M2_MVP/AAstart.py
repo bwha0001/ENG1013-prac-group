@@ -6,7 +6,8 @@ import to_7_segment_display as to_7_seg
 import maintenance_mode as m_m
 import led_state as led
 import polling_loop as pl
-import traffic_light_sequence as TLS
+# new normal opperation makes this obsolete
+#import traffic_light_sequence as TLS
 import main_menu as main
 import normal_operation as n_o
 import data_observation_mode as DOM
@@ -54,11 +55,8 @@ while True:
             'pollingRate' : pollingRate,
             'pedCounterReset' : ""
         }
-        
-        #Set up arduino
-        board = pymata4.Pymata4()
 
-        #set arduino pins
+        #set arduino pins for main board
         board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainRed"])
         board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainYellow"])
         board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainGreen"])
@@ -68,7 +66,7 @@ while True:
         board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianRed"])
         board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
         # Configure pin to sonar
-        board.set_pin_mode_sonar(changeableConditions["triggerPin"], changeableConditions["echoPin"], timeout=200000)
+        board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], timeout=200000)
         #Configiure ped button pin
 
 
@@ -77,6 +75,6 @@ while True:
     except KeyboardInterrupt:
         print("program end")
          # Remember to close the boards when you're done
-        board.close()
+        board.shutdown()
         # board2.close()
         break

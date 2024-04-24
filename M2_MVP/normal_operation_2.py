@@ -1,8 +1,7 @@
-import pymata4.pymata4
 import module_scripts as mod
 import numpy as np
 import math as mth
-import pymata4
+#from pymata4 import pymata4
 import polling_loop as pl
 import to_7_segment_display as to_7_seg
 import traffic_light_sequence as TLS
@@ -25,7 +24,7 @@ def normal_operating(intersectionData, changeableConditions):
         distToVehicle = intersectionData['distToVehicleRecord'][-1]
         pedCount = intersectionData['pedCountRecord'][-1]
         pollingTime = changeableConditions['pollingRate']
-        to_7_seg.sevenSeg(board2, 'n', pedCount)
+#        to_7_seg.sevenSeg(board2, 'n', pedCount)
         TLS.traffic_light_sequence(changeableConditions)
         
         

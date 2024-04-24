@@ -1,6 +1,6 @@
 import time
 import math as mth
-from pymata4 import pymata4 
+#from pymata4 import pymata4 
 
 
 def adder(a ,b):
@@ -72,6 +72,8 @@ def arduino_setup(myBoard, action:str,  wait: int, pin = []):
     return digiRead, anaRead
 # note this does not shut down the board, all pins should remain active
 
+if __name__ == "__main__":
+    from pymata4 import pymata4
 
 
 
