@@ -38,8 +38,9 @@ while True:
                 "sideGreen": 7,
                 "pedestrianRed": 8,
                 "pedestrianGreen": 9,
-                "triggerPin":12,
-                "echoPin":13
+                "pedButton":10,
+                "triggerPin":11,
+                "echoPin":12
                 },
             'ardinoPins7seg': [],
             'stageLengths':{
