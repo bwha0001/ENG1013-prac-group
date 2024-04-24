@@ -142,7 +142,7 @@ if __name__ == "__main__":
             "pedestrianRed": 8,
             "pedestrianGreen": 9,
             "pedButton":10,
-            "triggerPin":13,
+            "triggerPin":11,
             "echoPin":12
             },
         'ardinoPins7Seg': {},
