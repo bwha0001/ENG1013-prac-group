@@ -1,5 +1,5 @@
 import time
-from pymata4 import pymata4
+#from pymata4 import pymata4
 import polling_loop as pl
 def traffic_light_sequence(changeableConditions):
     pollingRate = changeableConditions['pollingRate']
@@ -92,4 +92,5 @@ def traffic_light_sequence(changeableConditions):
 ##figure out how to use the time module for having the colours 'print' for the correct amount of time 
 ##need to figure out how to conect the colour name to the LEDs in reality (and how to do the FLASHING)
 ##i think it needs to go into a while loop so that it can continue to run... might need more if statements?
-##do i need to import pymata4? probably...
+##do i need to import pymata4? probably... 
+###No don't import pymata4 in fucntion file unless in the if main file code

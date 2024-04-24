@@ -3,7 +3,9 @@
 #Last Edit: 10 April 2024
 #Version: 2
 
-def maintenance_mode(intersectionData, changeableConditions):
+import to_7_segment_display as to_7_seg
+
+def maintenance_mode(board, intersectionData, changeableConditions):
     '''
     Maintenance mode allows the user, with the correct PIN to edit conditons and reaction for the intersection
     Parameters: None

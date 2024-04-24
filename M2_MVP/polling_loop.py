@@ -1,12 +1,29 @@
 #polling loop
 #Authors: Caitlin and Kayla 
-#Version: 4 - List Storage and Global Dictonary Used, incorrect output fixed
-#Dates Edited: 4 April 2024
+#Version: 5 - Hardware Implementation
+#Dates Edited: 24 April 2024
 
 import time
-import random
-from pymata4 import pymata4
+import normal_operation
 
+#function for pedButton
+def ped_button(data):
+    """
+    :param data: a list containing pin type, pin number, 
+                data value and time-stamp
+    """
+    
+    # Print the value out (code goes here to do something with the data)
+    global pedsPresent
+    global lastButtonPress
+
+    if data[2] ==1 and time.time() > lastButtonPress+0.0001:
+        pedsPresent += 1
+        lastButtonPress = time.time()
+        print(f"Peds present: {pedsPresent}")
+
+    print(f"Test line button data: {data}")
+    #lastButtonPress = time.time()
 
 def polling_loop(board, intersectionData, changeableConditions):
     '''
@@ -19,24 +36,8 @@ def polling_loop(board, intersectionData, changeableConditions):
     #globals
     pollingRate = changeableConditions['pollingRate']
     trafficStage = changeableConditions['trafficStage']
-    
-    #function for pedButton
-    def ped_button(data):
-        """
-        :param data: a list containing pin type, pin number, 
-                    data value and time-stamp
-        """
-        '''
-        # Print the value out (code goes here to do something with the data)
-        global pedCount
-        global lastButtonPress
-    
-        if data[2] ==1 and time.time()-lastButtonPress>0.1:
-            pedCount += 1
-            print(pedCount)
-        '''
-        print(data)
-        #lastButtonPress = time.time()
+
+    normal_operation.pedsPresent
 
     #required for MVP Checkpoint
 
@@ -56,17 +57,11 @@ def polling_loop(board, intersectionData, changeableConditions):
     distToVehicleRecord = intersectionData['distToVehicleRecord']
     pedCountRecord = intersectionData['pedCountRecord']
 
-    #maybe
-    global pedCount
-
     if intersectionData['pedCountRecord'] == [] or changeableConditions["pedCounterReset"]=="stage1Reset":
         pedCount = 0
         # changeableConditions["pedCounterReset"]==""
     elif not intersectionData['pedCountRecord'] == []:
         pedCount = intersectionData['pedCountRecord'][-1]
-
-    #Start ped button checker
-    board.set_pin_mode_digital_input(10, callback=ped_button)
 
     #Traffic Stage approprite for new readings? ie Not suspended stage and enough time has passed
     if trafficStage in {1,2,3,4,5,6}:
@@ -89,6 +84,11 @@ def polling_loop(board, intersectionData, changeableConditions):
     #Placeholder generation for MVP Checkpoint
     distToVehicle, distReadingTime = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
 
+
+    #Update ped count total
+    pedCount = pedCount + pedsPresent
+    #Once total updated, reset the ped present count inbetween saves by polling
+    pedsPresent= 0
     #Has the pedestrian been pressed 
     #.....  (input of pedButton) = 1?
     
@@ -112,16 +112,19 @@ def polling_loop(board, intersectionData, changeableConditions):
     #Set polling time to the time it took to execute
     pollingEndTime = time.time()
     pollingTime = pollingEndTime - pollingStartTime
-    print(f"Time taken to poll: {pollingTime}")
+    print(f"Time taken to poll: {round(pollingTime, 2)} seconds")
     #Print the distnace to the nearest vechile
     print(f"Distance to nearest vechile: {distToVehicle} cm")
     #test line
-    print(pedCount)
+    print(f"Test Line Ped Count Record Value: {pedCount}\n")
 
     return intersectionData, changeableConditions
 
 #Hardware Test
 if __name__ == "__main__":
+    import random
+    from pymata4 import pymata4
+    
     #Create a dictonary of records
     intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[], "pedCounterReset":""}
 
@@ -158,16 +161,34 @@ if __name__ == "__main__":
     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
     # Configure pin to sonar
     board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], timeout=200000)
-    
+    #Start ped button checker
+    board.set_pin_mode_digital_input(10, callback=ped_button)
+    pedsPresent = 0
+
+
     lastButtonPress = time.time() - 0.1
 
+    #Test for 30 seconds
+    startTime = time.time()
+
+    while startTime + 30 > time.time():
+        try:
+            polling_loop(board, intersectionData, changeableConditions)
+        except KeyboardInterrupt:
+            print("Close")
+            break
+    board.shutdown()
+    exit()
+
+'''
     while True:
         try:
             polling_loop(board, intersectionData, changeableConditions)
         except KeyboardInterrupt:
             print("Close")
             board.shutdown()
-    
+            exit()
+'''
 
 #sOFTWARE TEST
 # if __name__ == "__main__":

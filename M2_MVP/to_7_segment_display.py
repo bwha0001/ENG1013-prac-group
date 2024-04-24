@@ -1,9 +1,8 @@
 import time
 import math as mth
-from pymata4 import pymata4 
+#Commented out to deal with double search for arduino error, this might need to chage when 7 seg attached
+#from pymata4 import pymata4 
 import module_scripts as ms
-
-
 
 
 # controling digits, ground needs to turn on/off
@@ -273,6 +272,9 @@ def sevenSeg(myBoard, mode : str, number = '000'):
 
 if __name__ == "__main__": # need to initialise in a seperate file
     
+    #Start of file import causing issue, board import for testing
+    from pymata4 import pymata4
+
     board = pymata4.Pymata4()
     sevenSeg(board, 'c', '333')
 

@@ -7,7 +7,7 @@
 from pymata4 import pymata4
 import time
 import math
-from TrafficLightSequence import trafficStage
+from traffic_light_sequence import trafficStage
 
 '''this time writing should be from the traffic light sequence, 
 it's just here to give a framework of how it could look.'''

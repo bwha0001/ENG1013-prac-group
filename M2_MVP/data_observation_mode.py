@@ -15,7 +15,7 @@ def data_observation_mode(intersectionData, changeableConditions):
         #Set 7 segment display to display d, using 7 segment display function
         #initalise varible for mode, mode used in any function call to print something to the 7 segment display
         mode = "d."
-        to_7_seg.sevenSeg(board2, mode, pedCounter = '000')
+#        to_7_seg.sevenSeg(board2, mode, pedCounter = '000')
         #Stop polling loop, set traffic stage to suspended
         changeableConditions['trafficStage'] = "suspended"
         #Show polling loop time from normal operating mode

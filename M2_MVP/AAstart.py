@@ -55,7 +55,6 @@ while True:
             'pedCounterReset' : ""
         }
         
-
         #Set up arduino
         board = pymata4.Pymata4()
 
@@ -70,6 +69,8 @@ while True:
         board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
         # Configure pin to sonar
         board.set_pin_mode_sonar(changeableConditions["triggerPin"], changeableConditions["echoPin"], timeout=200000)
+        #Configiure ped button pin
+
 
         main.main_menu(board, intersectionData, changeableConditions)
         

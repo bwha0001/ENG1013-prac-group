@@ -1,7 +1,7 @@
 #TODO File header
 import time
 import math as mth
-from pymata4 import pymata4
+#from pymata4 import pymata4
 import module_scripts as ms
 import to_7_segment_display as to_7_seg
 import maintenance_mode as m_m
@@ -12,6 +12,24 @@ import main_menu as main
 import normal_operation as n_o
 import data_observation_mode as DOM
 
+#function for pedButton
+def ped_button(data):
+    """
+    :param data: a list containing pin type, pin number, 
+                data value and time-stamp
+    """
+    
+    # Print the value out (code goes here to do something with the data)
+    global pedsPresent
+    global lastButtonPress
+
+    if data[2] ==1 and time.time() > lastButtonPress+0.001:
+        pedsPresent += 1
+        lastButtonPress = time.time()
+        print(f"Peds present: {pedsPresent}")
+
+    print(f"Test line button data: {data}")
+    #lastButtonPress = time.time()
 
 def traffic_stage_change(board, intersectionData, changeableConditions, trafficStage):
     """
@@ -50,7 +68,7 @@ def traffic_stage_change(board, intersectionData, changeableConditions, trafficS
         print(f"Pedestrian Count: {[pedCount]}")
     return intersectionData,changeableConditions, trafficStage, stageEndTime
 
-def normal_operation(intersectionData,changeableConditions):
+def normal_operation(board, intersectionData,changeableConditions):
     """
     normal opperation mode
     """
@@ -67,7 +85,7 @@ def normal_operation(intersectionData,changeableConditions):
 
     # Begin normal operation
     mode = 'n'
-#    to_7_segment_display(board, mode)
+#    to_7_seg.to_7_segment_display(board2, mode)
     #pull traffic stage from dictonary
     trafficStage = changeableConditions['trafficStage']
 
@@ -108,7 +126,9 @@ def normal_operation(intersectionData,changeableConditions):
 
 #Create a dictonary of records
 if __name__ == "__main__":     
-#   Create a dictonary of records
+    from pymata4 import pymata4
+    
+    #   Create a dictonary of records
     intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[]}
 
     changeableConditions = {
@@ -137,6 +157,23 @@ if __name__ == "__main__":
         'pollingRate' : 2,
         'pedCounterReset' : ""
     }
-    board = pymata4.Pymata4()
+
+    board =pymata4.Pymata4()
+
+    #set arduino pins
+    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainRed"])
+    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainYellow"])
+    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainGreen"])
+    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideRed"])
+    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideYellow"])
+    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideGreen"])
+    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianRed"])
+    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
+    # Configure pin to sonar
+    board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], timeout=200000)
+    #Start ped button checker
+    pedsPresent = 0
+    lastButtonPress = time.time()-0.1
+    board.set_pin_mode_digital_input(10, callback=ped_button)
 
     normal_operation(board, intersectionData, changeableConditions)
