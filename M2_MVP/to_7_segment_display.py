@@ -162,7 +162,7 @@ def to_arduino(myBoard, digDisplay, mode, number):
             # INITIALISING digit 2
             myBoard.digital_write(digGround[2],0)
             #printing to the pins
-            for i in range(0,len(digDisplay)):
+            for i in range(0,len(digDisplay[2])):
                 myBoard.digital_write(segmentID[i], int(digDisplay[2][i]))
             time.sleep(0.002)
             # clear pins
@@ -185,13 +185,19 @@ def to_arduino(myBoard, digDisplay, mode, number):
         myBoard.digital_write(digGround[3],1)
     
     #Make sure pins turn off
-    for i in range(0,len(digGround)):
-        myBoard.digital_write(digGround[i], 1)
+    for pin in segmentID:
+        myBoard.digital_write(pin, 0)
     for i in range(0,len(digGround)):
         myBoard.digital_write(digGround[i], 1)
     print("Value sent to arduino without fail")
+    return segmentID, digGround
 
-
+def make_sure_its_off(myBoard, segmentID, digGround):
+    #Make sure pins turn off
+    for pin in segmentID:
+        myBoard.digital_write(pin, 0)
+    for i in range(0,len(digGround)):
+        myBoard.digital_write(digGround[i], 1)
 
 def sevenSeg(myBoard, mode : str, number = '000'):
     """display numbers or letters to the seven segment display
@@ -260,7 +266,8 @@ def sevenSeg(myBoard, mode : str, number = '000'):
 
     else:
         print('Invalid input')
-    to_arduino(myBoard, digDisplay, mode, number)
+    segmentID, digGround = to_arduino(myBoard, digDisplay, mode, number)
+    make_sure_its_off(myBoard, segmentID, digGround)
     return digDisplay, mode, number         
 
 # def outputSevSeg(myBoard, segments, segs, digs):
@@ -276,7 +283,7 @@ if __name__ == "__main__": # need to initialise in a seperate file
     from pymata4 import pymata4
 
     board = pymata4.Pymata4()
-    sevenSeg(board, 'c', '333')
+    sevenSeg(board, 'c', '020')
 
     board.shutdown()
 #     segE = 1+2
