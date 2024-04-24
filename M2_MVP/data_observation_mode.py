@@ -9,7 +9,7 @@ import to_7_segment_display as to_7_seg
 import polling_loop as pl
 import plotting_function
 
-def data_observation_mode(board, intersectionData, changeableConditions):
+def data_observation_mode(board, board2, intersectionData, changeableConditions):
     #globals
     try:
         #Set 7 segment display to display d, using 7 segment display function
@@ -21,7 +21,7 @@ def data_observation_mode(board, intersectionData, changeableConditions):
         #Show polling loop time from normal operating mode
         print(f"Current Polling Interval is {changeableConditions['pollingRate']} seconds") 
         #get polling loop infomation 
-        [intersectionData, changeableConditions, distToVehicleRecord, pedCount] = pl.polling_loop(board, intersectionData, changeableConditions)
+        [intersectionData, changeableConditions, distToVehicleRecord, pedCount] = pl.polling_loop(board, board2, intersectionData, changeableConditions)
 #test line        [distToVehicleRecord, pedCount] = [intersectionData['distToVehicleRecord'], intersectionData['pedCountRecord'][-1]] #logic testing line
         #Show user pedestrian counter value
         #If there is no data at all print message directing to run normal operation mode

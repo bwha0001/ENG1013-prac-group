@@ -68,7 +68,7 @@ def traffic_stage_change(board, intersectionData, changeableConditions, trafficS
         print(f"Pedestrian Count: {[pedCount]}")
     return intersectionData,changeableConditions, trafficStage, stageEndTime
 
-def normal_operation(board, intersectionData,changeableConditions):
+def normal_operation(board, board2, intersectionData,changeableConditions):
     """
     normal opperation mode
     """
@@ -107,7 +107,7 @@ def normal_operation(board, intersectionData,changeableConditions):
                 #output lights to arduino
                 led.light_setting_state(board, changeableConditions, mainState, sideState, pedestrianState)
             # Run function polling loop, inputting polling rate, output of polling time, current distance and pedestrian count
-            [intersectionData, changeableConditions] = pl.polling_loop(board, intersectionData, changeableConditions)
+            [intersectionData, changeableConditions] = pl.polling_loop(board, board2, intersectionData, changeableConditions)
                 #Happens within function 
                     #If polling start time plus polling time taken equals the current time
                     # Display polling time on console, “Polling loop took <polling time> to complete”
