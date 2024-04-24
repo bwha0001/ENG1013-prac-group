@@ -4,6 +4,7 @@
 #Dates Edited: 24 April 2024
 
 import time
+import AAstart as start
 
 def polling_loop(board, board2, intersectionData, changeableConditions):
     '''
@@ -67,6 +68,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     #Placeholder generation for MVP Checkpoint
     distToVehicle, distReadingTime = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
 
+    start.pedsPresent
 
     #Update ped count total
     pedCount = pedCount + pedsPresent

@@ -11,6 +11,24 @@ import main_menu as main
 import normal_operation as n_o
 import data_observation_mode as DOM
 
+#function for pedButton
+def ped_button(data):
+    """
+    :param data: a list containing pin type, pin number, 
+                data value and time-stamp
+    """
+    
+    # Print the value out (code goes here to do something with the data)
+    global pedsPresent
+    global lastButtonPress
+
+    if data[2] ==1 and time.time() > lastButtonPress+0.0001:
+        pedsPresent += 1
+        lastButtonPress = time.time()
+        print(f"Peds present: {pedsPresent}")
+
+    print(f"Test line button data: {data}")
+
 while True:
     try:
         global intersectionData
@@ -20,7 +38,8 @@ while True:
         board = pymata4.Pymata4()        # Do something with board1
 
         # # Board 2
-        board2 = pymata4.Pymata4()
+#        board2 = pymata4.Pymata4()
+        board2 = ''
         # # Do something with board2
 
        
@@ -68,6 +87,7 @@ while True:
         # Configure pin to sonar
         board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], timeout=200000)
         #Configiure ped button pin
+        global pedsPresent
         pedsPresent = 0
         lastButtonPress = time.time() - 0.1
         board.set_pin_mode_digital_input(changeableConditions["arduinoPins"]["pedButton"], callback=ped_button)
