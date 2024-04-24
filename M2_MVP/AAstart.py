@@ -68,7 +68,9 @@ while True:
         # Configure pin to sonar
         board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], timeout=200000)
         #Configiure ped button pin
-
+        pedsPresent = 0
+        lastButtonPress = time.time() - 0.1
+        board.set_pin_mode_digital_input(changeableConditions["arduinoPins"]["pedButton"], callback=ped_button)
 
         main.main_menu(board, intersectionData, changeableConditions)
         
