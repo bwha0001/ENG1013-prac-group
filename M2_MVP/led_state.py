@@ -201,7 +201,7 @@ if __name__ == '__main__':
     time.sleep(3)
     light_setting_state(board, changeableConditions, "red", "green", "red")
     time.sleep(3)
-    light_setting_state(board, changeableConditions, "green", "green", "off")
+    light_setting_state(board, changeableConditions, "green", "yellow", "off")
     time.sleep(3)
     light_setting_state(board, changeableConditions, "off", "green", "green")
     time.sleep(3)

@@ -37,8 +37,6 @@ def main_menu(board, board2, intersectionData, changeableConditions, pedsPresent
             except KeyboardInterrupt: 
                 break
                 
-
-
         while True:
             programQuit = input("Would you like to quit? (Y/N) ")
             try: 

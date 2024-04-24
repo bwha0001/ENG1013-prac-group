@@ -4,6 +4,7 @@
 #Dates Edited: 24 April 2024
 
 import time
+import AAstart as start
 
 def polling_loop(board, board2, intersectionData, changeableConditions, pedsPresent):
     '''
@@ -66,6 +67,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions, pedsPres
     #Placeholder generation for MVP Checkpoint
     distToVehicle, distReadingTime = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
 
+    start.pedsPresent
 
     #Update ped count total
     pedCount = pedCount + pedsPresent
@@ -169,12 +171,14 @@ if __name__ == "__main__":
     lastButtonPress = time.time() - 0.1
     board.set_pin_mode_digital_input(changeableConditions["arduinoPins"]["pedButton"], callback=ped_button)
     
+    board2 = ''
+
     #Test for 30 seconds
     startTime = time.time()
 
     while startTime + 30 > time.time():
         try:
-            polling_loop(board,  intersectionData, changeableConditions)
+            polling_loop(board, board2, intersectionData, changeableConditions)
         except KeyboardInterrupt:
             print("Close")
             break
