@@ -2,7 +2,6 @@
 import time
 import math as mth
 #from pymata4 import pymata4
-import module_scripts as ms
 import to_7_segment_display as to_7_seg
 import maintenance_mode as m_m
 import led_state as led
@@ -20,7 +19,6 @@ def ped_button(data):
     """
     
     # Print the value out (code goes here to do something with the data)
-    global pedsPresent
     global lastButtonPress
 
     if data[2] ==1 and time.time() > lastButtonPress+0.001:
@@ -68,7 +66,7 @@ def traffic_stage_change(board, intersectionData, changeableConditions, trafficS
         print(f"Pedestrian Count: {[pedCount]}")
     return intersectionData,changeableConditions, trafficStage, stageEndTime
 
-def normal_operation(board, board2, intersectionData,changeableConditions):
+def normal_operation(board, board2, intersectionData,changeableConditions, pedsPresent):
     """
     normal opperation mode
     """

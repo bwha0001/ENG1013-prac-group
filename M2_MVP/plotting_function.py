@@ -6,8 +6,8 @@ import time
 def plotting_function(timeRecorded, distance):
 
     # globals
-    global intersectionData
-    global changeableConditions
+    # global intersectionData
+    # global changeableConditions
     #Convert time record to number of seconds since
     timeSince = []
     for i in range(0, len(timeRecorded), 1):

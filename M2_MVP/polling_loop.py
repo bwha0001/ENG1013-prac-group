@@ -5,7 +5,7 @@
 
 import time
 
-def polling_loop(board, board2, intersectionData, changeableConditions):
+def polling_loop(board, board2, intersectionData, changeableConditions, pedsPresent):
     '''
     Polling loop gets and stores data from sensors in intersection
     Arg:
@@ -17,7 +17,6 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     pollingRate = changeableConditions['pollingRate']
     trafficStage = changeableConditions['trafficStage']
 
-    global pedsPresent
 
     #required for MVP Checkpoint
 

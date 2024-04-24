@@ -2,7 +2,6 @@ import time
 import math as mth
 #Commented out to deal with double search for arduino error, this might need to chage when 7 seg attached
 #from pymata4 import pymata4 
-import module_scripts as ms
 
 
 # controling digits, ground needs to turn on/off
