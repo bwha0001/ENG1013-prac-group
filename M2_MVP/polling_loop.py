@@ -5,7 +5,7 @@
 
 import time
 
-def polling_loop(board, intersectionData, changeableConditions):
+def polling_loop(board, board2, intersectionData, changeableConditions):
     '''
     Polling loop gets and stores data from sensors in intersection
     Arg:
@@ -175,7 +175,7 @@ if __name__ == "__main__":
 
     while startTime + 30 > time.time():
         try:
-            polling_loop(board, intersectionData, changeableConditions)
+            polling_loop(board,  intersectionData, changeableConditions)
         except KeyboardInterrupt:
             print("Close")
             break

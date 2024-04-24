@@ -9,7 +9,7 @@ import time
 
 
 # board = pymata4.pymata4
-def normal_operating(intersectionData, changeableConditions):
+def normal_operating(board, board2, intersectionData, changeableConditions):
     """collectes data
 
     Args:
@@ -19,7 +19,7 @@ def normal_operating(intersectionData, changeableConditions):
     pollingRate = changeableConditions['pollingRate']
     trafficStage = changeableConditions['trafficStage']
     while True:
-        [intersectionData, changeableConditions] = pl.polling_loop(intersectionData, changeableConditions)
+        [intersectionData, changeableConditions] = pl.polling_loop(board, board2, intersectionData, changeableConditions)
 
         distToVehicle = intersectionData['distToVehicleRecord'][-1]
         pedCount = intersectionData['pedCountRecord'][-1]

@@ -1,7 +1,6 @@
 import time
 import math as mth
 from pymata4 import pymata4
-import module_scripts as ms
 import to_7_segment_display as to_7_seg
 import maintenance_mode as m_m
 import led_state as led
@@ -21,7 +20,7 @@ while True:
         board = pymata4.Pymata4()        # Do something with board1
 
         # # Board 2
-        # board2 = pymata4.Pymata4()
+        board2 = pymata4.Pymata4()
         # # Do something with board2
 
        
@@ -70,11 +69,11 @@ while True:
         #Configiure ped button pin
 
 
-        main.main_menu(board, intersectionData, changeableConditions)
+        main.main_menu(board, board2, intersectionData, changeableConditions)
         
     except KeyboardInterrupt:
         print("program end")
          # Remember to close the boards when you're done
         board.shutdown()
-        # board2.close()
+        board2.shutdown()
         break
