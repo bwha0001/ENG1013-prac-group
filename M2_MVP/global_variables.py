@@ -1,3 +1,9 @@
+#File for storage of global varibles
+#Authors: Team F12
+#Version: 1 - Implemented for the button
+#Last Edit: 25 April 2024
+
+
 # Define your global variables here
 pedsPresent = None
 lastButtonPress = None

@@ -1,3 +1,8 @@
+#Main Menu of Traffic Control System
+#Authors: Jenny
+#Version: 5 - Hardware Implementation
+#Last Edit: 22 April 2024
+
 import normal_operation as n_o
 import maintenance_mode as m_m
 import data_observation_mode as DOM

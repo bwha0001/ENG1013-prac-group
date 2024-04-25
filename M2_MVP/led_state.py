@@ -11,7 +11,7 @@ def flashing_led(board,pin):
     """
     Used to make LED flash
         Parameters:
-            pin
+            board, pin
         Returns:
             function has no returns
     """ 

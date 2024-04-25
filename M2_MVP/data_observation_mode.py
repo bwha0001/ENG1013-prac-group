@@ -1,8 +1,7 @@
-#data observation mode
+#Data Observation Mode
 #Authors: Caitlin
-#Version: 1 - Get infomation by running polling loop - TODO Error with ped count reset in polling loop 
-        #when run from here but not when run from polling loop file
-#Dates Edited: 4 April 2024
+#Version: 2 - Hardware implemented 
+#Last Edit: 24 April 2024
 
 import time
 import to_7_segment_display as to_7_seg
@@ -27,7 +26,7 @@ def data_observation_mode(board, board2, intersectionData, changeableConditions)
         #If there is no data at all print message directing to run normal operation mode
         if pedCount == "No Data":
              print("There is no data to veiw, please enter normal operation mode(mode: 2) to collect data.\n Returning to main menu")
-             exit()
+             return
         print(f"The current Pedestrian Count is {pedCount}")
         if len(intersectionData['pedCountRecord']) > 0:
                 print(f"The current Pedestrian Count is {intersectionData['pedCountRecord'][-1]}")
