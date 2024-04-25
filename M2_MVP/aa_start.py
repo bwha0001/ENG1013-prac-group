@@ -21,13 +21,9 @@ import global_variables as GLOB
 # initialise global variables for the rest of the script
 GLOB.init()
 # Board 1
-board = pymata4.Pymata4()        # Do something with board1
-
+board = pymata4.Pymata4(com_port="COM3")        
 # # Board 2
-#board2 = pymata4.Pymata4()
-#Single Arduino Test
-board2 = ''
-# # Do something with board2
+board2 = pymata4.Pymata4(com_port="COM7")
 
 
 #Create a dictonary of records
