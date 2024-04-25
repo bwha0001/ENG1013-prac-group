@@ -44,7 +44,7 @@ def main_menu(board, board2, intersectionData, changeableConditions):
                     break 
                 elif programQuit == "Y":
                     print("Closing program...")
-                    return None
+                    break
             except ValueError: 
                 print("Invalid Input. Options available as 'Y' to continue to main menu and 'N' to end program.")
                 

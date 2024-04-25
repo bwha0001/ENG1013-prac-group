@@ -70,7 +70,7 @@ def convertion_dict(value: str):
         '8' : '11111110',
         '9' : '11110110',
         'a' : '11101100',
-        'n' : '00101011',
+        'n' : '00101010',
         'm' : '00011010',
         'd' : '01111010', 
         'c' : '00011010',
@@ -90,7 +90,7 @@ def convert_to_three_digits(number):
 
 
 
-def to_arduino(myBoard, digDisplay, mode, number):
+def to_arduino(myBoard, digDisplay, mode, number, segmentID, digGround):
     """prints values from sevenSeg to the seven segment display
 
     Args:
@@ -99,16 +99,7 @@ def to_arduino(myBoard, digDisplay, mode, number):
         mode (list): letter to be displayed
         number (list): number to be displayed
     """
-    segA = 2
-    segB = 3
-    segC = 4 
-    segD = 5
-    segE = 6
-    segF = 7
-    segG = 8
-    segDP = 9
-    digGround = [11,12,13, 10]#dig 0 ... dig 4 
-    segmentID = [segA, segB, segC, segD, segE, segF, segG, segDP]
+
     # digDisplay = digDisplay[::-1] # reverse the digits cause i messed up
     # digGround = digGround[::-1]
 
@@ -186,7 +177,6 @@ def to_arduino(myBoard, digDisplay, mode, number):
     for i in range(0,len(digGround)):
         myBoard.digital_write(digGround[i], 1)
     # print("Value sent to arduino without fail")
-    return segmentID, digGround
 
 def make_sure_its_off(myBoard, segmentID, digGround):
     #Make sure pins turn off
@@ -262,45 +252,53 @@ def sevenSeg(myBoard, mode : str, number = '000'):
 
     else:
         print('Invalid input')
-    segmentID, digGround = to_arduino(myBoard, digDisplay, mode, number)
+
+    #initialising the seven segment display
+    segA = 2
+    segB = 3
+    segC = 4 
+    segD = 5
+    segE = 6
+    segF = 7
+    segG = 8
+    segDP = 9
+    digGround = [11,12,13, 10]#dig 0 ... dig 4 
+    segmentID = [segA, segB, segC, segD, segE, segF, segG, segDP]
+
+    to_arduino(myBoard, digDisplay, mode, number, segmentID, digGround)
     make_sure_its_off(myBoard, segmentID, digGround)
-    return digDisplay, mode, number         
-
-# def outputSevSeg(myBoard, segments, segs, digs):
-#     ms.arduino_setup(myBoard, 'digital write', [segs, digs])
-#     for i in range(0,len(segments)):
-#         for j in range(0,len(segments[i])):
-
-
-
-if __name__ == "__main__": # need to initialise in a seperate file
-    
-    #Start of file import causing issue, board import for testing
-    from pymata4 import pymata4
-
-    board = pymata4.Pymata4()
-    sevenSeg(board, 'c', '020')
-
-    board.shutdown()
-#     segE = 1+2
-#     segD = 2+2
-#     DP = 3+2
-#     segC = 4+2
-#     segG = 5+2
-#     dig3 = 6+2
-#     segB = 7+2
-#     dig2 = 8+2
-#     dig1 = 9+2
-#     segF = 10+2
-#     segA = 11+2
-#     dig0 = 12+2
-#     segs = [segA, segB,segC,segD,segE,segG, DP]
-#     digs = [dig3,dig2,dig1, dig0]
-#     board = pymata4.Pymata4
+    # del segmentID, digGround
     
 
 
-#     [dig4, digitNum, segments] = sevenSeg(board, 'c')
+# if __name__ == "__main__": # need to initialise in a seperate file
+    
+#     #Start of file import causing issue, board import for testing
+#     from pymata4 import pymata4
+
+#     board = pymata4.Pymata4()
+#     sevenSeg(board, 'c', '020')
+
+#     board.shutdown()
+# #     segE = 1+2
+# #     segD = 2+2
+# #     DP = 3+2
+# #     segC = 4+2
+# #     segG = 5+2
+# #     dig3 = 6+2
+# #     segB = 7+2
+# #     dig2 = 8+2
+# #     dig1 = 9+2
+# #     segF = 10+2
+# #     segA = 11+2
+# #     dig0 = 12+2
+# #     segs = [segA, segB,segC,segD,segE,segG, DP]
+# #     digs = [dig3,dig2,dig1, dig0]
+# #     board = pymata4.Pymata4
+    
+
+
+# #     [dig4, digitNum, segments] = sevenSeg(board, 'c')
 
 
 

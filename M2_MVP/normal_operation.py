@@ -76,8 +76,8 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
         _type_: _description_
     """
     # calling from the global library global_variables and assining it the initial values to be overwritted
-    GLOB.pedsPresent = changeableConditions['pedsPresent']
-    GLOB.lastButtonPress = changeableConditions['lastButtonPress']
+    GLOB.pedsPresent = changeableConditions['pedsPresent'][-1]
+    GLOB.lastButtonPress = changeableConditions['lastButtonPress'][-1]
     #define dictonary of traffic light colours to stage
     lightForStage = {
         1: ["green", "red", "red"],
@@ -110,7 +110,13 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
     try:
         while True:           
             # Does the traffic stage need changing?
-            if time.time()<=stageTimeEnd:
+            
+            #Due to need to continue flashing while polling loop still runs
+            #trigger light setting again (ped green flashing) if in stage 5
+            if trafficStage == 5:
+                led.light_setting_state(changeableConditions, mainState, sideState, pedestrianState)
+            else:
+                startTime = time.time()
                 intersectionData,changeableConditions, trafficStage, stageTimeEnd = traffic_stage_change(board, intersectionData, changeableConditions, trafficStage)
                 #set light colours
                 [mainState, sideState, pedestrianState] = lightForStage[changeableConditions["trafficStage"]] 
@@ -123,13 +129,9 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
                     # Display polling time on console, “Polling loop took <polling time> to complete”
                     # If polling start time plus polling time taken equals the current time
                     # Display the current distance, “The distance to the closest vehicle is <current distance> cm.”
-            
-            #Due to need to continue flashing while polling loop still runs
-            #trigger light setting again (ped green flashing) if in stage 5
-            if trafficStage == 5:
-                led.light_setting_state(changeableConditions, mainState, sideState, pedestrianState)
-            else:
-                break
+                endTime = time.time()
+                # time.sleep(changeableConditions['pollingRate'])
+                print(f"total time taken for polling: {round(startTime-endTime,2)}")
     except KeyboardInterrupt:
         #exit button activation
         print("Exit button activated, returning to main menu")

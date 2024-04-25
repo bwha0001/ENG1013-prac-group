@@ -60,16 +60,17 @@ def light_setting_state(board, changeableConditions, mainState, sideState, pedes
     '''
 
 #TODO what is the purpose of this? Nothing?
-    ledStates = {
-        "mainRed": 0,
-        "mainYellow": 0,
-        "mainGreen": 0,
-        "sideRed": 0,
-        "sideYellow": 0,
-        "sideGreen": 0,
-        "pedestrianRed": 0,
-        "pedestrianGreen": 0
-    }
+    # ledStates = {
+    #     "mainRed": 0,
+    #     "mainYellow": 0,
+    #     "mainGreen": 0,
+    #     "sideRed": 0,
+    #     "sideYellow": 0,
+    #     "sideGreen": 0,
+    #     "pedestrianRed": 0,
+    #     "pedestrianGreen": 0
+    # }
+    ledStates = changeableConditions['arduinoPins']
 
 #main traffic light
     if mainState == "red":

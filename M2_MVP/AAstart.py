@@ -73,7 +73,7 @@ changeableConditions['lastButtonPress'] = time.time() - 0.1
 # board.set_pin_mode_digital_input(changeableConditions["arduinoPins"]["pedButton"])
 main.main_menu(board, board2, intersectionData, changeableConditions)
 
-print("program end")
+print("program ending from AA")
     # Remember to close the boards when you're done
 board.shutdown()
 board2.shutdown()

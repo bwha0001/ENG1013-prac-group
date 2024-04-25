@@ -16,7 +16,7 @@ def ped_button_callback(data):
     if data[2] == 1 and time.time() > GLOB.lastButtonPress + 0.0001:
         pedsPresent_shared += 1
         GLOB.lastButtonPress = time.time()
-        print(f"Peds present: {pedsPresent_shared}")
+        print(f"Pedestrians present: {pedsPresent_shared}")
 # def ped_button(data): # this isnt getting called properly
 #     """
 #     :param data: a list containing pin type, pin number, 
@@ -69,6 +69,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     timeRecord = intersectionData['timeRecord']
     distToVehicleRecord = intersectionData['distToVehicleRecord']
     pedCountRecord = intersectionData['pedCountRecord']
+    
 
     if intersectionData['pedCountRecord'] == [] or changeableConditions["pedCounterReset"]=="stage1Reset":
         pedCount = 0
@@ -105,8 +106,8 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     board.set_pin_mode_digital_input(pedButton,callback=ped_button_callback)
     # print(GLOB.pedsPresent)
     #Update ped count total
-
-    pedCount =  pedCount + pedsPresent_shared
+    
+    pedCount =  pedCount + GLOB.pedsPresent
     pedsPresent_shared = 0  # reset shared variable
     #Has the pedestrian been pressed 
     #.....  (input of pedButton) = 1?
@@ -114,12 +115,13 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     """pedButton = random.randint(0,1)
 
     if pedButton == 1:
-        pedCount += 1"""
+        pedCount += 1
+        """
 
     #Store record of time of readings, ultrasonic sensor reading and pedestrian count, all stored with same list index
-    timeRecord.append(pollingStartTime)
-    distToVehicleRecord.append(distToVehicle)
-    pedCountRecord.append(pedCount)
+    intersectionData['timeRecord'].append(pollingStartTime)
+    intersectionData['distToVehicleRecord'].append(distToVehicle)
+    intersectionData['pedCountRecord'].append(pedCount)
 
     #Check if all lists have more readings than should be the case for 20 seconds, remove earliest reading to bring back to 20 sec
     if len(timeRecord)>(20/pollingRate) and len(distToVehicleRecord)>(20/pollingRate) and len(pedCountRecord)>(20/pollingRate):
@@ -129,16 +131,16 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
         pedCountRecord.pop(0)
 
     #Set polling time to the time it took to execute
+    # time.sleep(changeableConditions['pollingRate'])
     pollingEndTime = time.time()
     pollingTime = pollingEndTime - pollingStartTime
-    print(f"Time taken to poll: {round(pollingTime, 2)} seconds")
+    # print(f"Time taken to poll: {round(pollingTime, 2)} seconds")
     #Print the distnace to the nearest vechile
     print(f"Distance to nearest vechile: {distToVehicle} cm")
     #test line
     print(f"Test Line Ped Count Record Value: {pedCount}")
-    print(f"time from record: {timeRecord[-1]-pollingStartTime}\n")
+    # print(f"time from record: {timeRecord[-1]-pollingStartTime}\n")
     to_7_seg.sevenSeg(board2, 'c', distToVehicle)
-    time.sleep(changeableConditions['pollingRate'])
     return intersectionData, changeableConditions
 
 # #Hardware Test
