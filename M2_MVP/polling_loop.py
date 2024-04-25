@@ -6,7 +6,7 @@
 import time
 # import AAstart as start
 
-def ped_button(pedsPresent, lastButtonPress): # this isnt getting called properly
+def ped_button(data): # this isnt getting called properly
     """
     :param data: a list containing pin type, pin number, 
                 data value and time-stamp
@@ -16,9 +16,11 @@ def ped_button(pedsPresent, lastButtonPress): # this isnt getting called properl
     # lastButtonPress = changeableConditions['lastButtonPress']
     # pedsPresent = changeableConditions['pedsPresent']
 
-    if time.time() > lastButtonPress+0.0001:
+    if data[2] and time.time() > lastButtonPress+0.0001:
         # changeableConditions['pedsPresent'] += 1
         # changeableConditions['lastButtonPress'] = time.time()
+        global pedsPresent
+        global lastButtonPress
         pedsPresent += 1
         lastButtonPress = time.time()
         print(f"Peds present: {pedsPresent}")
@@ -36,10 +38,15 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
         if suspended [distance to next vechile list, pedestrian count]
     '''
     #globals
+    global pedsPresent
+    global lastButtonPress
+
     pollingRate = changeableConditions['pollingRate']
     trafficStage = changeableConditions['trafficStage']
     pedsPresent = changeableConditions['pedsPresent']
     lastButtonPress = changeableConditions['lastButtonPress']
+
+
 
 
     #required for MVP Checkpoint
@@ -90,8 +97,8 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     #Placeholder generation for MVP Checkpoint
     distToVehicle, distReadingTime = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
 
-    pedsPresent, lastButtonPress = ped_button(pedsPresent, lastButtonPress)
-
+    # pedsPresent, lastButtonPress = ped_button(pedsPresent, lastButtonPress)
+    board.set_pin_mode_digital_input(changeableConditions['arduinoPins']['pedButton'], callback = ped_button)
     #Update ped count total
     pedCount = pedCount + pedsPresent
     #Once total updated, reset the ped present count inbetween saves by polling

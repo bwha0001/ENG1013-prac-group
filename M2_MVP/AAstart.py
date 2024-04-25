@@ -72,7 +72,7 @@ board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], chan
 #Configiure ped button pin
 changeableConditions['lastButtonPress'] = time.time() - 0.1
 # board.set_pin_mode_digital_input(changeableConditions["arduinoPins"]["pedButton"], callback=ped_button(changeableConditions))
-board.set_pin_mode_digital_input(changeableConditions["arduinoPins"]["pedButton"])
+# board.set_pin_mode_digital_input(changeableConditions["arduinoPins"]["pedButton"])
 main.main_menu(board, board2, intersectionData, changeableConditions)
 
 print("program end")

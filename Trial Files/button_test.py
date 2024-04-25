@@ -10,7 +10,6 @@ def ped_button(data):
     """
     # Print the value out (code goes here to do something with the data)
     global pedCounter
-
     global lastButtonPress
     
     if data[2] ==1 and time.time()-lastButtonPress>0.1:

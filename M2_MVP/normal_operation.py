@@ -12,6 +12,28 @@ import normal_operation as n_o
 import data_observation_mode as DOM
 
 
+def ped_button(data): # this isnt getting called properly
+    """
+    :param data: a list containing pin type, pin number, 
+                data value and time-stamp
+    """
+    
+    # Print the value out (code goes here to do something with the data)
+    # lastButtonPress = changeableConditions['lastButtonPress']
+    # pedsPresent = changeableConditions['pedsPresent']
+
+    if data[2] and time.time() > lastButtonPress+0.0001:
+        # changeableConditions['pedsPresent'] += 1
+        # changeableConditions['lastButtonPress'] = time.time()
+        global pedsPresent
+        global lastButtonPress
+        pedsPresent += 1
+        lastButtonPress = time.time()
+        print(f"Peds present: {pedsPresent}")
+    return pedsPresent, lastButtonPress
+
+    # print(f"Test line button data: {changeableConditions['pedsPresent']}, {changeableConditions['lastButtonPress']}")
+
 def traffic_stage_change(board, intersectionData, changeableConditions, trafficStage):
     """
     This function takes care of the repeated processes of a change in traffic stage in the traffic control system and 
@@ -61,6 +83,10 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
     Returns:
         _type_: _description_
     """
+    global pedsPresent
+    global lastButtonPress
+    pedsPresent = changeableConditions['pedsPresent']
+    lastButtonPress = changeableConditions['lastButtonPress']
 #TODO add function header
     #define dictonary of traffic light colours to stage
     lightForStage = {
@@ -74,6 +100,9 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
 
     # Begin normal operation
     mode = 'n'
+    #initialise the pedestrian button
+    board.set_pin_mode_digital_input(changeableConditions['arduinoPins']['pedButton'], callback = ped_button)
+
 #    to_7_seg.to_7_segment_display(board2, mode)
     #pull traffic stage from dictonary
     trafficStage = changeableConditions['trafficStage']
