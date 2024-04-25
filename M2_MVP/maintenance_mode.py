@@ -17,6 +17,7 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
     '''
 
     try:
+        to_7_seg.sevenSeg(board2, 'c')
         #Initalisations, what is avaible to change, what acceptable values are
         changesCodes = {"PLR":"polling rate"}
         changesRules = {"PLR":{1, 2, 3, 4 ,5}}
