@@ -12,12 +12,9 @@ import normal_operation as n_o
 import data_observation_mode as DOM
 import global_variables as GLOB
 
-
-
-
     # print(f"Test line button data: {changeableConditions['pedsPresent']}, {changeableConditions['lastButtonPress']}")
 
-def traffic_stage_change(board, intersectionData, changeableConditions, trafficStage):
+def traffic_stage_change(intersectionData, changeableConditions, trafficStage):
     """
     This function takes care of the repeated processes of a change in traffic stage in the traffic control system and 
     the tasks that occur at particular stages. Displaying stage specific outputs to console.
@@ -101,7 +98,7 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
 
     #use changeable conditions to start operation from suspended stage, restarts at stage 1
     if trafficStage == "suspended":
-        intersectionData, changeableConditions, trafficStage, stageTimeEnd = traffic_stage_change(board, intersectionData, changeableConditions, trafficStage)
+        intersectionData, changeableConditions, trafficStage, stageTimeEnd = traffic_stage_change(intersectionData, changeableConditions, trafficStage)
         #set light colours
         [mainState, sideState, pedestrianState] = lightForStage[changeableConditions["trafficStage"]]
         #output lights to arduino
@@ -111,7 +108,7 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
         while True:           
             # Does the traffic stage need changing?
             if time.time()<=stageTimeEnd:
-                intersectionData,changeableConditions, trafficStage, stageTimeEnd = traffic_stage_change(board, intersectionData, changeableConditions, trafficStage)
+                intersectionData,changeableConditions, trafficStage, stageTimeEnd = traffic_stage_change(intersectionData, changeableConditions, trafficStage)
                 #set light colours
                 [mainState, sideState, pedestrianState] = lightForStage[changeableConditions["trafficStage"]] 
                 #output lights to arduino
@@ -128,8 +125,11 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
             #trigger light setting again (ped green flashing) if in stage 5
             if trafficStage == 5:
                 led.light_setting_state(changeableConditions, mainState, sideState, pedestrianState)
+            #potential erroring loop
+            '''
             else:
                 break
+            '''
     except KeyboardInterrupt:
         #exit button activation
         print("Exit button activated, returning to main menu")
