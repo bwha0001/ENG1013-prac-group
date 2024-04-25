@@ -25,7 +25,7 @@ board2 = ""
 
 
 #Create a dictonary of records
-intersectionData = {"timeRecord":[time.time()], "distToVehicleRecord":[], "pedCountRecord":[0]}
+intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[], "pedPresentRecord":[]}
 
 pollingRate = 2
 changeableConditions = {

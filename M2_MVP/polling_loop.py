@@ -12,11 +12,12 @@ def ped_button_callback(data):
     """
     Callback function for pedestrian button press.
     """
-    global pedsPresent_shared
+    #global pedsPresent_shared
     if data[2] == 1 and time.time() > GLOB.lastButtonPress + 0.0001:
         GLOB.pedsPresent += 1
         GLOB.lastButtonPress = time.time()
-        print(f"Pedestrians present: {pedsPresent_shared}")
+        print(GLOB.pedsPresent)
+        #print(f"Pedestrians present: {pedsPresent_shared}")
 # def ped_button(data): # this isnt getting called properly
 #     """
 #     :param data: a list containing pin type, pin number, 
@@ -91,13 +92,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
         
     #Set loop start time
     pollingStartTime = time.time()
-
-    if intersectionData['pedCountRecord'] == [] or changeableConditions["pedCounterReset"]=="stage1Reset":
-        pedCount = 0
-        # changeableConditions["pedCounterReset"]==""
-    elif not intersectionData['pedCountRecord'] == []:
-        pedCount = intersectionData['pedCountRecord'][-1]
-
+    
     #Take readings for distance to next vehcile (ultrosonic sensor reading) and pedestrian button pressed
     #Placeholder generation for MVP Checkpoint
     distToVehicle, distReadingTime = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
@@ -105,10 +100,24 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     # pedsPresent, lastButtonPress = ped_button(pedsPresent, lastButtonPress)
     pedButton = changeableConditions['arduinoPins']['pedButton']
     board.set_pin_mode_digital_input(pedButton,callback=ped_button_callback)
-    # print(GLOB.pedsPresent)
-    #Update ped count total
     
-    pedCount =  pedCount + GLOB.pedsPresent
+    #Update pedButtonRecord to number of presses so far
+    intersectionData['pedPresentRecord'].append(GLOB.pedsPresent)
+
+    if intersectionData['pedCountRecord'] == [] or changeableConditions["pedCounterReset"]=="stage1Reset":
+        #pedestrians so far in this interation of traffic sequence
+        pedCount = 0
+        #Set to 0 as there have been no peds in this interation of traffic sequence
+        pedButton = 0
+        # changeableConditions["pedCounterReset"]==""
+    elif not intersectionData['pedCountRecord'] == []:
+        pedCount = intersectionData['pedCountRecord'][-1]
+        #find the number of pedButton presses between polling loops, pedButton
+        pedButton = intersectionData['pedPresentRecord'][-1]-intersectionData['pedPresentRecord'][-2]
+
+    print(GLOB.pedsPresent)
+    #Update ped count total
+    pedCount += pedButton
     pedsPresent_shared = 0  # reset shared variable
     #GLOB.pedsPresent = 0
     #Has the pedestrian been pressed 
@@ -131,6 +140,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
         timeRecord.pop(0)
         distToVehicleRecord.pop(0)
         pedCountRecord.pop(0)
+        
 
     #Set polling time to the time it took to execute
     # time.sleep(changeableConditions['pollingRate'])
