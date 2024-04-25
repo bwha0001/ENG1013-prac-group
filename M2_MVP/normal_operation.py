@@ -76,8 +76,6 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
         _type_: _description_
     """
     # calling from the global library global_variables and assining it the initial values to be overwritted
-    GLOB.pedsPresent = changeableConditions['pedsPresent'][-1]
-    GLOB.lastButtonPress = changeableConditions['lastButtonPress'][-1]
     #define dictonary of traffic light colours to stage
     lightForStage = {
         1: ["green", "red", "red"],

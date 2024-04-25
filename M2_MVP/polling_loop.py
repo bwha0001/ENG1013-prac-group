@@ -14,7 +14,7 @@ def ped_button_callback(data):
     """
     global pedsPresent_shared
     if data[2] == 1 and time.time() > GLOB.lastButtonPress + 0.0001:
-        pedsPresent_shared += 1
+        GLOB.pedsPresent += 1
         GLOB.lastButtonPress = time.time()
         print(f"Pedestrians present: {pedsPresent_shared}")
 # def ped_button(data): # this isnt getting called properly
@@ -49,6 +49,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
 
     pollingRate = changeableConditions['pollingRate']
     trafficStage = changeableConditions['trafficStage']
+    
     global pedsPresent_shared
     pedsPresent_shared = 0 # initialise pedsPresent_shared
 
