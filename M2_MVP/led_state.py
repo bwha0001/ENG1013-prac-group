@@ -1,7 +1,7 @@
 # This converts the LED's into on/off/flashing and converts the traffic light setting to Arduino commands
 # Author: Hayley Dusting 
-# Date: 10/4/2024
-# Version ='3.0' Hardware testing, software checks still included
+# Date: 22/4/2024
+# Version = 4.0 Hardware tested, software cjhecks commented out
 
 import time
 from pymata4 import pymata4
@@ -9,12 +9,13 @@ from pymata4 import pymata4
 #function for flashing to turn LED on and off every 0.5 seconds (2Hz)
 def flashing_led(board,pin):
     """
-    Used to make LED flash
-        Parameters:
-            board, pin
-        Returns:
-            function has no returns
-    """ 
+    Used to make LED flash at 2Htz for 1 second
+    
+    Args:
+        board: Arduino Set Up
+        pin (interger): Arduino Pin which LED is connected to
+    """    
+    
     board.digital_write(pin,1)
     time.sleep(0.5)
     board.digital_write(pin,0)
@@ -26,12 +27,15 @@ def light_setting_state(board, changeableConditions, mainState, sideState, pedes
     #readded modes to function call based on the function header
     """
     Used to set traffic light state to on/off/flashing for each LED on the Arduino
-        Parameters:
-            main traffic light state ('red','yellow','green','flashing','off'),
-            side traffic light state ('red','yellow','green','flashing','off'),
-            pedestrian light state ('red','green','flashing', ,'off')
+        Args:
+            board: Arduino Set Up
+            board2: 2nd Arduino Set Up
+            changeableConditions (dictonary): Anything related to the system that changes
+            main traffic light state ('red','yellow','green','flashing','off'): state/colour of light set
+            side traffic light state ('red','yellow','green','flashing','off'): state/colour of light set
+            pedestrian light state ('red','green','flashing', ,'off'): state/colour of light set
         Returns:
-            main LED red, main LED yellow, main LED green, main LED flashing, side LED red, side LED yellow, side LED green, side LED flashing, pedestrian LED red, pedestrian LED green, pedestrian LED flashing
+            None
     """
     # importing the globals
 
@@ -118,7 +122,7 @@ def light_setting_state(board, changeableConditions, mainState, sideState, pedes
     elif pedestrianState == "flashing":
         board.digital_write(ledPins["pedestrianRed"], 0)
         flashing_led(board,ledPins["pedestrianGreen"])
-        print("pedestrian light green off  \npedestrian green flashing")
+        #print("pedestrian light green off  \npedestrian green flashing")
     elif pedestrianState == "off":
         board.digital_write(ledPins["pedestrianRed"], 0)
         board.digital_write(ledPins["pedestrianGreen"], 0)
