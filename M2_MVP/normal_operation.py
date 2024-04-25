@@ -93,8 +93,8 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
     to_7_seg.sevenSeg(board2, mode)
     #initialise the pedestrian button
     # board.set_pin_mode_digital_input(changeableConditions['arduinoPins']['pedButton'], callback = ped_button)
-    pedButton = changeableConditions['arduinoPins']['pedButton']
-    # Call the function with the_callback as the callback
+    # pedButton = changeableConditions['arduinoPins']['pedButton']
+    # # Call the function with the_callback as the callback
 
     #pull traffic stage from dictonary
     trafficStage = changeableConditions['trafficStage']
@@ -106,11 +106,11 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
         [mainState, sideState, pedestrianState] = lightForStage[changeableConditions["trafficStage"]]
         #output lights to arduino
         led.light_setting_state(board, changeableConditions, mainState, sideState, pedestrianState)
-
+    
     try:
         while True:           
             # Does the traffic stage need changing?
-            if time.time()>=stageTimeEnd:
+            if time.time()<=stageTimeEnd:
                 intersectionData,changeableConditions, trafficStage, stageTimeEnd = traffic_stage_change(board, intersectionData, changeableConditions, trafficStage)
                 #set light colours
                 [mainState, sideState, pedestrianState] = lightForStage[changeableConditions["trafficStage"]] 

@@ -70,17 +70,12 @@ def convertion_dict(value: str):
         '8' : '11111110',
         '9' : '11110110',
         'a' : '11101100',
-        'n' : '00101010',
+        'n' : '00101011',
         'm' : '00011010',
         'd' : '01111010', 
         'c' : '00011010',
         'g' : '10111110', 
-        '.' : '00000001',
-        'n.' : '00101011',
-        'm.' : '00011011',
-        'd.' : '01111011', 
-        'c.' : '00011011',
-        'g.' : '10111111', 
+        
     }
 
     key = value
@@ -190,7 +185,7 @@ def to_arduino(myBoard, digDisplay, mode, number):
         #turn of all digits
     for i in range(0,len(digGround)):
         myBoard.digital_write(digGround[i], 1)
-    print("Value sent to arduino without fail")
+    # print("Value sent to arduino without fail")
     return segmentID, digGround
 
 def make_sure_its_off(myBoard, segmentID, digGround):
@@ -240,7 +235,7 @@ def sevenSeg(myBoard, mode : str, number = '000'):
             
         if message1 == 'n':
             dig4 = convertion_dict('n')
-        print(f"dig4 :{dig4}, dig 0 : {digitNum[0]}, dig 1 : {digitNum[1]}, dig 2 : {digitNum[2]}")            
+        # print(f"dig4 :{dig4}, dig 0 : {digitNum[0]}, dig 1 : {digitNum[1]}, dig 2 : {digitNum[2]}")            
         if message1 == 'g':
             dig4 = convertion_dict('g')
             # print(f"dig4 :{dig4}, dig 0 : {digitNum[0]}, dig 1 : {digitNum[1]}, dig 2 :  {digitNum[2]}")   
