@@ -4,7 +4,7 @@
 #Version: 2 - Hardware tested
 
 import to_7_segment_display as to_7_seg
-
+import time
 def maintenance_mode(board, board2, intersectionData, changeableConditions):
     '''
     Maintenance mode allows the user, with the correct PIN to edit conditons and reaction for the intersection
@@ -19,8 +19,12 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
         intersectionData (dictonary): Data collected about the interesection
         changeableConditions (dictonary): Anything related to the system that changes
     '''
-
+    
     try:
+        time1 = time.time()
+        lockOutTime = changeableConditions['lockOutTime']
+        if time1-lockOutTime<30:
+            return None
         to_7_seg.sevenSeg(board2, 'c')
         #Initalisations, what is avaible to change, what acceptable values are
         changesCodes = {"PLR":"polling rate"}
@@ -42,6 +46,7 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
                 print(f"PIN incorrect, {2-i} tries remaining")
             elif 2-i== 0 and not pinInput == pin:
                 print("PIN incorrect, no attempts remaining, returing to main menu")
+                changeableConditions['lockOutTime'] = time.time()
                 return None
 
         #As properly entered mode now change 7 segment display

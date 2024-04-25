@@ -57,7 +57,8 @@ changeableConditions = {
     'pollingRate' : pollingRate,
     'pedCounterReset' : "",
     'pedsPresent' : 0, #PEDCOUNTER IS NOW IN THE DICTIONARY, WILL BE PASSED THROUGH THE ENTIRE THING
-    'lastButtonPress' : 0 #updated in line 91
+    'lastButtonPress' : 0, #updated in line 91
+    'lockOutTime': 0    # for maintenance mode lock out
 }
 
 #set arduino pins for main board
