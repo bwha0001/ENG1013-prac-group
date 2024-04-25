@@ -117,8 +117,9 @@ def to_arduino(myBoard, digDisplay, mode, number):
     # digDisplay = digDisplay[::-1] # reverse the digits cause i messed up
     # digGround = digGround[::-1]
 
+    wakeTime = 0.5
 
-    wakeTime = 3
+
     # board.set_pin_mode_digital_output(segF)
     for pin in digGround:
         myBoard.set_pin_mode_digital_output(pin)
@@ -186,6 +187,7 @@ def to_arduino(myBoard, digDisplay, mode, number):
     #Make sure pins turn off
     for pin in segmentID:
         myBoard.digital_write(pin, 0)
+        #turn of all digits
     for i in range(0,len(digGround)):
         myBoard.digital_write(digGround[i], 1)
     print("Value sent to arduino without fail")

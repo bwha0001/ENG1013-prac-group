@@ -56,35 +56,10 @@ def traffic_stage_change(board, intersectionData, changeableConditions, trafficS
 
 
 
-def ped_button(data): # this isnt getting called properly
-    """
-    :param data: a list containing pin type, pin number, 
-                data value and time-stamp
-    """
-    
-    # Print the value out (code goes here to do something with the data)
-    # lastButtonPress = changeableConditions['lastButtonPress']
-    # pedsPresent = changeableConditions['pedsPresent']
- 
-    if data[2] ==1 and time.time() > GLOB.lastButtonPress+0.0001:
-        # changeableConditions['pedsPresent'] += 1
-        # changeableConditions['lastButtonPress'] = time.time()
-
-        
-        GLOB.pedsPresent += 1
-        GLOB.lastButtonPress = time.time()
-        print(f"Peds present: {GLOB.pedsPresent}")
 
 
 
 
-# function handle to initalise and run the button
-def the_callback(data):
-    print("Received data:", data)
-
-
-    # Call the callback function with the data
-    
 
 
 
@@ -100,10 +75,9 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
     Returns:
         _type_: _description_
     """
-    GLOB.init()
+    # calling from the global library global_variables and assining it the initial values to be overwritted
     GLOB.pedsPresent = changeableConditions['pedsPresent']
     GLOB.lastButtonPress = changeableConditions['lastButtonPress']
-#TODO add function header
     #define dictonary of traffic light colours to stage
     lightForStage = {
         1: ["green", "red", "red"],
@@ -116,14 +90,12 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
 
     # Begin normal operation
     mode = 'n'
+    to_7_seg.sevenSeg(board2, mode)
     #initialise the pedestrian button
     # board.set_pin_mode_digital_input(changeableConditions['arduinoPins']['pedButton'], callback = ped_button)
     pedButton = changeableConditions['arduinoPins']['pedButton']
     # Call the function with the_callback as the callback
-    board.set_pin_mode_digital_input(pedButton,callback=ped_button)
-    print(GLOB.pedsPresent)
 
-#    to_7_seg.to_7_segment_display(board2, mode)
     #pull traffic stage from dictonary
     trafficStage = changeableConditions['trafficStage']
 
@@ -144,8 +116,8 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
                 [mainState, sideState, pedestrianState] = lightForStage[changeableConditions["trafficStage"]] 
                 #output lights to arduino
                 led.light_setting_state(board, changeableConditions, mainState, sideState, pedestrianState)
-            # Run function polling loop, inputting polling rate, output of polling time, current distance and pedestrian count
-            [intersectionData, changeableConditions] = pl.polling_loop(board, board2, intersectionData, changeableConditions)
+                # Run function polling loop, inputting polling rate, output of polling time, current distance and pedestrian count
+                [intersectionData, changeableConditions] = pl.polling_loop(board, board2, intersectionData, changeableConditions)
                 #Happens within function 
                     #If polling start time plus polling time taken equals the current time
                     # Display polling time on console, “Polling loop took <polling time> to complete”
@@ -156,10 +128,16 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
             #trigger light setting again (ped green flashing) if in stage 5
             if trafficStage == 5:
                 led.light_setting_state(changeableConditions, mainState, sideState, pedestrianState)
+            else:
+                break
     except KeyboardInterrupt:
         #exit button activation
         print("Exit button activated, returning to main menu")
-        return intersectionData, changeableConditions
+
+    return intersectionData, changeableConditions
+        
+    
+    
     
 
 # #Create a dictonary of records

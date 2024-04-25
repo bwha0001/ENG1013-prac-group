@@ -5,26 +5,36 @@
 
 import time
 import global_variables as GLOB
+import to_7_segment_display as to_7_seg
 # import AAstart as start
 
-def ped_button(data): # this isnt getting called properly
+def ped_button_callback(data):
     """
-    :param data: a list containing pin type, pin number, 
-                data value and time-stamp
+    Callback function for pedestrian button press.
     """
+    global pedsPresent_shared
+    if data[2] == 1 and time.time() > GLOB.lastButtonPress + 0.0001:
+        pedsPresent_shared += 1
+        GLOB.lastButtonPress = time.time()
+        print(f"Peds present: {pedsPresent_shared}")
+# def ped_button(data): # this isnt getting called properly
+#     """
+#     :param data: a list containing pin type, pin number, 
+#                 data value and time-stamp
+#     """
     
-    # Print the value out (code goes here to do something with the data)
-    # lastButtonPress = changeableConditions['lastButtonPress']
-    # pedsPresent = changeableConditions['pedsPresent']
+#     # Print the value out (code goes here to do something with the data)
+#     # lastButtonPress = changeableConditions['lastButtonPress']
+#     # pedsPresent = changeableConditions['pedsPresent']
  
-    if data[2] ==1 and time.time() > GLOB.lastButtonPress+0.0001:
-        # changeableConditions['pedsPresent'] += 1
-        # changeableConditions['lastButtonPress'] = time.time()
+#     if data[2] ==1 and time.time() > GLOB.lastButtonPress+0.0001:
+#         # changeableConditions['pedsPresent'] += 1
+#         # changeableConditions['lastButtonPress'] = time.time()
 
         
-        GLOB.pedsPresent += 1
-        GLOB.lastButtonPress = time.time()
-        print(f"Peds present: {GLOB.pedsPresent}")
+#         GLOB.pedsPresent += 1
+#         GLOB.lastButtonPress = time.time()
+#         print(f"Peds present: {GLOB.pedsPresent}")
 
 
 def polling_loop(board, board2, intersectionData, changeableConditions):
@@ -39,7 +49,8 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
 
     pollingRate = changeableConditions['pollingRate']
     trafficStage = changeableConditions['trafficStage']
-    
+    global pedsPresent_shared
+    pedsPresent_shared = 0 # initialise pedsPresent_shared
 
     #required for MVP Checkpoint
 
@@ -91,11 +102,12 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
 
     # pedsPresent, lastButtonPress = ped_button(pedsPresent, lastButtonPress)
     pedButton = changeableConditions['arduinoPins']['pedButton']
-    board.set_pin_mode_digital_input(pedButton,callback=ped_button)
+    board.set_pin_mode_digital_input(pedButton,callback=ped_button_callback)
     # print(GLOB.pedsPresent)
     #Update ped count total
-    pedCount = pedCount + GLOB.pedsPresent
-    GLOB.pedsPresent = 0
+
+    pedCount =  pedCount + pedsPresent_shared
+    pedsPresent_shared = 0  # reset shared variable
     #Has the pedestrian been pressed 
     #.....  (input of pedButton) = 1?
     
@@ -125,7 +137,8 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     #test line
     print(f"Test Line Ped Count Record Value: {pedCount}")
     print(f"time from record: {timeRecord[-1]-pollingStartTime}\n")
-
+    to_7_seg.sevenSeg(board2, 'c', distToVehicle)
+    time.sleep(changeableConditions['pollingRate'])
     return intersectionData, changeableConditions
 
 # #Hardware Test

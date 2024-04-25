@@ -12,8 +12,8 @@ import normal_operation as n_o
 import data_observation_mode as DOM
 import global_variables as GLOB
 
-#function for pedButton
-
+# initialise global variables for the rest of the script
+GLOB.init()
 # Board 1
 board = pymata4.Pymata4()        # Do something with board1
 

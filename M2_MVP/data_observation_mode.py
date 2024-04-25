@@ -44,7 +44,6 @@ def data_observation_mode(board, board2, intersectionData, changeableConditions)
     except KeyboardInterrupt:
         #exit button activation
         print("Exit button activated, returning to main menu")
-        exit()
 # if __name__ == "__main__":
 #     #initalisations
 #     import time

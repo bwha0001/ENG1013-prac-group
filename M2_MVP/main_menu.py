@@ -47,6 +47,7 @@ def main_menu(board, board2, intersectionData, changeableConditions):
                     return None
             except ValueError: 
                 print("Invalid Input. Options available as 'Y' to continue to main menu and 'N' to end program.")
+                
 
 
 # # Running program
