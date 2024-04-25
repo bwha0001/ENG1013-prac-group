@@ -25,11 +25,12 @@ def traffic_stage_change(board, intersectionData, changeableConditions, trafficS
     outputs: current traffic stage
     """
 
-    if trafficStage == "suspended" or trafficStage == 1:
+    if trafficStage == "suspended" or trafficStage == 6:
         #initalise stage 1
         #reset ped counter on next poll
         changeableConditions["pedCountReset"] = "stage1Reset"
         #update traffic stage
+        trafficStage = 1
         changeableConditions["trafficStage"] = 1
         #set stage end time to be x number of seconds from now determined by set value in changeable conditions
             #go to key of the current traffic stage in the lengths dictonary which is within changeable conditons
