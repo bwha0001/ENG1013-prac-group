@@ -20,7 +20,7 @@ board = pymata4.Pymata4()        # Do something with board1
 # # Board 2
 #board2 = pymata4.Pymata4()
 #Single Arduino Test
-board2 = ""
+board2 = pymata4.Pymata4()
 # # Do something with board2
 
 
