@@ -12,23 +12,6 @@ import normal_operation as n_o
 import data_observation_mode as DOM
 
 #function for pedButton
-def ped_button(data):
-    """
-    :param data: a list containing pin type, pin number, 
-                data value and time-stamp
-    """
-    
-    # Print the value out (code goes here to do something with the data)
-    global pedsPresent
-    global lastButtonPress
-
-    if data[2] ==1 and time.time() > lastButtonPress+0.0001:
-        pedsPresent += 1
-        lastButtonPress = time.time()
-        print(f"Peds present: {pedsPresent}")
-
-    print(f"Test line button data: {data}")
-
 
 global intersectionData
 global changeableConditions 
@@ -37,7 +20,6 @@ global pollingRate
 board = pymata4.Pymata4()        # Do something with board1
 
 # # Board 2
-#        board2 = pymata4.Pymata4()
 board2 = pymata4.Pymata4()
 # # Do something with board2
 
@@ -71,7 +53,9 @@ changeableConditions = {
     },
     'trafficStage' :"suspended",
     'pollingRate' : pollingRate,
-    'pedCounterReset' : ""
+    'pedCounterReset' : "",
+    'pedsPresent' : 0, #PEDCOUNTER IS NOW IN THE DICTIONARY, WILL BE PASSED THROUGH THE ENTIRE THING
+    'lastButtonPress' : 0 #updated in line 91
 }
 
 #set arduino pins for main board
@@ -86,11 +70,9 @@ board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestria
 # Configure pin to sonar
 board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], timeout=200000)
 #Configiure ped button pin
-global pedsPresent
-pedsPresent = 0
-lastButtonPress = time.time() - 0.1
-board.set_pin_mode_digital_input(changeableConditions["arduinoPins"]["pedButton"], callback=ped_button)
-
+changeableConditions['lastButtonPress'] = time.time() - 0.1
+# board.set_pin_mode_digital_input(changeableConditions["arduinoPins"]["pedButton"], callback=ped_button(changeableConditions))
+board.set_pin_mode_digital_input(changeableConditions["arduinoPins"]["pedButton"])
 main.main_menu(board, board2, intersectionData, changeableConditions)
 
 print("program end")

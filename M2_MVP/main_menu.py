@@ -4,7 +4,7 @@ import data_observation_mode as DOM
 
 #Not current main menu - 
 
-def main_menu(board, board2, intersectionData, changeableConditions, pedsPresent):
+def main_menu(board, board2, intersectionData, changeableConditions):
     """ 
     Used to select a mode 
         Parameters: 
@@ -26,7 +26,7 @@ def main_menu(board, board2, intersectionData, changeableConditions, pedsPresent
                     break
                 elif modeSelection == "2": 
                     print("Entering Normal Operation Mode...")
-                    n_o.normal_operation(board, board2, intersectionData, changeableConditions, pedsPresent)
+                    n_o.normal_operation(board, board2, intersectionData, changeableConditions)
                     break
                 elif modeSelection == "3":
                     print("Entering Maintenance Mode...")

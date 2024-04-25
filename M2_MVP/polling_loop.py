@@ -4,9 +4,30 @@
 #Dates Edited: 24 April 2024
 
 import time
-import AAstart as start
+# import AAstart as start
 
-def polling_loop(board, board2, intersectionData, changeableConditions, pedsPresent):
+def ped_button(pedsPresent, lastButtonPress): # this isnt getting called properly
+    """
+    :param data: a list containing pin type, pin number, 
+                data value and time-stamp
+    """
+    
+    # Print the value out (code goes here to do something with the data)
+    # lastButtonPress = changeableConditions['lastButtonPress']
+    # pedsPresent = changeableConditions['pedsPresent']
+
+    if time.time() > lastButtonPress+0.0001:
+        # changeableConditions['pedsPresent'] += 1
+        # changeableConditions['lastButtonPress'] = time.time()
+        pedsPresent += 1
+        lastButtonPress = time.time()
+        print(f"Peds present: {pedsPresent}")
+    return pedsPresent, lastButtonPress
+
+    # print(f"Test line button data: {changeableConditions['pedsPresent']}, {changeableConditions['lastButtonPress']}")
+
+
+def polling_loop(board, board2, intersectionData, changeableConditions):
     '''
     Polling loop gets and stores data from sensors in intersection
     Arg:
@@ -17,6 +38,8 @@ def polling_loop(board, board2, intersectionData, changeableConditions, pedsPres
     #globals
     pollingRate = changeableConditions['pollingRate']
     trafficStage = changeableConditions['trafficStage']
+    pedsPresent = changeableConditions['pedsPresent']
+    lastButtonPress = changeableConditions['lastButtonPress']
 
 
     #required for MVP Checkpoint
@@ -67,7 +90,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions, pedsPres
     #Placeholder generation for MVP Checkpoint
     distToVehicle, distReadingTime = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
 
-    start.pedsPresent
+    pedsPresent, lastButtonPress = ped_button(pedsPresent, lastButtonPress)
 
     #Update ped count total
     pedCount = pedCount + pedsPresent
@@ -104,86 +127,86 @@ def polling_loop(board, board2, intersectionData, changeableConditions, pedsPres
 
     return intersectionData, changeableConditions
 
-#Hardware Test
-if __name__ == "__main__":
-    import random
-    from pymata4 import pymata4
+# #Hardware Test
+# if __name__ == "__main__":
+#     import random
+#     from pymata4 import pymata4
     
-    #function for pedButton
-    def ped_button(data):
-        """
-        :param data: a list containing pin type, pin number, 
-                    data value and time-stamp
-        """
+#     #function for pedButton
+#     def ped_button(data):
+#         """
+#         :param data: a list containing pin type, pin number, 
+#                     data value and time-stamp
+#         """
         
-        # Print the value out (code goes here to do something with the data)
-        global pedsPresent
-        global lastButtonPress
+#         # Print the value out (code goes here to do something with the data)
+#         global pedsPresent
+#         global lastButtonPress
 
-        if data[2] ==1 and time.time() > lastButtonPress+0.0001:
-            pedsPresent += 1
-            lastButtonPress = time.time()
-            print(f"Peds present: {pedsPresent}")
+#         if data[2] ==1 and time.time() > lastButtonPress+0.0001:
+#             pedsPresent += 1
+#             lastButtonPress = time.time()
+#             print(f"Peds present: {pedsPresent}")
 
-        print(f"Test line button data: {data}")
-        #lastButtonPress = time.time()
+#         print(f"Test line button data: {data}")
+#         #lastButtonPress = time.time()
 
-    #Create a dictonary of records
-    intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[], "pedCounterReset":""}
+#     #Create a dictonary of records
+#     intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[], "pedCounterReset":""}
 
-    pollingRate = 2
-    changeableConditions = {
-        'arduinoPins' : {
-            "mainRed": 2,
-            "mainYellow": 3,
-            "mainGreen": 4,
-            "sideRed": 5,
-            "sideYellow": 6,
-            "sideGreen": 7,
-            "pedestrianRed": 8,
-            "pedestrianGreen": 9,
-            "pedButton":10,
-            "triggerPin":13,
-            "echoPin":12
-            },
-        'ardinoPins7Seg': {},
-        'trafficStage' : 1, # in the led state we need a case switching so we can assign the correct R,Y,G states from traffic stage, not neccercarily, was originally designed to have individual states entered within function call
-        'pollingRate' : 2,
-        'pedCounterReset' : ""
-        }
+#     pollingRate = 2
+#     changeableConditions = {
+#         'arduinoPins' : {
+#             "mainRed": 2,
+#             "mainYellow": 3,
+#             "mainGreen": 4,
+#             "sideRed": 5,
+#             "sideYellow": 6,
+#             "sideGreen": 7,
+#             "pedestrianRed": 8,
+#             "pedestrianGreen": 9,
+#             "pedButton":10,
+#             "triggerPin":13,
+#             "echoPin":12
+#             },
+#         'ardinoPins7Seg': {},
+#         'trafficStage' : 1, # in the led state we need a case switching so we can assign the correct R,Y,G states from traffic stage, not neccercarily, was originally designed to have individual states entered within function call
+#         'pollingRate' : 2,
+#         'pedCounterReset' : ""
+#         }
     
-    board =pymata4.Pymata4()
+#     board =pymata4.Pymata4()
 
-    #set arduino pins
-    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainRed"])
-    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainYellow"])
-    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainGreen"])
-    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideRed"])
-    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideYellow"])
-    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideGreen"])
-    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianRed"])
-    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
-    # Configure pin to sonar
-    board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], timeout=200000)
+#     #set arduino pins
+#     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainRed"])
+#     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainYellow"])
+#     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainGreen"])
+#     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideRed"])
+#     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideYellow"])
+#     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideGreen"])
+#     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianRed"])
+#     board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
+#     # Configure pin to sonar
+#     board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], timeout=200000)
     
-    #Start ped button checker
-    pedsPresent = 0
-    lastButtonPress = time.time() - 0.1
-    board.set_pin_mode_digital_input(changeableConditions["arduinoPins"]["pedButton"], callback=ped_button)
+#     #Start ped button checker
+#     pedsPresent = 0
+#     lastButtonPress = time.time() - 0.1
+#     board.set_pin_mode_digital_input(changeableConditions["arduinoPins"]["pedButton"], callback=ped_button)
     
-    board2 = ''
+#     board2 = ''
 
-    #Test for 30 seconds
-    startTime = time.time()
+#     #Test for 30 seconds
+#     startTime = time.time()
 
-    while startTime + 30 > time.time():
-        try:
-            polling_loop(board, board2, intersectionData, changeableConditions)
-        except KeyboardInterrupt:
-            print("Close")
-            break
-    board.shutdown()
-    exit()
+#     while startTime + 30 > time.time():
+#         try:
+#             polling_loop(board, board2, intersectionData, changeableConditions)
+#         except KeyboardInterrupt:
+#             print("Close")
+#             break
+#     board.shutdown()
+#     exit()
 
 '''
     while True:

@@ -1,4 +1,3 @@
-import module_scripts as mod
 import numpy as np
 import math as mth
 #from pymata4 import pymata4
