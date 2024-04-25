@@ -16,7 +16,8 @@ def ped_button_callback(data):
     if data[2] == 1 and time.time() > GLOB.lastButtonPress + 0.0001:
         GLOB.pedsPresent += 1
         GLOB.lastButtonPress = time.time()
-        print(GLOB.pedsPresent)
+        #debug lines-check is changing
+        #print(GLOB.pedsPresent)
         #print(f"Pedestrians present: {pedsPresent_shared}")
 # def ped_button(data): # this isnt getting called properly
 #     """
@@ -51,6 +52,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     pollingRate = changeableConditions['pollingRate']
     trafficStage = changeableConditions['trafficStage']
     
+    #not using?
     global pedsPresent_shared
     pedsPresent_shared = 0 # initialise pedsPresent_shared
 
@@ -115,6 +117,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
         #find the number of pedButton presses between polling loops, pedButton
         pedButton = intersectionData['pedPresentRecord'][-1]-intersectionData['pedPresentRecord'][-2]
 
+    #Test line - global updating
     print(GLOB.pedsPresent)
     #Update ped count total
     pedCount += pedButton
@@ -146,11 +149,11 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     # time.sleep(changeableConditions['pollingRate'])
     pollingEndTime = time.time()
     pollingTime = pollingEndTime - pollingStartTime
-    print(f"Time taken to poll: {round(pollingTime, 2)} seconds")
+    print(f"\nTime taken to poll: {round(pollingTime, 2)} seconds")
     #Print the distnace to the nearest vechile
-    print(f"Distance to nearest vechile: {distToVehicle} cm")
+    print(f"Distance to nearest vechile: {distToVehicle} cm\n")
     #test line
-    print(f"Test Line Ped Count Record Value: {pedCount}")
+    #print(f"Test Line Ped Count Record Value: {pedCount}")
     # print(f"time from record: {timeRecord[-1]-pollingStartTime}\n")
     to_7_seg.sevenSeg(board2, 'c', distToVehicle)
     return intersectionData, changeableConditions, 

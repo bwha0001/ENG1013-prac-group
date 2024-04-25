@@ -1,6 +1,7 @@
 import normal_operation as n_o
 import maintenance_mode as m_m
 import data_observation_mode as DOM
+import led_state as led
 
 def main_menu(board, board2, intersectionData, changeableConditions):
     """ 
@@ -16,6 +17,8 @@ def main_menu(board, board2, intersectionData, changeableConditions):
     while True:
         while True:  
             #modeSelection = ""
+            #Set all LED's to off
+            led.light_setting_state(board, changeableConditions, "off", "off", "off")
             modeSelection = input("Modes:\n 1 - Data Observation.\n 2 - Normal Operation Mode\n 3 - Maintenance Mode\n Select Mode (1,2,3): ")
             try: 
                 if modeSelection == "1":

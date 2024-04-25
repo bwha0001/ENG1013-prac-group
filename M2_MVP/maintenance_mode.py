@@ -52,7 +52,7 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
                     while True:
                         changeToConditon = input(f"Enter alternation to {changesCodes[optionCode]}:")
                         if int(changeToConditon) in changesRules[optionCode]:
-                            changeableConditions[changesToVaribles[optionCode]] = changeToConditon
+                            changeableConditions[changesToVaribles[optionCode]] = int(changeToConditon)
                             break
                         else:
                             print(f"Change requested to {changesCodes[optionCode]} not avalible. Acceptable changes are to {changesRules[optionCode]}")
