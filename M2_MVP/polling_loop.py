@@ -113,7 +113,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
         pedButton = intersectionData['pedPresentRecord'][-1]-intersectionData['pedPresentRecord'][-2]
 
     #Test line - global updating
-    print(GLOB.pedsPresent)
+    #print(GLOB.pedsPresent)
     #Update ped count total
     pedCount += pedButton
     pedsPresent_shared = 0  # reset shared variable
