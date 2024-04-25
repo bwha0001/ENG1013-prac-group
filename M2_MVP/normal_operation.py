@@ -34,7 +34,7 @@ def traffic_stage_change(board, intersectionData, changeableConditions, trafficS
         #set stage end time to be x number of seconds from now determined by set value in changeable conditions
             #go to key of the current traffic stage in the lengths dictonary which is within changeable conditons
         stageEndTime = time.time() + changeableConditions["stageLengths"][changeableConditions["trafficStage"]]
-    elif trafficStage in {1,2,3,4,5}:
+    if trafficStage in {1,2,3,4,5}:
         #increase stage by one
         #update traffic stage
         trafficStage += 1
