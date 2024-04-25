@@ -4,6 +4,7 @@
 #Dates Edited: 24 April 2024
 
 import time
+import global_variables as GLOB
 # import AAstart as start
 
 def ped_button(data): # this isnt getting called properly
@@ -15,18 +16,15 @@ def ped_button(data): # this isnt getting called properly
     # Print the value out (code goes here to do something with the data)
     # lastButtonPress = changeableConditions['lastButtonPress']
     # pedsPresent = changeableConditions['pedsPresent']
-
-    if data[2] and time.time() > lastButtonPress+0.0001:
+ 
+    if data[2] ==1 and time.time() > GLOB.lastButtonPress+0.0001:
         # changeableConditions['pedsPresent'] += 1
         # changeableConditions['lastButtonPress'] = time.time()
-        global pedsPresent
-        global lastButtonPress
-        pedsPresent += 1
-        lastButtonPress = time.time()
-        print(f"Peds present: {pedsPresent}")
-    return pedsPresent, lastButtonPress
 
-    # print(f"Test line button data: {changeableConditions['pedsPresent']}, {changeableConditions['lastButtonPress']}")
+        
+        GLOB.pedsPresent += 1
+        GLOB.lastButtonPress = time.time()
+        print(f"Peds present: {GLOB.pedsPresent}")
 
 
 def polling_loop(board, board2, intersectionData, changeableConditions):
@@ -38,16 +36,10 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
         if suspended [distance to next vechile list, pedestrian count]
     '''
     #globals
-    global pedsPresent
-    global lastButtonPress
 
     pollingRate = changeableConditions['pollingRate']
     trafficStage = changeableConditions['trafficStage']
-    pedsPresent = changeableConditions['pedsPresent']
-    lastButtonPress = changeableConditions['lastButtonPress']
-
-
-
+    
 
     #required for MVP Checkpoint
 
@@ -98,11 +90,12 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     distToVehicle, distReadingTime = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
 
     # pedsPresent, lastButtonPress = ped_button(pedsPresent, lastButtonPress)
-    board.set_pin_mode_digital_input(changeableConditions['arduinoPins']['pedButton'], callback = ped_button)
+    pedButton = changeableConditions['arduinoPins']['pedButton']
+    board.set_pin_mode_digital_input(pedButton,callback=ped_button)
+    # print(GLOB.pedsPresent)
     #Update ped count total
-    pedCount = pedCount + pedsPresent
-    #Once total updated, reset the ped present count inbetween saves by polling
-    pedsPresent= 0
+    pedCount = pedCount + GLOB.pedsPresent
+    GLOB.pedsPresent = 0
     #Has the pedestrian been pressed 
     #.....  (input of pedButton) = 1?
     
@@ -117,7 +110,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     pedCountRecord.append(pedCount)
 
     #Check if all lists have more readings than should be the case for 20 seconds, remove earliest reading to bring back to 20 sec
-    if len(timeRecord)>20/pollingRate and len(distToVehicleRecord)>20/pollingRate and len(pedCountRecord)>20/pollingRate:
+    if len(timeRecord)>(20/pollingRate) and len(distToVehicleRecord)>(20/pollingRate) and len(pedCountRecord)>(20/pollingRate):
         #Remove first item in each of the lists
         timeRecord.pop(0)
         distToVehicleRecord.pop(0)
@@ -130,7 +123,8 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     #Print the distnace to the nearest vechile
     print(f"Distance to nearest vechile: {distToVehicle} cm")
     #test line
-    print(f"Test Line Ped Count Record Value: {pedCount}\n")
+    print(f"Test Line Ped Count Record Value: {pedCount}")
+    print(f"time from record: {timeRecord[-1]-pollingStartTime}\n")
 
     return intersectionData, changeableConditions
 

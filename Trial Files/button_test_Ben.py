@@ -79,16 +79,16 @@ def analog_in(my_board, pin, counter):
     my_board.set_pin_mode_analog_input(pin, callback=the_callback)
 
     while True:
-        try:
-            # Do a read of the last value reported every 5 seconds and print it
-            # digital_read returns A tuple of last value change and the time that it occurred
-            value, time_stamp = my_board.analog_read(pin)
-            date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time_stamp))
-            print(f'Polling - last change: {value} change received on {date} ')
-            counter =+ 1
-            
-            time.sleep(POLL_TIME)
+    
+        # Do a read of the last value reported every 5 seconds and print it
+        # digital_read returns A tuple of last value change and the time that it occurred
+        value, time_stamp = my_board.analog_read(pin)
+        date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time_stamp))
+        print(f'Polling - last change: {value} change received on {date} ')
+        counter =+ 1
         
+        time.sleep(POLL_TIME)
+    
     return counter
 
 board = pymata4.Pymata4()

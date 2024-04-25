@@ -10,27 +10,10 @@ import traffic_light_sequence as TLS
 import main_menu as main
 import normal_operation as n_o
 import data_observation_mode as DOM
+import global_variables as GLOB
 
 
-def ped_button(data): # this isnt getting called properly
-    """
-    :param data: a list containing pin type, pin number, 
-                data value and time-stamp
-    """
-    
-    # Print the value out (code goes here to do something with the data)
-    # lastButtonPress = changeableConditions['lastButtonPress']
-    # pedsPresent = changeableConditions['pedsPresent']
 
-    if data[2] and time.time() > lastButtonPress+0.0001:
-        # changeableConditions['pedsPresent'] += 1
-        # changeableConditions['lastButtonPress'] = time.time()
-        global pedsPresent
-        global lastButtonPress
-        pedsPresent += 1
-        lastButtonPress = time.time()
-        print(f"Peds present: {pedsPresent}")
-    return pedsPresent, lastButtonPress
 
     # print(f"Test line button data: {changeableConditions['pedsPresent']}, {changeableConditions['lastButtonPress']}")
 
@@ -71,6 +54,40 @@ def traffic_stage_change(board, intersectionData, changeableConditions, trafficS
         print(f"Pedestrian Count: {[pedCount]}")
     return intersectionData,changeableConditions, trafficStage, stageEndTime
 
+
+
+def ped_button(data): # this isnt getting called properly
+    """
+    :param data: a list containing pin type, pin number, 
+                data value and time-stamp
+    """
+    
+    # Print the value out (code goes here to do something with the data)
+    # lastButtonPress = changeableConditions['lastButtonPress']
+    # pedsPresent = changeableConditions['pedsPresent']
+ 
+    if data[2] ==1 and time.time() > GLOB.lastButtonPress+0.0001:
+        # changeableConditions['pedsPresent'] += 1
+        # changeableConditions['lastButtonPress'] = time.time()
+
+        
+        GLOB.pedsPresent += 1
+        GLOB.lastButtonPress = time.time()
+        print(f"Peds present: {GLOB.pedsPresent}")
+
+
+
+
+# function handle to initalise and run the button
+def the_callback(data):
+    print("Received data:", data)
+
+
+    # Call the callback function with the data
+    
+
+
+
 def normal_operation(board, board2, intersectionData,changeableConditions):
     """_summary_
 
@@ -83,10 +100,9 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
     Returns:
         _type_: _description_
     """
-    global pedsPresent
-    global lastButtonPress
-    pedsPresent = changeableConditions['pedsPresent']
-    lastButtonPress = changeableConditions['lastButtonPress']
+    GLOB.init()
+    GLOB.pedsPresent = changeableConditions['pedsPresent']
+    GLOB.lastButtonPress = changeableConditions['lastButtonPress']
 #TODO add function header
     #define dictonary of traffic light colours to stage
     lightForStage = {
@@ -101,7 +117,11 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
     # Begin normal operation
     mode = 'n'
     #initialise the pedestrian button
-    board.set_pin_mode_digital_input(changeableConditions['arduinoPins']['pedButton'], callback = ped_button)
+    # board.set_pin_mode_digital_input(changeableConditions['arduinoPins']['pedButton'], callback = ped_button)
+    pedButton = changeableConditions['arduinoPins']['pedButton']
+    # Call the function with the_callback as the callback
+    board.set_pin_mode_digital_input(pedButton,callback=ped_button)
+    print(GLOB.pedsPresent)
 
 #    to_7_seg.to_7_segment_display(board2, mode)
     #pull traffic stage from dictonary

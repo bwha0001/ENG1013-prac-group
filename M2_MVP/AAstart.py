@@ -10,12 +10,10 @@ import polling_loop as pl
 import main_menu as main
 import normal_operation as n_o
 import data_observation_mode as DOM
+import global_variables as GLOB
 
 #function for pedButton
 
-global intersectionData
-global changeableConditions 
-global pollingRate
 # Board 1
 board = pymata4.Pymata4()        # Do something with board1
 
