@@ -57,64 +57,64 @@ def light_setting_state(board, changeableConditions, mainState, sideState, pedes
         board.digital_write(ledPins["mainRed"], 1)
         board.digital_write(ledPins["mainYellow"], 0)
         board.digital_write(ledPins["mainGreen"], 0)
-        print("main red on")
-        print("main yellow off\nmain green off")
+        # print("main red on")
+        # print("main yellow off\nmain green off")
     elif mainState == "yellow":
         board.digital_write(ledPins["mainRed"], 0)
         board.digital_write(ledPins["mainYellow"], 1)
         board.digital_write(ledPins["mainGreen"], 0)
-        print("main red off \nmain yellow on\nmain green off")
+        # print("main red off \nmain yellow on\nmain green off")
     elif mainState == "green":
         board.digital_write(ledPins["mainRed"], 0)
         board.digital_write(ledPins["mainYellow"], 0)
         board.digital_write(ledPins["mainGreen"], 1)
-        print("main red off \nmain yellow off\n main green on")
+        # print("main red off \nmain yellow off\n main green on")
     elif mainState == "flashing":
         board.digital_write(ledPins["mainRed"], 0)
         #board.pwm_write(ledPins["mainYellow"], 30)
         flashing_led(board,ledPins["mainYellow"])
         board.digital_write(ledPins["mainGreen"], 0)
-        print("main red off \nmain yellow flashing\n main green off")
+        # print("main red off \nmain yellow flashing\n main green off")
     elif mainState == "off":
         board.digital_write(ledPins["mainRed"], 0)
         board.digital_write(ledPins["mainYellow"], 0)
         board.digital_write(ledPins["mainGreen"], 0)
-        print("main red off \nmain yellow off\n main green off")
+        # print("main red off \nmain yellow off\n main green off")
 # side state
     if sideState == "red":
         board.digital_write(ledPins["sideRed"], 1)
         board.digital_write(ledPins["sideYellow"], 0)
         board.digital_write(ledPins["sideGreen"], 0)
-        print("side red on \n side yellow off\n side green off")
+        # print("side red on \n side yellow off\n side green off")
     elif sideState == "yellow":
         board.digital_write(ledPins["sideRed"], 0)
         board.digital_write(ledPins["sideYellow"], 1)
         board.digital_write(ledPins["sideGreen"], 0)
-        print("side red off \n side yellow on\n side green off")
+        # print("side red off \n side yellow on\n side green off")
     elif sideState == "green":
         board.digital_write(ledPins["sideRed"], 0)
         board.digital_write(ledPins["sideYellow"], 0)
         board.digital_write(ledPins["sideGreen"], 1)
-        print("side red off \n side yellow off\n side green on")
+        # print("side red off \n side yellow off\n side green on")
     elif sideState == "flashing":
         board.digital_write(ledPins["sideRed"], 0)
         flashing_led(board,ledPins["sideYellow"])
         board.digital_write(ledPins["sideGreen"], 0)
-        print("side red off \n side yellow flashing\n side green off")
+        # print("side red off \n side yellow flashing\n side green off")
     elif sideState == "off":
         board.digital_write(ledPins["sideRed"], 0)
         board.digital_write(ledPins["sideYellow"], 0)
         board.digital_write(ledPins["sideGreen"], 0)
-        print("side red off \nside yellow off\n side green off")
+        # print("side red off \nside yellow off\n side green off")
 # pedestrian light
     if pedestrianState == "red":
         board.digital_write(ledPins["pedestrianRed"], 1)
         board.digital_write(ledPins["pedestrianGreen"], 0)
-        print("pedestrian light red on \npedestrian green off")
+        # print("pedestrian light red on \npedestrian green off")
     elif pedestrianState == "green":
         board.digital_write(ledPins["pedestrianRed"], 0)
         board.digital_write(ledPins["pedestrianGreen"], 1)
-        print("pedestrian light red of \npedestrian green on")
+        # print("pedestrian light red of \npedestrian green on")
     elif pedestrianState == "flashing":
         board.digital_write(ledPins["pedestrianRed"], 0)
         flashing_led(board,ledPins["pedestrianGreen"])
@@ -122,7 +122,7 @@ def light_setting_state(board, changeableConditions, mainState, sideState, pedes
     elif pedestrianState == "off":
         board.digital_write(ledPins["pedestrianRed"], 0)
         board.digital_write(ledPins["pedestrianGreen"], 0)
-        print("pedestrian red off \n pedestrian green off")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+        # print("pedestrian red off \n pedestrian green off")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 
 # if __name__ == '__main__':
 

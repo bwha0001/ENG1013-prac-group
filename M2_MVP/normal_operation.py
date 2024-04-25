@@ -39,7 +39,7 @@ def traffic_stage_change(intersectionData, changeableConditions, trafficStage):
         #update traffic stage
         trafficStage += 1   
     else:
-        print("How did you get here?")
+        print("traffic light operating")
     
     #update changeable conditons with new traffic stage
     changeableConditions["trafficStage"]=trafficStage
