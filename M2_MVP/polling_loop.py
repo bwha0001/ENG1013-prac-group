@@ -59,44 +59,44 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     #inputs: trafficStage, pollingRate which defaults to 2
     #outputs: Current distance to next vehicle, Distance to vehicle record, Pedestrian Counter, Time taken for polling
 
-    #Creates a dictonary of records if one doesnt exist
+    '''
+        #Creates a dictonary of records if one doesnt exist
     try:
         intersectionData
     except NameError:
         print("Can't access golbal intersection data")
         intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[]}
+    '''
 
     #import data from dictonary of intersectionData
     timeRecord = intersectionData['timeRecord']
     distToVehicleRecord = intersectionData['distToVehicleRecord']
     pedCountRecord = intersectionData['pedCountRecord']
-    
-
-    if intersectionData['pedCountRecord'] == [] or changeableConditions["pedCounterReset"]=="stage1Reset":
-        pedCount = 0
-        # changeableConditions["pedCounterReset"]==""
-    elif not intersectionData['pedCountRecord'] == []:
-        pedCount = intersectionData['pedCountRecord'][-1]
 
     #Traffic Stage approprite for new readings? ie Not suspended stage and enough time has passed
+    #is in the correct stage to pollling to continue
     if trafficStage in {1,2,3,4,5,6}:
-        pass
+        if intersectionData["timeRecord"] == []:
+            pass
+        elif time.time() - intersectionData["timeRecord"][-1] <= pollingRate:
+            return [intersectionData, changeableConditions]
+        elif time.time() - intersectionData["timeRecord"][-1] >= pollingRate:
+            pass
     elif  trafficStage == "suspended":
         #return distToVechile and current pedestrian count from prior loop
         try:
             return [intersectionData, changeableConditions, intersectionData['distToVehicleRecord'], intersectionData['pedCountRecord'][-1]]
         except IndexError:
             return [intersectionData, changeableConditions, intersectionData['distToVehicleRecord'], "No Data"]
-    
-    if intersectionData["timeRecord"] == []:
-        pass
-    elif time.time() - intersectionData["timeRecord"][-1] <= pollingRate:
-        return [intersectionData, changeableConditions]
-    elif time.time() - intersectionData["timeRecord"][-1] >= pollingRate:
-        pass
         
     #Set loop start time
     pollingStartTime = time.time()
+
+    if intersectionData['pedCountRecord'] == [] or changeableConditions["pedCounterReset"]=="stage1Reset":
+        pedCount = 0
+        # changeableConditions["pedCounterReset"]==""
+    elif not intersectionData['pedCountRecord'] == []:
+        pedCount = intersectionData['pedCountRecord'][-1]
 
     #Take readings for distance to next vehcile (ultrosonic sensor reading) and pedestrian button pressed
     #Placeholder generation for MVP Checkpoint

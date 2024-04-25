@@ -17,7 +17,7 @@ import global_variables as GLOB
 
     # print(f"Test line button data: {changeableConditions['pedsPresent']}, {changeableConditions['lastButtonPress']}")
 
-def traffic_stage_change(board, intersectionData, changeableConditions, trafficStage):
+def traffic_stage_change(intersectionData, changeableConditions, trafficStage):
     """
     This function takes care of the repeated processes of a change in traffic stage in the traffic control system and 
     the tasks that occur at particular stages. Displaying stage specific outputs to console.
@@ -31,21 +31,20 @@ def traffic_stage_change(board, intersectionData, changeableConditions, trafficS
         changeableConditions["pedCountReset"] = "stage1Reset"
         #update traffic stage
         trafficStage = 1
-        changeableConditions["trafficStage"] = 1
         #set stage end time to be x number of seconds from now determined by set value in changeable conditions
             #go to key of the current traffic stage in the lengths dictonary which is within changeable conditons
-        stageEndTime = time.time() + changeableConditions["stageLengths"][changeableConditions["trafficStage"]]
-    if trafficStage in {1,2,3,4,5}:
+        stageEndTime = time.time() + changeableConditions["stageLengths"][trafficStage]
         #increase stage by one
         #update traffic stage
-        trafficStage += 1
-        changeableConditions["trafficStage"] = trafficStage
-        #set stage end time to be x number of seconds from now determined by set value in changeable conditions
-            #go to key of the current traffic stage in the lengths dictonary which is within changeable conditons
-        stageEndTime = time.time() + changeableConditions["stageLengths"][changeableConditions["trafficStage"]]   
+        trafficStage += 1   
     else:
         print("How did you get here?")
     
+    #update changeable conditons with new traffic stage
+    changeableConditions["trafficStage"]=trafficStage
+    #set stage end time to be x number of seconds from now determined by set value in changeable conditions
+    #go to key of the current traffic stage in the lengths dictonary which is within changeable conditons
+    stageEndTime = time.time() + changeableConditions["stageLengths"][changeableConditions["trafficStage"]]
     #Display traffic stage commencing on console
     print(f"Commencing Traffic Stage {trafficStage}")
     #display pedestrian count if entered stage 3
@@ -100,7 +99,7 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
 
     #use changeable conditions to start operation from suspended stage, restarts at stage 1
     if trafficStage == "suspended":
-        intersectionData, changeableConditions, trafficStage, stageTimeEnd = traffic_stage_change(board, intersectionData, changeableConditions, trafficStage)
+        intersectionData, changeableConditions, trafficStage, stageTimeEnd = traffic_stage_change(intersectionData, changeableConditions, trafficStage)
         #set light colours
         [mainState, sideState, pedestrianState] = lightForStage[changeableConditions["trafficStage"]]
         #output lights to arduino
@@ -109,28 +108,24 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
     try:
         while True:           
             # Does the traffic stage need changing?
-            
-            #Due to need to continue flashing while polling loop still runs
-            #trigger light setting again (ped green flashing) if in stage 5
-            if trafficStage == 5:
-                led.light_setting_state(changeableConditions, mainState, sideState, pedestrianState)
-            else:
-                startTime = time.time()
-                intersectionData,changeableConditions, trafficStage, stageTimeEnd = traffic_stage_change(board, intersectionData, changeableConditions, trafficStage)
+            if time.time()>=stageTimeEnd:
+                intersectionData,changeableConditions, trafficStage, stageTimeEnd = traffic_stage_change(intersectionData, changeableConditions, trafficStage)
                 #set light colours
                 [mainState, sideState, pedestrianState] = lightForStage[changeableConditions["trafficStage"]] 
                 #output lights to arduino
                 led.light_setting_state(board, changeableConditions, mainState, sideState, pedestrianState)
                 # Run function polling loop, inputting polling rate, output of polling time, current distance and pedestrian count
-                [intersectionData, changeableConditions] = pl.polling_loop(board, board2, intersectionData, changeableConditions)
-                #Happens within function 
-                    #If polling start time plus polling time taken equals the current time
-                    # Display polling time on console, “Polling loop took <polling time> to complete”
-                    # If polling start time plus polling time taken equals the current time
-                    # Display the current distance, “The distance to the closest vehicle is <current distance> cm.”
-                endTime = time.time()
-                # time.sleep(changeableConditions['pollingRate'])
-                print(f"total time taken for polling: {round(startTime-endTime,2)}")
+            [intersectionData, changeableConditions] = pl.polling_loop(board, board2, intersectionData, changeableConditions)
+            #Happens within function 
+                #If polling start time plus polling time taken equals the current time
+                # Display polling time on console, “Polling loop took <polling time> to complete”
+                # If polling start time plus polling time taken equals the current time
+                # Display the current distance, “The distance to the closest vehicle is <current distance> cm.”
+            
+            #Due to need to continue flashing while polling loop still runs
+            #trigger light setting again (ped green flashing) if in stage 5
+            if trafficStage == 5:
+                led.light_setting_state(board, changeableConditions, mainState, sideState, pedestrianState)
     except KeyboardInterrupt:
         #exit button activation
         print("Exit button activated, returning to main menu")

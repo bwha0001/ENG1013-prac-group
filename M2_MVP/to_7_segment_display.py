@@ -197,6 +197,9 @@ def sevenSeg(myBoard, mode : str, number = '000'):
         number (3 digit number)(str): number to be displayed, defaults to 0. e.g inputing 3 = '003'
     """
 
+    #stops trying to send to arduino in single arduino testing
+    if myBoard == '':
+        return
    
     validated1, message1 = valid_7seg(mode) # validate operating mode input\
     if type(number) is not type('jdf') or len(number)!= 2:  # converting any input to 3 digit string

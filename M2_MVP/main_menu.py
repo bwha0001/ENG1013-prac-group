@@ -17,7 +17,7 @@ def main_menu(board, board2, intersectionData, changeableConditions):
 
     while True:
         while True:  
-            modeSelection = ""
+            #modeSelection = ""
             modeSelection = input("Modes:\n 1 - Data Observation.\n 2 - Normal Operation Mode\n 3 - Maintenance Mode\n Select Mode (1,2,3): ")
             try: 
                 if modeSelection == "1":
@@ -39,14 +39,18 @@ def main_menu(board, board2, intersectionData, changeableConditions):
                 
         while True:
             programQuit = input("Would you like to quit? (Y/N) ")
-            try: 
-                if programQuit == "N": 
-                    break 
-                elif programQuit == "Y":
-                    print("Closing program...")
-                    break
-            except ValueError: 
-                print("Invalid Input. Options available as 'Y' to continue to main menu and 'N' to end program.")
+            if programQuit == "N": 
+                break 
+            elif programQuit == "Y":
+                print("Closing program...")
+                break
+            else:
+                print("Invalid Input. Options available as 'Y' to continue to main menu and 'N' to end program.") 
+        if programQuit == "N":
+            pass
+        elif programQuit == "Y":
+            return
+                
                 
 
 
