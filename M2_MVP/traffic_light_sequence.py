@@ -2,6 +2,16 @@ import time
 #from pymata4 import pymata4
 import polling_loop as pl
 def traffic_light_sequence(changeableConditions):
+    """iterates through the traffic light sequences in normal operation mode
+
+    Args:
+        changeableConditions (dictionary): from changeable conditions we take
+        pollingRate which is required to keep the code operating in time with the polling loop
+
+    Returns:
+        trafficStage: Feedback which stage the traffic light is in to normal_operation
+        which is requred for led_state to trigger the relevant LED's
+    """
     pollingRate = changeableConditions['pollingRate']
     trafficStage = []
 
