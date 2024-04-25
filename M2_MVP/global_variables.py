@@ -16,6 +16,11 @@ lastButtonPress = None
 
 # Initialize the global variables
 def init():
+    """
+        init holds the global variables, so in order to intialise the globals init() is called
+        in the initial set up and the rest of the global_variables become accesable across multiple files
+
+    """
     global pedsPresent
     global lastButtonPress 
     # global intersectionData
