@@ -17,9 +17,9 @@ def flashing_led(board,pin):
     """    
     
     board.digital_write(pin,1)
-    time.sleep(0.5)
+    time.sleep(0.3)
     board.digital_write(pin,0)
-    time.sleep(0.5)
+    time.sleep(0.3)
 
 
 #function to convert traffic light state into LED state
