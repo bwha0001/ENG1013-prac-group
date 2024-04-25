@@ -1,7 +1,7 @@
 #polling loop
 #Authors: Caitlin and Kayla 
 #Version: 5 - Hardware Implementation
-#Dates Edited: 24 April 2024
+#Dates Edited: 25 April 2024
 
 import time
 import global_variables as GLOB

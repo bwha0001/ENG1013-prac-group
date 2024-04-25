@@ -1,3 +1,9 @@
+#Traffic Management Start Up File
+#Authors: Team F12
+#Version: 5 - Hardware Implementation
+#Last Edit: 25 April 2024
+
+
 import time
 import math as mth
 from pymata4 import pymata4
