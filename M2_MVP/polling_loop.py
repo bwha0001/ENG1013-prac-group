@@ -110,6 +110,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     
     pedCount =  pedCount + GLOB.pedsPresent
     pedsPresent_shared = 0  # reset shared variable
+    #GLOB.pedsPresent = 0
     #Has the pedestrian been pressed 
     #.....  (input of pedButton) = 1?
     

@@ -21,14 +21,17 @@ def main_menu(board, board2, intersectionData, changeableConditions):
                 if modeSelection == "1":
                     print("Entering Data Observation Mode...")
                     DOM.data_observation_mode(board, board2, intersectionData, changeableConditions)
+                    print("\n\nMain Menu")
                     break
                 elif modeSelection == "2": 
                     print("Entering Normal Operation Mode...")
                     n_o.normal_operation(board, board2, intersectionData, changeableConditions)
+                    print("\n\nMain Menu")
                     break
                 elif modeSelection == "3":
                     print("Entering Maintenance Mode...")
                     m_m.maintenance_mode(board, board2, intersectionData, changeableConditions)
+                    print("\n\nMain Menu")
                     break
                 else:
                     print("Invalid Mode Input. Re-enter mode option.")
@@ -44,6 +47,7 @@ def main_menu(board, board2, intersectionData, changeableConditions):
                 break
             else:
                 print("Invalid Input. Options available as 'Y' to continue to main menu and 'N' to end program.") 
+        
         if programQuit == "N":
             pass
         elif programQuit == "Y":
