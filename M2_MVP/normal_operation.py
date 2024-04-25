@@ -125,6 +125,10 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
             
             #Due to need to continue flashing while polling loop still runs
             #trigger light setting again (ped green flashing) if in stage 5
+            if trafficStage==3:
+                pedestrianStage3 = intersectionData['pedPresentRecord'][-1]
+                print("pedestrian count at stage 3")
+                to_7_seg.sevenSeg(board2, 'n', pedestrianStage3)
             if trafficStage == 5:
                 led.light_setting_state(board, changeableConditions, mainState, sideState, pedestrianState)
     except KeyboardInterrupt:
