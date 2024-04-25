@@ -1,5 +1,4 @@
 import time
-#from pymata4 import pymata4
 import polling_loop as pl
 def traffic_light_sequence(changeableConditions):
     """iterates through the traffic light sequences in normal operation mode
