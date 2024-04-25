@@ -29,7 +29,7 @@ board2 = pymata4.Pymata4(com_port="COM7")
 #Create a dictonary of records
 intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[], "pedPresentRecord":[]}
 
-pollingRate = 2
+pollingRate = 5
 changeableConditions = {
     'arduinoPins' : {
         "mainRed": 6,
