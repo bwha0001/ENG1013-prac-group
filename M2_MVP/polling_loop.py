@@ -135,14 +135,14 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     # time.sleep(changeableConditions['pollingRate'])
     pollingEndTime = time.time()
     pollingTime = pollingEndTime - pollingStartTime
-    # print(f"Time taken to poll: {round(pollingTime, 2)} seconds")
+    print(f"Time taken to poll: {round(pollingTime, 2)} seconds")
     #Print the distnace to the nearest vechile
     print(f"Distance to nearest vechile: {distToVehicle} cm")
     #test line
     print(f"Test Line Ped Count Record Value: {pedCount}")
     # print(f"time from record: {timeRecord[-1]-pollingStartTime}\n")
     to_7_seg.sevenSeg(board2, 'c', distToVehicle)
-    return intersectionData, changeableConditions
+    return intersectionData, changeableConditions, 
 
 # #Hardware Test
 # if __name__ == "__main__":

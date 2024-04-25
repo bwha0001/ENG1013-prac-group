@@ -49,7 +49,7 @@ def light_setting_state(board, changeableConditions, mainState, sideState, pedes
     pedestrianState = 'red'
     pedCountRecord = changableConditions['pedCountRecord']
     '''
-    
+
     ledPins = changeableConditions['arduinoPins']
 
 #main traffic light
@@ -122,10 +122,7 @@ def light_setting_state(board, changeableConditions, mainState, sideState, pedes
     elif pedestrianState == "off":
         board.digital_write(ledPins["pedestrianRed"], 0)
         board.digital_write(ledPins["pedestrianGreen"], 0)
-        print("pedestrian red off \n pedestrian green off")
-    
-    #Checking they arent just immediatly turning off
-    time.sleep(1)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+        print("pedestrian red off \n pedestrian green off")                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 
 # if __name__ == '__main__':
 

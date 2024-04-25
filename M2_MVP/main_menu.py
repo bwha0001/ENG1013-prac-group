@@ -2,8 +2,6 @@ import normal_operation as n_o
 import maintenance_mode as m_m
 import data_observation_mode as DOM
 
-#Not current main menu - 
-
 def main_menu(board, board2, intersectionData, changeableConditions):
     """ 
     Used to select a mode 

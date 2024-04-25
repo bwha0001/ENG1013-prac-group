@@ -30,17 +30,17 @@ intersectionData = {"timeRecord":[time.time()], "distToVehicleRecord":[], "pedCo
 pollingRate = 2
 changeableConditions = {
     'arduinoPins' : {
-        "mainRed": 2,
-        "mainYellow": 3,
-        "mainGreen": 4,
-        "sideRed": 5,
-        "sideYellow": 6,
-        "sideGreen": 7,
-        "pedestrianRed": 8,
-        "pedestrianGreen": 9,
-        "pedButton":10,
-        "triggerPin":11,
-        "echoPin":12
+        "mainRed": 2+3,
+        "mainYellow": 3+3,
+        "mainGreen": 4+3,
+        "sideRed": 5+3,
+        "sideYellow": 6+3,
+        "sideGreen": 7+3,
+        "pedestrianRed": 8+3,
+        "pedestrianGreen": 9+3,
+        "pedButton":2,
+        "triggerPin":3,
+        "echoPin":4
         },
     'ardinoPins7seg': [],
     'stageLengths':{
