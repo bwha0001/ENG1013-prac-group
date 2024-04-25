@@ -9,6 +9,16 @@ import polling_loop as pl
 import plotting_function
 
 def data_observation_mode(board, board2, intersectionData, changeableConditions):
+    """
+    Where the user can veiw data collected about the intersection, displays graphs and counts to console
+    
+    Args:
+        board: Arduino Set Up
+        board2: 2nd Arduino Set Up
+        intersectionData (dictonary): Data collected about the interesection
+        changeableConditions (dictonary): Anything related to the system that changes
+    """        
+    
     #globals
     try:
         #Set 7 segment display to display d, using 7 segment display function
@@ -43,6 +53,10 @@ def data_observation_mode(board, board2, intersectionData, changeableConditions)
     except KeyboardInterrupt:
         #exit button activation
         print("Exit button activated, returning to main menu")
+
+
+#Software/No data collection test
+
 # if __name__ == "__main__":
 #     #initalisations
 #     import time

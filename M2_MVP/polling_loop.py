@@ -40,13 +40,23 @@ def ped_button_callback(data):
 
 
 def polling_loop(board, board2, intersectionData, changeableConditions):
-    '''
-    Polling loop gets and stores data from sensors in intersection
-    Arg:
-        board, Traffic Stage {1,2,3,4,5,6,"suspended"}, polling rate
+    """
+    Reads and stores from intersection sensors
+    
+    Args:
+        board: Arduino Set Up
+        board2: 2nd Arduino Set Up
+        intersectionData (dictonary): Data collected about the interesection
+        changeableConditions (dictonary): Anything related to the system that changes
+
     Returns:
-        if suspended [distance to next vechile list, pedestrian count]
-    '''
+        intersectionData (dictonary): Data collected about the interesection
+        changeableConditions (dictonary): Anything related to the system that changes
+    Conditional Returns, when intersection opperation is suspended:
+        distToVechile(list): distance to next vechile record for the last 20 seconds
+        pedCount(int): number of pedestrian button presses in current iteration of the traffic sequence
+
+    """    
     #globals
 
     pollingRate = changeableConditions['pollingRate']
@@ -55,21 +65,6 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     #not using?
     global pedsPresent_shared
     pedsPresent_shared = 0 # initialise pedsPresent_shared
-
-    #required for MVP Checkpoint
-
-    #polling loop to read sensors for traffic control
-    #inputs: trafficStage, pollingRate which defaults to 2
-    #outputs: Current distance to next vehicle, Distance to vehicle record, Pedestrian Counter, Time taken for polling
-
-    '''
-        #Creates a dictonary of records if one doesnt exist
-    try:
-        intersectionData
-    except NameError:
-        print("Can't access golbal intersection data")
-        intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[]}
-    '''
 
     #import data from dictonary of intersectionData
     timeRecord = intersectionData['timeRecord']
@@ -156,7 +151,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     #print(f"Test Line Ped Count Record Value: {pedCount}")
     # print(f"time from record: {timeRecord[-1]-pollingStartTime}\n")
     to_7_seg.sevenSeg(board2, 'c', distToVehicle)
-    return intersectionData, changeableConditions, 
+    return intersectionData, changeableConditions
 
 # #Hardware Test
 # if __name__ == "__main__":

@@ -1,4 +1,7 @@
-#TODO File header
+#Normal Operation Mode for Traffic Control System
+#Authors: Caitlin
+#Version: 3 - Reworked for hardware implementation
+#Last Edit: 25 April 2024
 import time
 import math as mth
 #from pymata4 import pymata4
@@ -18,12 +21,18 @@ import global_variables as GLOB
     # print(f"Test line button data: {changeableConditions['pedsPresent']}, {changeableConditions['lastButtonPress']}")
 
 def traffic_stage_change(intersectionData, changeableConditions, trafficStage):
-    """
-    This function takes care of the repeated processes of a change in traffic stage in the traffic control system and 
-    the tasks that occur at particular stages. Displaying stage specific outputs to console.
-    parameters:  current traffic stage
-    outputs: current traffic stage
-    """
+    """_summary_
+
+    Args:
+        intersectionData (dictonary): Data collected about the interesection
+        changeableConditions (dictonary): Anything related to the system that changes
+        trafficStage (1,2,3,4,5,6,"suspended"): \Traffic Stage of intersection
+    Returns:
+        intersectionData (dictonary): Data collected about the interesection
+        changeableConditions (dictonary): Anything related to the system that changes
+        trafficStage(1,2,3,4,5,6): the stage of the traffic sequence that was just entered
+        stageEndTime(float): the end time of the current traffic sequence stage
+    """    
 
     if trafficStage == "suspended" or trafficStage == 6:
         #initalise stage 1
@@ -60,21 +69,17 @@ def traffic_stage_change(intersectionData, changeableConditions, trafficStage):
 
 
 
-
-
-
-
 def normal_operation(board, board2, intersectionData,changeableConditions):
-    """_summary_
+    """Manages the opperation of the traffic lights and polling loop
 
     Args:
-        board (_type_): _description_
-        board2 (_type_): _description_
-        intersectionData (_type_): _description_
-        changeableConditions (_type_): _description_
-
+        board: Arduino Set Up
+        board2: 2nd Arduino Set Up
+        intersectionData (dictonary): Data collected about the interesection
+        changeableConditions (dictonary): Anything related to the system that changes
     Returns:
-        _type_: _description_
+        intersectionData (dictonary): Data collected about the interesection
+        changeableConditions (dictonary): Anything related to the system that changes
     """
     # calling from the global library global_variables and assining it the initial values to be overwritted
     #define dictonary of traffic light colours to stage

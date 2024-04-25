@@ -1,19 +1,23 @@
 #Maintenacence Mode for Traffic Control System
 #Author: Caitlin Macdonald
-#Last Edit: 10 April 2024
-#Version: 2
+#Last Edit: 24 April 2024
+#Version: 2 - Hardware tested
 
 import to_7_segment_display as to_7_seg
 
 def maintenance_mode(board, board2, intersectionData, changeableConditions):
     '''
     Maintenance mode allows the user, with the correct PIN to edit conditons and reaction for the intersection
-    Parameters: None
     Args:
+        board: Arduino Set Up
+        board2: 2nd Arduino Set Up
+        intersectionData (dictonary): Data collected about the interesection
+        changeableConditions (dictonary): Anything related to the system that changes
     User Inputs: 
         pin, condition to edit, new condition value
     Returns: 
-            Alters conditions dictonary
+        intersectionData (dictonary): Data collected about the interesection
+        changeableConditions (dictonary): Anything related to the system that changes
     '''
 
     try:

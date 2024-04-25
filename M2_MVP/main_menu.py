@@ -10,14 +10,16 @@ import led_state as led
 
 def main_menu(board, board2, intersectionData, changeableConditions):
     """ 
-    Used to select a mode 
-        Parameters: 
-            modeSelection: data observation mode, normal operation mode, maintenance mode 
-            programQuit: quits main menu (Yes/No)
-        Returns: 
-            Displays mode then quits or reselects mode
-    """
-    
+    Used to select a mode and to quit the program       
+        
+    Args:
+        board: Arduino Set Up
+        board2: 2nd Arduino Set Up
+        intersectionData (dictonary): Data collected about the interesection
+        changeableConditions (dictonary): Anything related to the system that changes
+    Returns: 
+        None
+    """   
 
     while True:
         while True:  
