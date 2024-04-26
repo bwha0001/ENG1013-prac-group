@@ -26,19 +26,19 @@ def main_menu(board, board2, intersectionData, changeableConditions):
             #modeSelection = ""
             #Set all LED's to off
             led.light_setting_state(board, changeableConditions, "off", "off", "off")
-            modeSelection = input("Modes:\n 1 - Data Observation.\n 2 - Normal Operation Mode\n 3 - Maintenance Mode\n Select Mode (1,2,3): ")
+            modeSelection = input("Modes:\n d - Data Observation.\n n - Normal Operation Mode\n c - Maintenance Mode\n Select Mode (1,2,3): ").lower()
             try: 
-                if modeSelection == "1":
+                if modeSelection == "d" or modeSelection == "D":
                     print("Entering Data Observation Mode...")
                     DOM.data_observation_mode(board, board2, intersectionData, changeableConditions)
                     print("\n\nCurrently in Main Menu")
                     break
-                elif modeSelection == "2": 
+                elif modeSelection == "n" or modeSelection == "N": 
                     print("Entering Normal Operation Mode...")
                     n_o.normal_operation(board, board2, intersectionData, changeableConditions)
                     print("\n\nCurrently in Main Menu")
                     break
-                elif modeSelection == "3":
+                elif modeSelection == "c"  or modeSelection == "C":
                     print("Entering Maintenance Mode...")
                     m_m.maintenance_mode(board, board2, intersectionData, changeableConditions)
                     print("\n\nCurrently in Main Menu")

@@ -1,3 +1,9 @@
+#REDUNDANT -- updated normal operating mode and now uses traffic_state_change
+#Traffic light sequence
+#Authors: Hayley Dusting
+#Version:  1
+#Dates Edited: 12 April 2024
+
 import time
 import polling_loop as pl
 def traffic_light_sequence(changeableConditions):
@@ -8,7 +14,7 @@ def traffic_light_sequence(changeableConditions):
         pollingRate which is required to keep the code operating in time with the polling loop
 
     Returns:
-        trafficStage: Feedback which stage the traffic light is in to normal_operation
+        trafficStage: Feedback which stage the traffic lights are in to normal_operation
         which is requred for led_state to trigger the relevant LED's
     """
     pollingRate = changeableConditions['pollingRate']
@@ -97,9 +103,3 @@ def traffic_light_sequence(changeableConditions):
             trafficStage.pop(0)
             trafficStage.append('stage1')
         return trafficStage
-
-##figure out how to use the time module for having the colours 'print' for the correct amount of time 
-##need to figure out how to conect the colour name to the LEDs in reality (and how to do the FLASHING)
-##i think it needs to go into a while loop so that it can continue to run... might need more if statements?
-##do i need to import pymata4? probably... 
-###No don't import pymata4 in fucntion file unless in the if main file code

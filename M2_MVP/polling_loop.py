@@ -1,5 +1,5 @@
 #polling loop
-#Authors: Caitlin and Kayla 
+#Authors: Caitlin and Kayla and Ben
 #Version: 5 - Hardware Implementation
 #Dates Edited: 25 April 2024
 
@@ -12,32 +12,10 @@ def ped_button_callback(data):
     """
     Callback function for pedestrian button press.
     """
-    #global pedsPresent_shared
     if data[2] == 1 and time.time() > GLOB.lastButtonPress + 0.0001:
         GLOB.pedsPresent += 1
         GLOB.lastButtonPress = time.time()
-        #debug lines-check is changing
-        #print(GLOB.pedsPresent)
-        #print(f"Pedestrians present: {pedsPresent_shared}")
-# def ped_button(data): # this isnt getting called properly
-#     """
-#     :param data: a list containing pin type, pin number, 
-#                 data value and time-stamp
-#     """
-    
-#     # Print the value out (code goes here to do something with the data)
-#     # lastButtonPress = changeableConditions['lastButtonPress']
-#     # pedsPresent = changeableConditions['pedsPresent']
  
-#     if data[2] ==1 and time.time() > GLOB.lastButtonPress+0.0001:
-#         # changeableConditions['pedsPresent'] += 1
-#         # changeableConditions['lastButtonPress'] = time.time()
-
-        
-#         GLOB.pedsPresent += 1
-#         GLOB.lastButtonPress = time.time()
-#         print(f"Peds present: {GLOB.pedsPresent}")
-
 
 def polling_loop(board, board2, intersectionData, changeableConditions):
     """
@@ -62,10 +40,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     pollingRate = changeableConditions['pollingRate']
     trafficStage = changeableConditions['trafficStage']
     
-    #not using?
-    global pedsPresent_shared
-    pedsPresent_shared = 0 # initialise pedsPresent_shared
-
+    
     #import data from dictonary of intersectionData
     timeRecord = intersectionData['timeRecord']
     distToVehicleRecord = intersectionData['distToVehicleRecord']
@@ -114,18 +89,10 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
 
     #Test line - global updating
     #print(GLOB.pedsPresent)
+
     #Update ped count total
     pedCount += pedButton
-    pedsPresent_shared = 0  # reset shared variable
-    #GLOB.pedsPresent = 0
-    #Has the pedestrian been pressed 
-    #.....  (input of pedButton) = 1?
     
-    """pedButton = random.randint(0,1)
-
-    if pedButton == 1:
-        pedCount += 1
-        """
 
     #Store record of time of readings, ultrasonic sensor reading and pedestrian count, all stored with same list index
     intersectionData['timeRecord'].append(pollingStartTime)
@@ -135,6 +102,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     #Check if all lists have more readings than should be the case for 20 seconds, remove earliest reading to bring back to 20 sec
     if len(timeRecord)>(20/pollingRate) and len(distToVehicleRecord)>(20/pollingRate) and len(pedCountRecord)>(20/pollingRate):
         #Remove first item in each of the lists
+        #aliasing back to dictionaries
         timeRecord.pop(0)
         distToVehicleRecord.pop(0)
         pedCountRecord.pop(0)
@@ -147,10 +115,8 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     print(f"\nTime taken to poll: {round(pollingTime, 2)} seconds")
     #Print the distnace to the nearest vechile
     print(f"Distance to nearest vechile: {distToVehicle} cm\n")
-    #test line
-    #print(f"Test Line Ped Count Record Value: {pedCount}")
-    # print(f"time from record: {timeRecord[-1]-pollingStartTime}\n")
-    to_7_seg.sevenSeg(board2, 'c', distToVehicle)
+   
+    to_7_seg.sevenSeg(board2, 'n', distToVehicle) # display distance to vehicle
     return intersectionData, changeableConditions
 
 # #Hardware Test

@@ -56,8 +56,6 @@ changeableConditions = {
     'trafficStage' :"suspended",
     'pollingRate' : pollingRate,
     'pedCounterReset' : "",
-    'pedsPresent' : 0, #PEDCOUNTER IS NOW IN THE DICTIONARY, WILL BE PASSED THROUGH THE ENTIRE THING
-    'lastButtonPress' : 0, #updated in line 91
     'lockOutTime': 0    # for maintenance mode lock out
 }
 
@@ -70,12 +68,9 @@ board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideYello
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideGreen"])
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianRed"])
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
-# Configure pin to sonar
+# Configure trigger and echo to sonar
 board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], timeout=200000)
-#Configiure ped button pin
-changeableConditions['lastButtonPress'] = time.time() - 0.1
-# board.set_pin_mode_digital_input(changeableConditions["arduinoPins"]["pedButton"], callback=ped_button(changeableConditions))
-# board.set_pin_mode_digital_input(changeableConditions["arduinoPins"]["pedButton"])
+
 main.main_menu(board, board2, intersectionData, changeableConditions)
 
 print("program ending from AA")

@@ -1,5 +1,5 @@
 #Normal Operation Mode for Traffic Control System
-#Authors: Caitlin
+#Authors: Caitlin 
 #Version: 3 - Reworked for hardware implementation
 #Last Edit: 25 April 2024
 import time
