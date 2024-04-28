@@ -35,7 +35,7 @@ def data_observation_mode(board, board2, intersectionData, changeableConditions)
         #Show user pedestrian counter value
         #If there is no data at all print message directing to run normal operation mode
         if pedCount == "No Data":
-             print("There is no data to veiw, please enter normal operation mode(mode: 2) to collect data.\n Returning to main menu")
+             print("There is no data to veiw, please enter normal operation mode(mode: d) to collect data.\n Returning to main menu")
              return
         print(f"The current Pedestrian Count is {pedCount}")
         if len(intersectionData['pedCountRecord']) > 0:

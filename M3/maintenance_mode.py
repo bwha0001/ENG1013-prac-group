@@ -5,6 +5,7 @@
 
 import to_7_segment_display as to_7_seg
 import time
+
 def maintenance_mode(board, board2, intersectionData, changeableConditions):
     '''
     Maintenance mode allows the user, with the correct PIN to edit conditons and reaction for the intersection
@@ -21,10 +22,11 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
     '''
     
     try:
-        time1 = time.time()
+        #Check if locked out
         lockOutTime = changeableConditions['lockOutTime']
-        if time1-lockOutTime<30:
-            return None
+        if time.time() < lockOutTime:
+            print(f"You are locked out. Wait {round(lockOutTime-time.time()/60, 2)} mins till you can enter maintenance mode.")
+            return
         to_7_seg.sevenSeg(board2, 'c')
         #Initalisations, what is avaible to change, what acceptable values are
         changesCodes = {"PLR":"polling rate"}
@@ -32,44 +34,51 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
         changesToVaribles = {"PLR":"pollingRate"}
         #Suspend polling loop, set mode infomation
         changeableConditions["trafficStage"] = "suspended"
-        mode = "c"
+        
         #PIN - Checks if pin matches stored. If matches enter maintenance mode, if it doesnt match determine whether the user has any more attempts avaible to them
         pin = "1234"
         triesAllowed = 3
         attemptsMade = 0
         for i in range(0,triesAllowed):
             pinInput = input("Enter the PIN:")
-            if pinInput == pin: 
+            if pinInput == pin:
+                accessEndTime = time.time() + changeableConditions["accessTime"]
                 print("Password Correct, entering maintenance mode")
+                #Set access time to accessTime from current time, this resets every time enter maintence mode
+                accessTime = changeableConditions["accessTime"]
+                accessEndTime = time.time() + accessTime
                 break
             elif 2-i > 0 and not pinInput == pin:
                 print(f"PIN incorrect, {2-i} tries remaining")
+                attemptsMade += 1
             elif 2-i== 0 and not pinInput == pin:
-                print("PIN incorrect, no attempts remaining, returing to main menu")
-                changeableConditions['lockOutTime'] = time.time()
+                print("PIN incorrect, no attempts remaining. \n You have been locked out of maintenance mode for 2 minites, returing to main menu.")
+                changeableConditions['lockOutTime'] = time.time() + changeableConditions['lockOutLength']
                 return None
-
-        #As properly entered mode now change 7 segment display
-#        to_7_seg.to_7_segment_display(board2, mode)
         
-        while True:
-            while True:
-                #Choose option to edit
-                print(f"Enter of the the following to codes to change associated condition:\n {changesCodes}")
-                optionCode  = input("Enter Condition to edit:")
-                if optionCode in changesCodes.keys():
-                    #Change option
-                    while True:
-                        changeToConditon = input(f"Enter alternation to {changesCodes[optionCode]}:")
+        while time.time()<=accessEndTime:
+            #Choose option to edit
+            print(f"Enter of the the following to codes to change associated condition:\n {changesCodes}")
+            optionCode  = input("Enter Condition to edit:")
+            if optionCode in changesCodes.keys():
+                #Change option
+                while True:
+                    changeToConditon = input(f"Enter alternation to {changesCodes[optionCode]}:")
+                    try:
                         if int(changeToConditon) in changesRules[optionCode]:
                             changeableConditions[changesToVaribles[optionCode]] = int(changeToConditon)
                             to_7_seg.sevenSeg(board2, 'c', int(changeToConditon))
-                            break
+                            pass
                         else:
-                            print(f"Change requested to {changesCodes[optionCode]} not avalible. Acceptable changes are to {changesRules[optionCode]}")
-                    break
-                else:
-                    print(f"Input does not match change code.\n The codes and their changes are as follows:\n {changesCodes}")
+                            invalidChangeMessage = f"Change requested to {changesCodes[optionCode]} not avalible. Acceptable changes are to {changesRules[optionCode]}"
+                            print(invalidChangeMessage)
+                    except ValueError:
+                        print(invalidChangeMessage)
+            else:
+                print(f"Input does not match change code.\n The codes and their changes are as follows:\n {changesCodes}\n")
+                #Restart loop
+                continue
+
             #Change another conditon?
             while True:        
                 contInput = input("Would you like to continue making changes to conditions? (Y/N): ")
@@ -79,15 +88,24 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
                     print("Invalid Input, input 'Y' to make more changes or 'N' to return to exit")
             #Determine whether to repeat asking process
             if contInput == "Y":
-                pass
+                continue
             elif contInput == "N":
-                break    
-        return intersectionData, changeableConditions
+                return intersectionData, changeableConditions
+        
+        #This line accessed if access time over
+        #Double check time passed
+        if time.time()>accessEndTime:
+            print(changeableConditions["accessTime"])
+            #print(f"Access Timed Out, after {changeableConditions["accessTime"]} mins of access.")
+            return intersectionData, changeableConditions
+        
     except KeyboardInterrupt:
         #exit button activation
         print("Exit button activated, returning to main menu")
         return intersectionData, changeableConditions
     
+
+
 # if __name__ == "__main__":
 #     global changeableConditions
 #     changeableConditions = {
