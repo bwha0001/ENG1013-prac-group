@@ -26,7 +26,7 @@ def main_menu(board, board2, intersectionData, changeableConditions):
             #modeSelection = ""
             #Set all LED's to off
             led.light_setting_state(board, changeableConditions, "off", "off", "off")
-            modeSelection = input("Modes:\n d - Data Observation.\n n - Normal Operation Mode\n c - Maintenance Mode\n Select Mode (1,2,3): ").lower()
+            modeSelection = input("Modes:\n d - Data Observation.\n n - Normal Operation Mode\n c - Maintenance Mode\n Select Mode (d,n,c): ").lower()
             try: 
                 if modeSelection == "d" or modeSelection == "D":
                     print("Entering Data Observation Mode...")
@@ -58,9 +58,9 @@ def main_menu(board, board2, intersectionData, changeableConditions):
             else:
                 print("Invalid Input. Options available as 'Y' to continue to main menu and 'N' to end program.") 
         
-        if programQuit == "N":
+        if programQuit == "N" or programQuit == "n":
             pass
-        elif programQuit == "Y":
+        elif programQuit == "Y" or programQuit == "y":
             return
                 
                 

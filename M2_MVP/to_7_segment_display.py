@@ -230,7 +230,8 @@ def sevenSeg(myBoard, mode : str, number = '000'):
         if message1 == 'g':
             dig4 = convertion_dict('g')
             # print(f"dig4 :{dig4}, dig 0 : {digitNum[0]}, dig 1 : {digitNum[1]}, dig 2 :  {digitNum[2]}")   
-
+        if message1 == 'p':
+            dig4 = convertion_dict('p')
         # seperating the segments from number digits
         # digits read right to left
         digit0 = [str(d) for d in str(digitNum[0])]
@@ -252,7 +253,7 @@ def sevenSeg(myBoard, mode : str, number = '000'):
     segF = 7
     segG = 8
     segDP = 9
-    digGround = [11,12,13, 10]#dig 0-2 numbers, dig 4 letter
+    digGround = [13,11,12, 10]#dig 0-2 numbers, dig 4 letter
     segmentID = [segA, segB, segC, segD, segE, segF, segG, segDP]
 
     to_arduino(myBoard, digDisplay, mode, number, segmentID, digGround)
