@@ -21,17 +21,20 @@ import global_variables as GLOB
 # initialise global variables for the rest of the script
 GLOB.init()
 
+'''
 #two arduino operation
 # Board 1
-board = pymata4.Pymata4(com_port="COM5")        
+board = pymata4.Pymata4(com_port="COM8")     
 # # Board 2
-board2 = pymata4.Pymata4()
-
+board2 = pymata4.Pymata4(com_port="COM7")
 '''
+
+
+
 #single arduino
 board = pymata4.Pymata4()
 board2 = ""
-'''
+
 
 #Create a dictonary of records
 intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[], "pedPresentRecord":[], "speedRecord" :[]}
@@ -65,7 +68,7 @@ changeableConditions = {
     'pedCounterReset' : "",
     'lockOutTime': 0,    # for maintenance mode lock out
     "lockOutLength": 120, #Locked out for 2 mins
-    "accessTime": 180 #time able to access maintence mode 3 mins(access time in seconds)
+    "accessTime": 60 #testing at 1 min #180 #time able to access maintence mode 3 mins(access time in seconds)
 }
 
 #set arduino pins for main board
