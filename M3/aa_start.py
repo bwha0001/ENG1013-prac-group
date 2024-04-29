@@ -34,7 +34,7 @@ board = pymata4.Pymata4()
 board2 = ""
 
 #Create a dictonary of records
-intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[], "pedPresentRecord":[]}
+intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[], "pedPresentRecord":[], "speedRecord" :[]}
 
 pollingRate = 5
 changeableConditions = {

@@ -6,6 +6,7 @@
 import time
 import global_variables as GLOB
 import to_7_segment_display as to_7_seg
+import instentaneous_speed 
 # import AAstart as start
 
 def ped_button_callback(data):
@@ -45,6 +46,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     timeRecord = intersectionData['timeRecord']
     distToVehicleRecord = intersectionData['distToVehicleRecord']
     pedCountRecord = intersectionData['pedCountRecord']
+    speed = intersectionData['speedRecord']
 
     #Traffic Stage approprite for new readings? ie Not suspended stage and enough time has passed
     #is in the correct stage to pollling to continue
@@ -67,7 +69,10 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     
     #Take readings for distance to next vehcile (ultrosonic sensor reading) and pedestrian button pressed
     #Placeholder generation for MVP Checkpoint
-    distToVehicle, distReadingTime = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
+    distToVehicle1, distReadingTime1 = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
+    distToVehicle2, distReadingTime2 = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
+    speed = instentaneous_speed.velocity(distToVehicle1, distToVehicle2, distReadingTime1, distReadingTime2)
+    intersectionData["speedRecord"].append(speed)
 
     # pedsPresent, lastButtonPress = ped_button(pedsPresent, lastButtonPress)
     pedButton = changeableConditions['arduinoPins']['pedButton']
@@ -96,7 +101,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
 
     #Store record of time of readings, ultrasonic sensor reading and pedestrian count, all stored with same list index
     intersectionData['timeRecord'].append(pollingStartTime)
-    intersectionData['distToVehicleRecord'].append(distToVehicle)
+    intersectionData['distToVehicleRecord'].append(distToVehicle1)
     intersectionData['pedCountRecord'].append(pedCount)
 
     #Check if all lists have more readings than should be the case for 20 seconds, remove earliest reading to bring back to 20 sec
@@ -114,9 +119,9 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     pollingTime = pollingEndTime - pollingStartTime
     print(f"\nTime taken to poll: {round(pollingTime, 2)} seconds")
     #Print the distnace to the nearest vechile
-    print(f"Distance to nearest vechile: {distToVehicle} cm\n")
+    print(f"Distance to nearest vechile: {distToVehicle1} cm\n")
    
-    to_7_seg.sevenSeg(board2, 'n', distToVehicle) # display distance to vehicle
+    to_7_seg.sevenSeg(board2, 'n', distToVehicle1) # display distance to vehicle
     return intersectionData, changeableConditions
 
 # #Hardware Test

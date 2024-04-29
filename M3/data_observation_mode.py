@@ -50,6 +50,7 @@ def data_observation_mode(board, board2, intersectionData, changeableConditions)
         if changeableConditions['pollingRate'] * len(distToVehicleRecord) >= 20:
 #test line            print("complete function plot triggered") #testing statememnt
             plotting_function.plotting_function(intersectionData['timeRecord'], intersectionData['distToVehicleRecord'])
+            plotting_function.plotting_function(intersectionData['timeRecord'], intersectionData['speedRecord'])
         else:
             print("There is not 20 seconds of data, please return to normal operation mode to collect more data.\n To exit this mode enter ctrl + c in command window")    
     except KeyboardInterrupt:
