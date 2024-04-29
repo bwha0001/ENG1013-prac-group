@@ -101,7 +101,7 @@ def to_arduino(myBoard, digDisplay, mode, number, segmentID, digGround):
     # digDisplay = digDisplay[::-1] # reverse the digits cause i messed up
     # digGround = digGround[::-1]
 
-    wakeTime = 1.5
+    wakeTime = 0.8
 
 
     # board.set_pin_mode_digital_output(segF)
@@ -238,7 +238,8 @@ def sevenSeg(myBoard, mode : str, number = '000'):
         digit1 = [str(d) for d in str(digitNum[1])]
         digit2 = [str(d) for d in str(digitNum[2])]
         digit3 = [str(d) for d in str(dig4)] # mode display digit
-        digDisplay = [digit0, digit1, digit2, digit3]
+        # digDisplay = [digit0, digit1, digit2, digit3] 
+        digDisplay = [digit0, digit2,digit1, digit3] # should be idk need to test to make sure
 
 
     else:
@@ -253,7 +254,7 @@ def sevenSeg(myBoard, mode : str, number = '000'):
     segF = 7
     segG = 8
     segDP = 9
-    digGround = [13,11,12, 10]#dig 0-2 numbers, dig 4 letter
+    digGround = [11, 12, 13, 10]#dig 0-2 numbers, dig 4 letter
     segmentID = [segA, segB, segC, segD, segE, segF, segG, segDP]
 
     to_arduino(myBoard, digDisplay, mode, number, segmentID, digGround)
