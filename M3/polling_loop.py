@@ -70,9 +70,18 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     #Take readings for distance to next vehcile (ultrosonic sensor reading) and pedestrian button pressed
     #Placeholder generation for MVP Checkpoint
     distToVehicle1, distReadingTime1 = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
+    time.sleep(0.05)
     distToVehicle2, distReadingTime2 = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
+    ## adding collecting instentaneous velocity by running the ultrasonic sensor twice
     speed = instentaneous_speed.velocity(distToVehicle1, distToVehicle2, distReadingTime1, distReadingTime2)
     intersectionData["speedRecord"].append(speed)
+
+
+    ##############################################################################################
+    # add in a line of code to take temperature as a voltage from an analogue input
+    # add temperature_handle function
+    # intersectionData['temperatureRecord].append(temperature)
+    ##############################################################################################
 
     # pedsPresent, lastButtonPress = ped_button(pedsPresent, lastButtonPress)
     pedButton = changeableConditions['arduinoPins']['pedButton']
@@ -111,6 +120,10 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
         timeRecord.pop(0)
         distToVehicleRecord.pop(0)
         pedCountRecord.pop(0)
+        intersectionData["speedRecord"].pop(0)
+        # intersectionData['temperatureRecord'].pop(0)
+
+
         
 
     #Set polling time to the time it took to execute
