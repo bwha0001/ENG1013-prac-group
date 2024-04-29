@@ -22,16 +22,16 @@ import global_variables as GLOB
 GLOB.init()
 
 #two arduino operation
-'''
 # Board 1
-board = pymata4.Pymata4(com_port="COM3")        
+board = pymata4.Pymata4(com_port="COM5")        
 # # Board 2
-board2 = pymata4.Pymata4(com_port="COM7")
-'''
+board2 = pymata4.Pymata4()
 
+'''
 #single arduino
 board = pymata4.Pymata4()
 board2 = ""
+'''
 
 #Create a dictonary of records
 intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[], "pedPresentRecord":[], "speedRecord" :[]}

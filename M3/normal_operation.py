@@ -14,9 +14,6 @@ import normal_operation as n_o
 import data_observation_mode as DOM
 import global_variables as GLOB
 
-
-
-
     # print(f"Test line button data: {changeableConditions['pedsPresent']}, {changeableConditions['lastButtonPress']}")
 
 def traffic_stage_change(intersectionData, changeableConditions, trafficStage):
