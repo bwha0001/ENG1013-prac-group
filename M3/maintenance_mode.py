@@ -25,7 +25,7 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
         #Check if locked out
         lockOutTime = changeableConditions['lockOutTime']
         if time.time() < lockOutTime:
-            print(f"You are locked out. Wait {round(lockOutTime-time.time()/60, 2)} mins till you can enter maintenance mode.")
+            print(f"You are locked out. Wait {round((lockOutTime-time.time())/60, 2)} mins till you can enter maintenance mode.")
             return
         to_7_seg.sevenSeg(board2, 'c')
         #Initalisations, what is avaible to change, what acceptable values are
@@ -55,48 +55,71 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
                 print("PIN incorrect, no attempts remaining. \n You have been locked out of maintenance mode for 2 minites, returing to main menu.")
                 changeableConditions['lockOutTime'] = time.time() + changeableConditions['lockOutLength']
                 return None
-        
+
+        #Initalise varible for option changing to be saved in, initalise as empty string to say it can be overwritten
+        optionCode = ""
+
+
+        #make changes
+
         while time.time()<=accessEndTime:
-            #Choose option to edit
-            print(f"Enter of the the following to codes to change associated condition:\n {changesCodes}")
-            optionCode  = input("Enter Condition to edit:")
+            #Check if a new input should be asked for
+            if optionCode == '':
+                #Choose option to edit
+                print(f"Enter of the the following to codes to change associated condition:\n {changesCodes}")
+                optionCode  = input("Enter Condition to edit:")
+
+            #Check that option to edit is valid
             if optionCode in changesCodes.keys():
-                #Change option
-                while True:
-                    changeToConditon = input(f"Enter alternation to {changesCodes[optionCode]}:")
-                    try:
-                        if int(changeToConditon) in changesRules[optionCode]:
-                            changeableConditions[changesToVaribles[optionCode]] = int(changeToConditon)
-                            to_7_seg.sevenSeg(board2, 'c', int(changeToConditon))
-                            pass
-                        else:
-                            invalidChangeMessage = f"Change requested to {changesCodes[optionCode]} not avalible. Acceptable changes are to {changesRules[optionCode]}"
-                            print(invalidChangeMessage)
-                    except ValueError:
-                        print(invalidChangeMessage)
+                #If valid input changeCode remains saved
+                pass
             else:
                 print(f"Input does not match change code.\n The codes and their changes are as follows:\n {changesCodes}\n")
-                #Restart loop
+                #Do not save optionCode entered by user overwritten to condition of optionCode being an asked for ie. empty string\
+                optionCode = ''
+                #Restarts loop
                 continue
 
-            #Change another conditon?
-            while True:        
+            #Change option
+            changeToConditon = input(f"Enter alternation to {changesCodes[optionCode]}:")
+            try:
+                if int(changeToConditon) in changesRules[optionCode]:
+                    changeableConditions[changesToVaribles[optionCode]] = int(changeToConditon)
+                    #Confirms that chnage was made
+                    conditionChanged = 1 
+                    to_7_seg.sevenSeg(board2, 'c', int(changeToConditon))
+                    optionCode = ""
+                else:
+                    invalidChangeMessage = f"Change requested to {changesCodes[optionCode]} not avalible. Acceptable changes are to {changesRules[optionCode]}"
+                    print(invalidChangeMessage)
+                    #Restart loop
+                    continue
+            except ValueError:
+                print(invalidChangeMessage)
+                continue
+
+### TODO ### Get rid of while loops that won't trigger timeout
+
+            #Change another conditon? given time out not occoured
+            while time.time()<= accessEndTime:
+                #Ask if want to continue to make changes or quit
                 contInput = input("Would you like to continue making changes to conditions? (Y/N): ")
                 if contInput in {"Y","N"}:
                     break
                 else:
                     print("Invalid Input, input 'Y' to make more changes or 'N' to return to exit")
+
             #Determine whether to repeat asking process
             if contInput == "Y":
                 continue
             elif contInput == "N":
                 return intersectionData, changeableConditions
         
-        #This line accessed if access time over
+        #This line accessed if access time over and loop is broken
         #Double check time passed
         if time.time()>accessEndTime:
-            print(changeableConditions["accessTime"])
-            #print(f"Access Timed Out, after {changeableConditions["accessTime"]} mins of access.")
+            #Print time out message
+            print(f"Access Timed Out, after {round(changeableConditions['accessTime']/60,2)} mins of access.")
             return intersectionData, changeableConditions
         
     except KeyboardInterrupt:
