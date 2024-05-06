@@ -71,12 +71,17 @@ changeableConditions = {
         6:3
     },
     'trafficStage' :"suspended",
-    'pollingRate' : pollingRate,
     'pedCounterReset' : "",
     'lockOutTime': 0,    # for maintenance mode lock out
     "lockOutLength": 120, #Locked out for 2 mins
-    "accessTime": 60 #testing at 1 min #180 #time able to access maintence mode 3 mins(access time in seconds)
+    "accessTime": 60, #testing at 1 min #180 #time able to access maintence mode 3 mins(access time in seconds)
     
+    #changeable conditions for maintenance mode
+    'pollingRate' : pollingRate,
+    "overHeight" : 60,
+    "extensionTime" : 3,
+    "plotLength" : 20
+
 }
 
 #set arduino pins for main board

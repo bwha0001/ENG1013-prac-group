@@ -28,16 +28,25 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
             print(f"You are locked out. Wait {round((lockOutTime-time.time())/60, 2)} mins till you can enter maintenance mode.")
             return
         to_7_seg.sevenSeg(board2, 'c')
+
+        changeToCondition = 0 # initialise changeToCondition which is updated in 95
         #Initalisations, what is avaible to change, what acceptable values are
         changesCodes = {"PLR":"polling rate",
                         "OHH": "Over head height", 
-                        "ETC" : "Extension time for car"
-                        "plot": "time length to record data"}
-        changesRules = {"PLR":{1, 2, 3, 4 ,5}}
+                        "ETC" : "Extension time for car",
+                        "plotLength": "time length to record data"}
+
         changesToVaribles = {"PLR":"pollingRate",
                              "OHH": "overHeight",
                              "ETC":"extensionTime",
-                             "plot": "plottingTime"} # orange light needs to hold longer
+                             "plotLength": "plotLength"} # orange light needs to hold longer
+        OHHAllowableValues = [int(d) for d in range(5,60,1)] # minimum = 5 meaning 5cm away from sensor,max = 60cm 
+        ETCAlloableValues = [3,4,5,6,7,8]
+        changesRules = {"PLR":{1, 2, 3, 4 ,5},
+                        "OHH": OHHAllowableValues,
+                        "ETC": ETCAlloableValues,
+                        "plotLength": [20,30,40,50,60,70,80]
+                        }
         #Suspend polling loop, set mode infomation
         changeableConditions["trafficStage"] = "suspended"
         
@@ -46,10 +55,10 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
         triesAllowed = 3
         attemptsMade = 0
         for i in range(0,triesAllowed):
-            pinInput = input("Enter the PIN:")
+            pinInput = input("\n\n\nEnter the PIN:")
             if pinInput == pin:
                 accessEndTime = time.time() + changeableConditions["accessTime"]
-                print("Password Correct, entering maintenance mode")
+                print("\n\nPassword Correct, entering maintenance mode")
                 #Set access time to accessTime from current time, this resets every time enter maintence mode
                 accessTime = changeableConditions["accessTime"]
                 accessEndTime = time.time() + accessTime
@@ -98,7 +107,7 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
             changeToConditon = input(f"Enter alternation to {changesCodes[optionCode]}:")
             try:
                 if int(changeToConditon) in changesRules[optionCode]:
-                    changeableConditions[changesToVaribles[optionCode]] = int(changeToConditon)
+                    changeableConditions[changesToVaribles[optionCode]] = int(changeToConditon) #updates dictionary with new value
                     #Confirms that chnage was made
                     conditionChanged = 1 
                     to_7_seg.sevenSeg(board2, 'c', int(changeToConditon))
