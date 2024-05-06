@@ -37,9 +37,14 @@ board2 = ""
 
 
 #Create a dictonary of records
-intersectionData = {"timeRecord":[], "distToVehicleRecord":[], "pedCountRecord":[], "pedPresentRecord":[], "speedRecord" :[]}
+intersectionData = {"timeRecord":[], "distToVehicleRecord1":[], #regular distance sensor
+                    'distToVehichleRecord2' : [], # overhight sensor 
+                    "pedCountRecord":[], 
+                    "pedPresentRecord":[], 
+                    "speedRecord" :[]}
 
 pollingRate = 5
+# This needs to be updated during the meeting once everyone is confirmed with pins
 changeableConditions = {
     'arduinoPins' : {
         "mainRed": 6,
@@ -70,6 +75,7 @@ changeableConditions = {
     'lockOutTime': 0,    # for maintenance mode lock out
     "lockOutLength": 120, #Locked out for 2 mins
     "accessTime": 60 #testing at 1 min #180 #time able to access maintence mode 3 mins(access time in seconds)
+    
 }
 
 #set arduino pins for main board

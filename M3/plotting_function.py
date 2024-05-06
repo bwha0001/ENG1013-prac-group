@@ -18,7 +18,8 @@ def plotting_function(timeRecorded, distance):
 
     #Convert time record to number of seconds since
     timeSince = []
-    for i in range(0, len(timeRecorded), 1):
+    for i in range(0, len(timeRecorded), 1): # making this run to 20 would force 20 seconds of data to 
+        # get around the bug where you go in and out of mode without running polling loop to manage distance
         timeSince.append(round(timeRecorded[i]-timeRecorded[-1], 2))
     #Plotting
     plt.plot(timeSince,distance)

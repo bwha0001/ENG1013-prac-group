@@ -44,7 +44,8 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     
     #import data from dictonary of intersectionData
     timeRecord = intersectionData['timeRecord']
-    distToVehicleRecord = intersectionData['distToVehicleRecord']
+    distToVehicleRecord = intersectionData['distToVehicleRecord1']
+    overhightDist = intersectionData["distToVehichleRecord2"] #  initialising overheight sensor as well
     pedCountRecord = intersectionData['pedCountRecord']
     speed = intersectionData['speedRecord']
 
@@ -60,22 +61,33 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     elif  trafficStage == "suspended":
         #return distToVechile and current pedestrian count from prior loop
         try:
-            return [intersectionData, changeableConditions, intersectionData['distToVehicleRecord'], intersectionData['pedCountRecord'][-1]]
+            return [intersectionData, changeableConditions, intersectionData['distToVehicleRecord1'], intersectionData['pedCountRecord'][-1]]
         except IndexError:
-            return [intersectionData, changeableConditions, intersectionData['distToVehicleRecord'], "No Data"]
+            return [intersectionData, changeableConditions, intersectionData['distToVehicleRecord1'], "No Data"]
         
     #Set loop start time
     pollingStartTime = time.time()
     
     #Take readings for distance to next vehcile (ultrosonic sensor reading) and pedestrian button pressed
     #Placeholder generation for MVP Checkpoint
-    distToVehicle1, distReadingTime1 = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
+    distToVehicle1, distReadingTime1 = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"]) 
+    overHeightDist, distReadingTime1 = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
+
     time.sleep(0.05)
     distToVehicle2, distReadingTime2 = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
+    overHeightDist, distReadingTime1 = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
+    
     ## adding collecting instentaneous velocity by running the ultrasonic sensor twice
     speed = instentaneous_speed.velocity(distToVehicle1, distToVehicle2, distReadingTime1, distReadingTime2)
     intersectionData["speedRecord"].append(speed)
 
+    ###################
+    #over height detection with a bit of ASCI art to make sure its obvious
+    if overHeightDist[-1] <50:
+        print("##########################################\n")
+        print("WARNING, VEHICHLE OVERHEIGHT\n")
+        print("##########################################\n")
+    ####################
 
     ##############################################################################################
     # add in a line of code to take temperature as a voltage from an analogue input
@@ -110,7 +122,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
 
     #Store record of time of readings, ultrasonic sensor reading and pedestrian count, all stored with same list index
     intersectionData['timeRecord'].append(pollingStartTime)
-    intersectionData['distToVehicleRecord'].append(distToVehicle1)
+    intersectionData['distToVehicleRecord1'].append(distToVehicle1)
     intersectionData['pedCountRecord'].append(pedCount)
 
     #Check if all lists have more readings than should be the case for 20 seconds, remove earliest reading to bring back to 20 sec
