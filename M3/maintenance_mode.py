@@ -100,7 +100,7 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
             #     #If valid input changeCode remains saved
             #     pass
             if optionCode not in keys:
-                print(f"Input does not match change code.\n The codes and their changes are as follows:\n {changesCodes}\n")
+                print(f"Input does not match change code.\n")
                 #Do not save optionCode entered by user overwritten to condition of optionCode being an asked for ie. empty string\
                 optionCode = ''
                 #Restarts loop
