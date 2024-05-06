@@ -35,11 +35,12 @@ def main_menu(board, board2, intersectionData, changeableConditions):
                     break
                 elif modeSelection == "n" or modeSelection == "N": 
                     #Check for Override switch
-                    OverrideRead = board.analog_read(changeableConditions['arduinoPins']['normalOverride'])
-                    if OverrideRead[1] == 1023:
+                    overrideRead = board.analog_read(changeableConditions['arduinoPins']['normalOverride'])
+                    print(overrideRead)
+                    if int(overrideRead[0]) == 1023:
                         #override switch active, do not enter normal operation mode
-                        print("/n/nManual Override Switch activated, the switch position must be changed to enter normal operation/n/n")
-                    elif OverrideRead[1]== 0:
+                        print("\n\nManual Override Switch activated, the switch position must be changed to enter normal operation")
+                    elif int(overrideRead[0])== 0:
                         #Override switch not active, safe to enter normal operation mode
                         print("Entering Normal Operation Mode...")
                         n_o.normal_operation(board, board2, intersectionData, changeableConditions)
@@ -57,7 +58,10 @@ def main_menu(board, board2, intersectionData, changeableConditions):
                     print("Invalid Mode Input. Re-enter mode option.")
             except KeyboardInterrupt: 
                 break
-                
+
+        #Suspend  traffic stage when retuned to main menu
+        changeableConditions["trafficStage"]="suspended"   
+
         while True:
             programQuit = input("Would you like to quit the program? (Y/N) ")
             if programQuit == "N" or programQuit == 'n': 

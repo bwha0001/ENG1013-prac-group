@@ -38,7 +38,7 @@ board2 = ""
 
 #Create a dictonary of records
 intersectionData = {"timeRecord":[], "distToVehicleRecord1":[], #regular distance sensor
-                    'distToVehichleRecord2' : [], # overhight sensor 
+                    'overheightRecord' : [], # overhight sensor 
                     "pedCountRecord":[], 
                     "pedPresentRecord":[], 
                     "speedRecord" :[]}
@@ -55,10 +55,12 @@ changeableConditions = {
         "sideGreen": 11,
         "pedestrianRed": 12,
         "pedestrianGreen": 13,
-        "pedButton":3,
-        "triggerPin":4,
-        "echoPinMain":5,
-        "echoPinOverHeight" : 2, # random number until pin map finalised
+        "pedButton":13,
+        "triggerPin":2,
+        "echoPin":3,
+        "triggerPin2":4,
+        "echoPin2":5,
+        "echoPinOverHeight":13, # random number until pin map finalised
         "normalOverride":3
         },
     'ardinoPins7seg': [],
@@ -98,7 +100,12 @@ board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestria
 #######
 # potentially need to put set pin mode sonar in polling to initialise before being called
 #######
-# board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], timeout=200000)
+board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"])
+board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin2"], changeableConditions["arduinoPins"]["echoPin2"])
+
+#first reading causing errors,
+
+board.set_pin_mode_analog_input(changeableConditions['arduinoPins']['normalOverride'])
 
 main.main_menu(board, board2, intersectionData, changeableConditions)
 

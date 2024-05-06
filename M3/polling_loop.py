@@ -45,9 +45,11 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     #import data from dictonary of intersectionData
     timeRecord = intersectionData['timeRecord']
     distToVehicleRecord = intersectionData['distToVehicleRecord1']
-    overhightDist = intersectionData["distToVehichleRecord2"] #  initialising overheight sensor as well
+    overheightDist = intersectionData["overheightRecord"] #  initialising overheight sensor as well
     pedCountRecord = intersectionData['pedCountRecord']
-    speed = intersectionData['speedRecord']
+    speedRecord = intersectionData['speedRecord']
+
+
 
     #Traffic Stage approprite for new readings? ie Not suspended stage and enough time has passed
     #is in the correct stage to pollling to continue
@@ -69,20 +71,21 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     pollingStartTime = time.time()
     
     #Take readings for distance to next vehcile (ultrosonic sensor reading) and pedestrian button pressed
-    #Placeholder generation for MVP Checkpoint
     distToVehicle1, distReadingTime1 = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"]) 
-    overHeightDist, distReadingTime1 = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
+    overHeightDist, distReadingTime1 = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin2"])
 
     time.sleep(0.05)
     distToVehicle2, distReadingTime2 = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
     
     ## adding collecting instentaneous velocity by running the ultrasonic sensor twice
     speed = instentaneous_speed.velocity(distToVehicle1, distToVehicle2, distReadingTime1, distReadingTime2)
-    intersectionData["speedRecord"].append(speed)
+    speedRecord.append(speed)
+    
+    #intersectionData["speedRecord"].append(speed)
 
     ###################
     #over height detection with a bit of ASCI art to make sure its obvious
-    if overHeightDist[-1] <50: #change over height in changeable conditions rather then just hardcode
+    if overHeightDist <changeableConditions["overHeight"]: #change over height in changeable conditions rather then just hardcode
         print("##########################################\n")
         print("WARNING, VEHICHLE OVERHEIGHT\n")
         print("##########################################\n")
@@ -123,6 +126,8 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     intersectionData['timeRecord'].append(pollingStartTime)
     intersectionData['distToVehicleRecord1'].append(distToVehicle1)
     intersectionData['pedCountRecord'].append(pedCount)
+    intersectionData["overheightRecord"].append(overHeightDist)
+    
 
 #this limits data to 20 seconds, now it holds data for infinite length and adjusting pot length will be done in plotting
     # #Check if all lists have more readings than should be the case for 20 seconds, remove earliest reading to bring back to 20 sec

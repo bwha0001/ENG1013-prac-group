@@ -62,9 +62,6 @@ def traffic_stage_change(intersectionData, changeableConditions, trafficStage):
 
 
 
-
-
-
 def normal_operation(board, board2, intersectionData,changeableConditions):
     """Manages the opperation of the traffic lights and polling loop
 
@@ -110,8 +107,8 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
     try:
         while True:           
             #Check for Override switch
-            OverrideRead = board.analog_read(changeableConditions['arduinoPins']['normalOverride'])
-            if OverrideRead[1] == 1023:
+            overrideRead = board.analog_read(changeableConditions['arduinoPins']['normalOverride'])
+            if overrideRead[0] == 1023:
                 #override switch active, exit normal operation mode
                 trafficStage = "suspended"
                 print("Manual Override Switch activated, exiting normal operation mode")
@@ -132,12 +129,14 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
                 # If polling start time plus polling time taken equals the current time
                 # Display the current distance, “The distance to the closest vehicle is <current distance> cm.”
             
-            #Due to need to continue flashing while polling loop still runs
-            #trigger light setting again (ped green flashing) if in stage 5
             if trafficStage==3:
                 pedestrianStage3 = intersectionData['pedPresentRecord'][-1]
-                print("pedestrian count at stage 3")
+                #Runnaway line commented out
+                #print(f"pedestrian count at stage 3")
                 to_7_seg.sevenSeg(board2, 'n', pedestrianStage3)
+
+            #Due to need to continue flashing while polling loop still runs
+            #trigger light setting again (ped green flashing) if in stage 5
             if trafficStage == 5:
                 led.light_setting_state(board, changeableConditions, mainState, sideState, pedestrianState)
     except KeyboardInterrupt:
