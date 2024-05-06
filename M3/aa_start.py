@@ -52,7 +52,8 @@ changeableConditions = {
         "pedestrianGreen": 13,
         "pedButton":3,
         "triggerPin":4,
-        "echoPin":5
+        "echoPin":5,
+        "normalOverride":3
         },
     'ardinoPins7seg': [],
     'stageLengths':{

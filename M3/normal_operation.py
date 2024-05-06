@@ -109,6 +109,14 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
     
     try:
         while True:           
+            #Check for Override switch
+            OverrideRead = board.analog_read(changeableConditions['arduinoPins']['normalOverride'])
+            if OverrideRead[1] == 1023:
+                #override switch active, exit normal operation mode
+                trafficStage = "suspended"
+                print("Manual Override Switch activated, exiting normal operation mode")
+                return intersectionData, changeableConditions
+            
             # Does the traffic stage need changing?
             if time.time()>=stageTimeEnd:
                 intersectionData,changeableConditions, trafficStage, stageTimeEnd = traffic_stage_change(intersectionData, changeableConditions, trafficStage)
