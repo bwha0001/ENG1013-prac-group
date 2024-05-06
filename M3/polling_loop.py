@@ -124,15 +124,16 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     intersectionData['distToVehicleRecord1'].append(distToVehicle1)
     intersectionData['pedCountRecord'].append(pedCount)
 
-    #Check if all lists have more readings than should be the case for 20 seconds, remove earliest reading to bring back to 20 sec
-    if len(timeRecord)>(20/pollingRate) and len(distToVehicleRecord)>(20/pollingRate) and len(pedCountRecord)>(20/pollingRate):
-        #Remove first item in each of the lists
-        #aliasing back to dictionaries
-        timeRecord.pop(0)
-        distToVehicleRecord.pop(0)
-        pedCountRecord.pop(0)
-        intersectionData["speedRecord"].pop(0)
-        # intersectionData['temperatureRecord'].pop(0)
+#this limits data to 20 seconds, now it holds data for infinite length and adjusting pot length will be done in plotting
+    # #Check if all lists have more readings than should be the case for 20 seconds, remove earliest reading to bring back to 20 sec
+    # if len(timeRecord)>(20/pollingRate) and len(distToVehicleRecord)>(20/pollingRate) and len(pedCountRecord)>(20/pollingRate):
+    #     #Remove first item in each of the lists
+    #     #aliasing back to dictionaries
+    #     timeRecord.pop(0)
+    #     distToVehicleRecord.pop(0)
+    #     pedCountRecord.pop(0)
+    #     intersectionData["speedRecord"].pop(0)
+    #     # intersectionData['temperatureRecord'].pop(0)
 
 
         

@@ -34,7 +34,7 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
         changesCodes = {"PLR":"polling rate",
                         "OHH": "Over head height", 
                         "ETC" : "Extension time for car",
-                        "plotLength": "time length to record data"}
+                        "PLT": "Plot length time"}
 
         changesToVaribles = {"PLR":"pollingRate",
                              "OHH": "overHeight",
