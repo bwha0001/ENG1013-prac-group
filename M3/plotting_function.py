@@ -8,7 +8,7 @@ import time
 
 # input ultrasonic sensor list and time list 
 # voltage to distance calculation 
-def plotting_function(timeRecorded, distance):
+def plotting_function(changeableConditions, timeRecorded, distance):
     """
     Creates and displays graphs of data collected by sensors
     Args:
@@ -16,6 +16,7 @@ def plotting_function(timeRecorded, distance):
         distance (list): list of floats of distance to next vechile readings
     """
 
+# TODO handle values to length from changeable conditions
     #Convert time record to number of seconds since
     timeSince = []
     for i in range(0, len(timeRecorded), 1): # making this run to 20 would force 20 seconds of data to 
