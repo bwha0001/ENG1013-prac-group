@@ -147,9 +147,13 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     # time.sleep(changeableConditions['pollingRate'])
     pollingEndTime = time.time()
     pollingTime = pollingEndTime - pollingStartTime
-    print(f"\nTime taken to poll: {round(pollingTime, 2)} seconds")
+    #Print time between readings, if it is the inital readings print differant message
+    try:
+        print(f"\nTime between polling readings: {round(timeRecord[-1]-timeRecord[-2], 2):.2f} seconds.")
+    except IndexError:
+        print(f"Taking inital readings took {round(pollingTime,2):.2f} seconds.")
     #Print the distnace to the nearest vechile
-    print(f"Distance to nearest vechile: {distToVehicle1} cm\n")
+    print(f"Distance to nearest vechile: {round(float(distToVehicle1),2):.2f} cm\n")
    
     to_7_seg.sevenSeg(board2, 'n', distToVehicle1) # display distance to vehicle
     return intersectionData, changeableConditions

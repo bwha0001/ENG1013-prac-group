@@ -29,7 +29,8 @@ def traffic_stage_change(intersectionData, changeableConditions, trafficStage):
         trafficStage(1,2,3,4,5,6): the stage of the traffic sequence that was just entered
         stageEndTime(float): the end time of the current traffic sequence stage
     """    
-
+    
+    #Process for changing traffic stage
     if trafficStage == "suspended" or trafficStage == 6:
         #initalise stage 1
         #reset ped counter on next poll
@@ -53,6 +54,8 @@ def traffic_stage_change(intersectionData, changeableConditions, trafficStage):
     stageEndTime = time.time() + changeableConditions["stageLengths"][changeableConditions["trafficStage"]]
     #Display traffic stage commencing on console
     print(f"Commencing Traffic Stage {trafficStage}")
+
+
     #display pedestrian count if entered stage 3
     if changeableConditions["trafficStage"] == 3:
         #print message and last value in the list stored in intersection data
@@ -115,13 +118,24 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
                 return intersectionData, changeableConditions
             
             # Does the traffic stage need changing?
-            if time.time()>=stageTimeEnd:
-                intersectionData,changeableConditions, trafficStage, stageTimeEnd = traffic_stage_change(intersectionData, changeableConditions, trafficStage)
-                #set light colours
-                [mainState, sideState, pedestrianState] = lightForStage[changeableConditions["trafficStage"]] 
-                #output lights to arduino
-                led.light_setting_state(board, changeableConditions, mainState, sideState, pedestrianState)
-                # Run function polling loop, inputting polling rate, output of polling time, current distance and pedestrian count
+            if time.time()>=stageTimeEnd:              
+                #Check if the traffic stage is able to be changed if stage 2, ie next vechile isnt too close
+                if trafficStage == 2:
+                    #Check for nearest vechile from ultrasonic
+                    distToNextVechile = board.sonar_read(changeableConditions['arduinoPins']['triggerPin'])
+                    if distToNextVechile[0] < changeableConditions["extensionTrigger"]:
+                        stageTimeEnd += changeableConditions["extensionTrigger"]
+                        #debugging line
+                        print("stage 2 extended")
+                else:
+                    #Change traffic stage
+                    intersectionData,changeableConditions, trafficStage, stageTimeEnd = traffic_stage_change(intersectionData, changeableConditions, trafficStage)
+                    #set light colours
+                    [mainState, sideState, pedestrianState] = lightForStage[changeableConditions["trafficStage"]] 
+                    #output lights to arduino
+                    led.light_setting_state(board, changeableConditions, mainState, sideState, pedestrianState)
+            
+            # Run function polling loop, inputting polling rate, output of polling time, current distance and pedestrian count
             [intersectionData, changeableConditions] = pl.polling_loop(board, board2, intersectionData, changeableConditions)
             #Happens within function 
                 #If polling start time plus polling time taken equals the current time

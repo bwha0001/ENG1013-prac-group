@@ -43,7 +43,7 @@ intersectionData = {"timeRecord":[], "distToVehicleRecord1":[], #regular distanc
                     "pedPresentRecord":[], 
                     "speedRecord" :[]}
 
-pollingRate = 5
+pollingRate = 2
 # This needs to be updated during the meeting once everyone is confirmed with pins
 changeableConditions = {
     'arduinoPins' : {
@@ -82,6 +82,7 @@ changeableConditions = {
     'pollingRate' : pollingRate,
     "overHeight" : 60,
     "extensionTime" : 3,
+    "extensionTrigger":3,
     "plotLength" : 20
 
 }

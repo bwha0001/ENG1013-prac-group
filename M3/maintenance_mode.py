@@ -34,11 +34,13 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
         changesCodes = {"PLR":"polling rate",
                         "OHH": "Over head height", 
                         "ETC" : "Extension time for car",
+                        "ETT":"Distance for nearest vechile to extend yellow",
                         "PLT": "Plot length time"}
 
         changesToVaribles = {"PLR":"pollingRate",
                              "OHH": "overHeight",
                              "ETC":"extensionTime",
+                             "ETT":"extensionTrigger",
                              "plotLength": "plotLength"} # orange light needs to hold longer
         OHHAllowableValues = [int(d) for d in range(5,60,1)] # minimum = 5 meaning 5cm away from sensor,max = 60cm 
         ETCAlloableValues = [3,4,5,6,7,8]
