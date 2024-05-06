@@ -86,7 +86,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
         print("##########################################\n")
         print("WARNING, VEHICHLE OVERHEIGHT\n")
         print("##########################################\n")
-    ####################
+    #################### need to flash an led --> write as a function to flash an independant LED
 
     ##############################################################################################
     # add in a line of code to take temperature as a voltage from an analogue input

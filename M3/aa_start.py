@@ -58,7 +58,7 @@ changeableConditions = {
         "pedButton":3,
         "triggerPin":4,
         "echoPinMain":5,
-        "echoPinOverHeight" : 15, # random number until pin map finalised
+        "echoPinOverHeight" : 2, # random number until pin map finalised
         "normalOverride":3
         },
     'ardinoPins7seg': [],
@@ -93,7 +93,7 @@ board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestria
 #######
 # potentially need to put set pin mode sonar in polling to initialise before being called
 #######
-board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], timeout=200000)
+# board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], timeout=200000)
 
 main.main_menu(board, board2, intersectionData, changeableConditions)
 

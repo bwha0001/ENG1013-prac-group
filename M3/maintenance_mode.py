@@ -29,9 +29,15 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
             return
         to_7_seg.sevenSeg(board2, 'c')
         #Initalisations, what is avaible to change, what acceptable values are
-        changesCodes = {"PLR":"polling rate"}
+        changesCodes = {"PLR":"polling rate",
+                        "OHH": "Over head height", 
+                        "ETC" : "Extension time for car"
+                        "plot": "time length to record data"}
         changesRules = {"PLR":{1, 2, 3, 4 ,5}}
-        changesToVaribles = {"PLR":"pollingRate"}
+        changesToVaribles = {"PLR":"pollingRate",
+                             "OHH": "overHeight",
+                             "ETC":"extensionTime",
+                             "plot": "plottingTime"} # orange light needs to hold longer
         #Suspend polling loop, set mode infomation
         changeableConditions["trafficStage"] = "suspended"
         
@@ -61,12 +67,20 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
 
 
         #make changes
+        #things that can can be changed
 
+        #1. time held for plotting
+        #2. extenstion time if car is close
+        #3. overheight height
+        
         while time.time()<=accessEndTime:
             #Check if a new input should be asked for
             if optionCode == '':
                 #Choose option to edit
-                print(f"Enter of the the following to codes to change associated condition:\n {changesCodes}")
+                print(f"Enter of the the following to codes to change associated condition:\n ")
+                keys = changesCodes.keys()
+                for i in changesCodes:
+                    print(f"{keys[i]} as {changesCodes[i]}\n")
                 optionCode  = input("Enter Condition to edit:")
 
             #Check that option to edit is valid
