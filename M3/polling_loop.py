@@ -75,7 +75,6 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
 
     time.sleep(0.05)
     distToVehicle2, distReadingTime2 = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
-    overHeightDist, distReadingTime1 = board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
     
     ## adding collecting instentaneous velocity by running the ultrasonic sensor twice
     speed = instentaneous_speed.velocity(distToVehicle1, distToVehicle2, distReadingTime1, distReadingTime2)
