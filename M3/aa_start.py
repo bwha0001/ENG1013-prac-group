@@ -89,6 +89,10 @@ board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideGreen
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianRed"])
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
 # Configure trigger and echo to sonar
+
+#######
+# potentially need to put set pin mode sonar in polling to initialise before being called
+#######
 board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], timeout=200000)
 
 main.main_menu(board, board2, intersectionData, changeableConditions)
