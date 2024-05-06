@@ -58,7 +58,7 @@ changeableConditions = {
         "pedButton":3,
         "triggerPin":4,
         "echoPinMain":5,
-        "echoPinOverHeight" : 15, # random number until pin map finalised
+        "echoPinOverHeight" : 2, # random number until pin map finalised
         "normalOverride":3
         },
     'ardinoPins7seg': [],
@@ -71,12 +71,17 @@ changeableConditions = {
         6:3
     },
     'trafficStage' :"suspended",
-    'pollingRate' : pollingRate,
     'pedCounterReset' : "",
     'lockOutTime': 0,    # for maintenance mode lock out
     "lockOutLength": 120, #Locked out for 2 mins
-    "accessTime": 60 #testing at 1 min #180 #time able to access maintence mode 3 mins(access time in seconds)
+    "accessTime": 60, #testing at 1 min #180 #time able to access maintence mode 3 mins(access time in seconds)
     
+    #changeable conditions for maintenance mode
+    'pollingRate' : pollingRate,
+    "overHeight" : 60,
+    "extensionTime" : 3,
+    "plotLength" : 20
+
 }
 
 #set arduino pins for main board
@@ -89,7 +94,11 @@ board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideGreen
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianRed"])
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
 # Configure trigger and echo to sonar
-board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], timeout=200000)
+
+#######
+# potentially need to put set pin mode sonar in polling to initialise before being called
+#######
+# board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], timeout=200000)
 
 main.main_menu(board, board2, intersectionData, changeableConditions)
 

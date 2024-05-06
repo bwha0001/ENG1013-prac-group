@@ -82,11 +82,11 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
 
     ###################
     #over height detection with a bit of ASCI art to make sure its obvious
-    if overHeightDist[-1] <50:
+    if overHeightDist[-1] <50: #change over height in changeable conditions rather then just hardcode
         print("##########################################\n")
         print("WARNING, VEHICHLE OVERHEIGHT\n")
         print("##########################################\n")
-    ####################
+    #################### need to flash an led --> write as a function to flash an independant LED
 
     ##############################################################################################
     # add in a line of code to take temperature as a voltage from an analogue input
