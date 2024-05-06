@@ -239,7 +239,7 @@ def sevenSeg(myBoard, mode : str, number = '000'):
         digit2 = [str(d) for d in str(digitNum[2])]
         digit3 = [str(d) for d in str(dig4)] # mode display digit
         # digDisplay = [digit0, digit1, digit2, digit3] 
-        digDisplay = [digit0, digit2,digit1, digit3] # should be idk need to test to make sure
+        digDisplay = [digit0, digit1, digit2, digit3] # should be idk need to test to make sure
 
 
     else:
