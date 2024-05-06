@@ -57,7 +57,8 @@ changeableConditions = {
         "pedestrianGreen": 13,
         "pedButton":3,
         "triggerPin":4,
-        "echoPin":5,
+        "echoPinMain":5,
+        "echoPinOverHeight" : 15, # random number until pin map finalised
         "normalOverride":3
         },
     'ardinoPins7seg': [],
