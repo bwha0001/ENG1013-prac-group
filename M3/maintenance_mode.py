@@ -87,16 +87,17 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
             if optionCode == '':
                 #Choose option to edit
                 print(f"Enter of the the following to codes to change associated condition:\n ")
-                keys = changesCodes.keys()
-                for i in changesCodes:
-                    print(f"{keys[i]} as {changesCodes[i]}\n")
+                keys = list(changesCodes.keys())
+                values = list(changesCodes.values())
+                for i in range(0,len(changesCodes)):
+                    print(f"{keys[i]} for {values[i]}\n")
                 optionCode  = input("Enter Condition to edit:")
 
-            #Check that option to edit is valid
-            if optionCode in changesCodes.keys():
-                #If valid input changeCode remains saved
-                pass
-            else:
+            # #Check that option to edit is valid
+            # if optionCode in changesCodes.keys():
+            #     #If valid input changeCode remains saved
+            #     pass
+            if optionCode not in keys:
                 print(f"Input does not match change code.\n The codes and their changes are as follows:\n {changesCodes}\n")
                 #Do not save optionCode entered by user overwritten to condition of optionCode being an asked for ie. empty string\
                 optionCode = ''
