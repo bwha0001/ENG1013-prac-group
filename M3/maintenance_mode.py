@@ -116,8 +116,12 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
                     to_7_seg.sevenSeg(board2, 'c', int(changeToConditon))
                     optionCode = ""
                 else:
-                    invalidChangeMessage = f"Change requested to {changesCodes[optionCode]} not avalible. Acceptable changes are to {changesRules[optionCode]}"
-                    print(invalidChangeMessage)
+                    if changesCodes[optionCode] == 'OHH':
+                        invalidChangeMessage = f"Change requested to {changesCodes[optionCode]} not avalible. Acceptable changes are to between 5 to 60cm" # just to stop printing out a masive list
+                        print(invalidChangeMessage)
+                    else:
+                        invalidChangeMessage = f"Change requested to {changesCodes[optionCode]} not avalible. Acceptable changes are to {changesRules[optionCode]}"
+                        print(invalidChangeMessage)
                     #Restart loop
                     continue
             except ValueError:

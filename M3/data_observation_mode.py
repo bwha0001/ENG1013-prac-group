@@ -47,10 +47,11 @@ def data_observation_mode(board, board2, intersectionData, changeableConditions)
 
 
         #Check if there is enough recorded data, if so plot, if not notify user and plot sample?
-        if changeableConditions['pollingRate'] * len(distToVehicleRecord) >= 20:
+        plotLength = changeableConditions["plotLength"]
+        if changeableConditions['pollingRate'] * len(distToVehicleRecord) >= plotLength:
 #test line            print("complete function plot triggered") #testing statememnt
-            plotting_function.plotting_function(changeableConditions, intersectionData['timeRecord'], intersectionData['distToVehicleRecord'])
-            plotting_function.plotting_function(changeableConditions, intersectionData['timeRecord'], intersectionData['speedRecord'])
+            plotting_function.plotting_function(changeableConditions, intersectionData, 'time', 'distance')
+            plotting_function.plotting_function(changeableConditions, intersectionData, 'time', 'velocity')
             ##############################################
             # plot temperature
         else:
