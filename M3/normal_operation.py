@@ -63,7 +63,10 @@ def traffic_stage_change(intersectionData, changeableConditions, trafficStage):
         print(f"Pedestrian Count: {[pedCount]}")
     return intersectionData,changeableConditions, trafficStage, stageEndTime
 
-
+def thermistor_adjust(changeableConditions):
+    if tempCelcius > 35:
+        changeableConditions["stageLengths"][1] += 5
+        changeableConditions["stageLengths"][4] += 5
 
 def normal_operation(board, board2, intersectionData,changeableConditions):
     """Manages the opperation of the traffic lights and polling loop
