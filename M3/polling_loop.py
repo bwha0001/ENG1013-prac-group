@@ -94,9 +94,9 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
 
     ##############################################################################################
     # add in a line of code to take temperature as a voltage from an analogue input
-    thermRes = board.analog_read(changeableConditions["arduinoPins"]["temperaturePin"])
-    tempVoltage = temp.thermistor_voltage(thermRes, voltIn)
-    tempCelcius = temp.temperature(tempVoltage)
+    voltage = board.analog_read(changeableConditions["arduinoPins"]["temperaturePin"])
+    thermRes = temp.thermistor_resistance(resistance, voltage)
+    tempCelcius = temp.temperature(thermRes)
     intersectionData['temperatureRecord'].append(tempCelcius)
 
     #code for LDR to take light from an analogue input
