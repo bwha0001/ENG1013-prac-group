@@ -4,17 +4,18 @@
 # thermistor reference
 import math as mth
 
-#voltage dividor with a 1k resistor to find voltage 
-def thermistor_voltage(thermRes, voltIn):
-    fixedRes = 1000
-    tempVoltage = voltIn * (fixedRes/(thermRes+fixedRes)) 
-    return tempVoltage
+#voltage divider with a 1k resistor
+def thermistor_resistance(resistance, voltage):
+    thermRes = resistance * (voltage / (5.0 - voltage))
+    return thermRes
 
-def temperature(tempVoltage):
-    if tempVoltage>4.59:
+def temperature(thermRes):
+    if thermRes>4.59:
         #need to check constants
-        tempCelcius = -21.21*mth.log((0.0331335)*(-100+100/tempVoltage))
-    elif tempVoltage<=4.59:
-        tempCelcius = -7.015*mth.log((0.00284784)*(-100+500/tempVoltage))
+        #tempCelcius = -21.21*mth.log((0.0331335)*(-100+100/tempVoltage))
+        tempCelcius = -21.21 * mth.log(thermRes) + 72.203
+    elif thermRes<=4.59:
+        #tempCelcius = -7.015*mth.log((0.00284784)*(-100+500/tempVoltage))
+        tempCelcius = -7.071 * mth.log(thermRes) + 41.128
 
     return tempCelcius
