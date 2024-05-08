@@ -137,7 +137,14 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
                     [mainState, sideState, pedestrianState] = lightForStage[changeableConditions["trafficStage"]] 
                     #output lights to arduino
                     led.light_setting_state(board, changeableConditions, mainState, sideState, pedestrianState)
-            
+             
+            if trafficStage == 2:
+                board.analog_write(buzzerPin, 500) 
+            elif trafficStage == 5:
+                board.analog_write(buzzerPin, 1000)
+            else:
+                board.analog_write(buzzerPin, 0)
+                
             # Run function polling loop, inputting polling rate, output of polling time, current distance and pedestrian count
             [intersectionData, changeableConditions] = pl.polling_loop(board, board2, intersectionData, changeableConditions)
             #Happens within function 
