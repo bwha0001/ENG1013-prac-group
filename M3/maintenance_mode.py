@@ -5,6 +5,7 @@
 
 import to_7_segment_display as to_7_seg
 import time
+import time_conversion as tc
 
 def maintenance_mode(board, board2, intersectionData, changeableConditions):
     '''
@@ -25,7 +26,10 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
         #Check if locked out
         lockOutTime = changeableConditions['lockOutTime']
         if time.time() < lockOutTime:
-            print(f"You are locked out. Wait {round((lockOutTime-time.time())/60, 2)} mins till you can enter maintenance mode.")
+            #find how long remaining in lockout, in mins and seconds
+            lockOutMin, lockOutSec = tc.time_conversion(lockOutTime-time.time(), "sec")
+            #print message about how much time remaining to console
+            print(f"You are locked out. {lockOutMin} mins and {lockOutSec} seconds till maintenance mode can be accessesed.")
             return
         to_7_seg.sevenSeg(board2, 'c')
 
