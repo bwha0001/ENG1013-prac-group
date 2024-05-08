@@ -7,6 +7,7 @@ import time
 import global_variables as GLOB
 import to_7_segment_display as to_7_seg
 import instentaneous_speed 
+import temperature_handling as temp
 # import AAstart as start
 
 def ped_button_callback(data):
@@ -94,9 +95,9 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     ##############################################################################################
     # add in a line of code to take temperature as a voltage from an analogue input
     thermRes = board.analog_read(changeableConditions["arduinoPins"]["temperaturePin"])
-    tempVoltage = thermistor_voltage(thermRes, voltIn)
-    tempCelcius = temperature(tempVoltage)
-    intersectionData['temperatureRecord'].append(tempcelcius)
+    tempVoltage = temp.thermistor_voltage(thermRes, voltIn)
+    tempCelcius = temp.temperature(tempVoltage)
+    intersectionData['temperatureRecord'].append(tempCelcius)
 
     #code for LDR to take light from an analogue input
     #light = board.analog_read(changeableConditions["arduinoPins"]["ldrPin"])
