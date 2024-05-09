@@ -96,7 +96,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     # add in a line of code to take temperature as a voltage from an analogue input
 
     #Take reading of current temprature then store in intersection data
-    tempCelcius = temp.temp_read(board, changeableConditions, intersectionData)
+    tempCelcius = temp.temperature(board, changeableConditions)
     intersectionData["tempRecord"].append(tempCelcius)
 
     """
