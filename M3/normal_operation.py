@@ -59,7 +59,8 @@ def traffic_stage_change(board, intersectionData, changeableConditions, trafficS
     #Take reading from themistor and ldr
     #funtion calls
     currentLight = "placeholder for function"
-    currentTemp = temp.temp_read(board, changeableConditions, intersectionData)
+    currentTemp = temp.temperature(board, changeableConditions)
+    print(currentTemp)
     #if current temprature is above the temprature for triggering add to the extension time
     if currentTemp == changeableConditions["tempTrigger"]:
         stageExtensionTime += changeableConditions["tempStageExtensions"][trafficStage]
@@ -151,7 +152,7 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
                         print("stage 2 extended")
                 else:
                     #Change traffic stage
-                    intersectionData,changeableConditions, trafficStage, stageTimeEnd = traffic_stage_change(intersectionData, changeableConditions, trafficStage)
+                    intersectionData,changeableConditions, trafficStage, stageTimeEnd = traffic_stage_change(board, intersectionData, changeableConditions, trafficStage)
                     #set light colours
                     [mainState, sideState, pedestrianState] = lightForStage[changeableConditions["trafficStage"]] 
                     #output lights to arduino

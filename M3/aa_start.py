@@ -130,7 +130,8 @@ board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestria
 #######
 board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"])
 board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin2"], changeableConditions["arduinoPins"]["echoPin2"])
-
+board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"]) 
+board.sonar_read(changeableConditions["arduinoPins"]["triggerPin2"]) 
 #set up pin for themister
 board.set_pin_mode_analog_input(changeableConditions["arduinoPins"]["temperaturePin"])
 #set up pin for LDR
