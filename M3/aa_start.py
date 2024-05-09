@@ -64,7 +64,7 @@ changeableConditions = {
         "echoPin2":5,
         "echoPinOverHeight":13, # random number until pin map finalised
         "normalOverride":3
-        "tempraturePin": 
+        "tempraturePin":0 
         },
     'ardinoPins7seg': [],
 
@@ -85,8 +85,8 @@ changeableConditions = {
     #Light and temp changes TODO decide what is editable parameters and what is set
 
     "circutConditions":{
-        "tempResistor": 1000,
-        "lightResistor": 1000
+        "tempResistorOhms": 1000,
+        "lightResistorOhms": 1000
     },
     "dayNightTrigger": "", #TODO esablish light value
     "nightStageLengths":{
