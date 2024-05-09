@@ -20,10 +20,18 @@ def temperature(thermRes):
     return tempCelcius
 
 def temp_read(board, changeableConditions, intersectionData):
-    #TODO analog read then other function calls
+    """
+    Takes reading from themistor and hence calculates temprature
+    Args:
+        board: Arduino Set Up
+        intersectionData (dictonary): Data collected about the interesection
+        changeableConditions (dictonary): Anything related to the system that changes
+
+    Returns:
+        tempCelcius(interger/float?): temprature mesured as per themistor
+    """
     voltage = board.analog_read(changeableConditions["arduinoPins"]["temperaturePin"])
     thermRes = thermistor_resistance(resistance, voltage)
     #TODO which resistance is this refering to, the other resistor in tbe circut not LDR?
     tempCelcius = temperature(thermRes)
-    intersectionData['temperatureRecord'].append(tempCelcius)
     return tempCelcius
