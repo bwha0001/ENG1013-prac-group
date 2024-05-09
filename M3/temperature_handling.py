@@ -1,37 +1,53 @@
-# translates the temperature from voltage to temperature.
+# # translates the temperature from voltage to temperature.
 
-# Double check formulas, rearanged values from
-# thermistor reference
+# # Double check formulas, rearanged values from
+# # thermistor reference
+# import math as mth
+
+# #voltage divider with a 1k resistor
+# # def thermistor_resistance(resistance, voltage):
+# #     thermRes = resistance * (voltage / (5.0 - voltage))
+# #     return thermRes
+
+# def temperature(thermRes):
+#     if thermRes>4.59:
+#         #need to check constants
+#         #tempCelcius = -21.21*mth.log((0.0331335)*(-100+100/tempVoltage))
+#         tempCelcius = -21.21 * mth.log(thermRes) + 72.203
+#     elif thermRes<=4.59:
+#         #tempCelcius = -7.015*mth.log((0.00284784)*(-100+500/tempVoltage))
+#         tempCelcius = -7.071 * mth.log(thermRes) + 41.128
+#     return tempCelcius
+
+# def temp_read(board, changeableConditions, intersectionData):
+#     """
+#     Takes reading from themistor and hence calculates temprature
+#     Args:
+#         board: Arduino Set Up
+#         intersectionData (dictonary): Data collected about the interesection
+#         changeableConditions (dictonary): Anything related to the system that changes
+
+#     Returns:
+#         tempCelcius(interger/float?): temprature mesured as per themistor
+#     """
+#     voltage = board.analog_read(changeableConditions["arduinoPins"]["temperaturePin"])
+#     # thermRes = thermistor_resistance(resistance, voltage)
+#     #TODO which resistance is this refering to, the other resistor in tbe circut not LDR?
+#     # tempCelcius = temperature(thermRes)
+#     return tempCelcius
+
+
 import math as mth
 
-#voltage divider with a 1k resistor
-def thermistor_resistance(resistance, voltage):
-    thermRes = resistance * (voltage / (5.0 - voltage))
-    return thermRes
+def temp_calculation(voltage):
+    #insert code
+    resistance = voltage # fix this in a second
+    eqn1 = -7.017*mth.log(resistance) + 41.128
+    eqn2 = -21.21*mth.log(resistance) + 72.203
 
-def temperature(thermRes):
-    if thermRes>4.59:
-        #need to check constants
-        #tempCelcius = -21.21*mth.log((0.0331335)*(-100+100/tempVoltage))
-        tempCelcius = -21.21 * mth.log(thermRes) + 72.203
-    elif thermRes<=4.59:
-        #tempCelcius = -7.015*mth.log((0.00284784)*(-100+500/tempVoltage))
-        tempCelcius = -7.071 * mth.log(thermRes) + 41.128
-    return tempCelcius
 
-def temp_read(board, changeableConditions, intersectionData):
-    """
-    Takes reading from themistor and hence calculates temprature
-    Args:
-        board: Arduino Set Up
-        intersectionData (dictonary): Data collected about the interesection
-        changeableConditions (dictonary): Anything related to the system that changes
+def temperature(myBoard, changeableConditions):
+    tempPin = changeableConditions["ardionoPins"]["temperaturePin"]
+    voltage, time = myBoard.analog_read(tempPin)
+    
 
-    Returns:
-        tempCelcius(interger/float?): temprature mesured as per themistor
-    """
-    voltage = board.analog_read(changeableConditions["arduinoPins"]["temperaturePin"])
-    thermRes = thermistor_resistance(resistance, voltage)
-    #TODO which resistance is this refering to, the other resistor in tbe circut not LDR?
-    tempCelcius = temperature(thermRes)
-    return tempCelcius
