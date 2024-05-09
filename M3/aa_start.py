@@ -49,14 +49,14 @@ pollingRate = 2
 # This needs to be updated during the meeting once everyone is confirmed with pins
 changeableConditions = {
     'arduinoPins' : {
-        "mainRed": 6,
-        "mainYellow": 7,
-        "mainGreen": 8,
+        "mainRed": 13,
+        "mainYellow": 12,
+        "mainGreen": 11,
         "sideRed": 9,
         "sideYellow": 10,
-        "sideGreen": 11,
-        "pedestrianRed": 12,
-        "pedestrianGreen": 13,
+        "sideGreen": 7,
+        "pedestrianRed": 6,
+        "pedestrianGreen": 5,
         "pedButton":13,
         "triggerPin":2,
         "echoPin":3,

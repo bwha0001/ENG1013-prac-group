@@ -139,6 +139,8 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
                 print("Manual Override Switch activated, exiting normal operation mode")
                 return intersectionData, changeableConditions
             
+            ## PLACE PED BUTTON
+
             # Does the traffic stage need changing?
             if time.time()>=stageTimeEnd:              
                 #Check if the traffic stage is able to be changed if stage 2, ie next vechile isnt too close
