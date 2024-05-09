@@ -13,6 +13,7 @@ import main_menu as main
 import normal_operation as n_o
 import data_observation_mode as DOM
 import global_variables as GLOB
+import temperature_handling as temp
 
     # print(f"Test line button data: {changeableConditions['pedsPresent']}, {changeableConditions['lastButtonPress']}")
 
@@ -52,6 +53,20 @@ def traffic_stage_change(intersectionData, changeableConditions, trafficStage):
     #set stage end time to be x number of seconds from now determined by set value in changeable conditions
     #go to key of the current traffic stage in the lengths dictonary which is within changeable conditons
     stageEndTime = time.time() + changeableConditions["stageLengths"][changeableConditions["trafficStage"]]
+    
+    #Extend stage if approprite based on low light or high temp
+    stageExtensionTime = 0
+    #Take reading from themistor and ldr
+    #funtion calls
+    currentLight = "placeholder for function"
+    currentTemp = temp.temp_read()
+    #if current temprature is above the temprature for triggering add to the extension time
+    if currentTemp == changeableConditions["tempTrigger"]:
+        stageExtensionTime += changeableConditions["tempStageExtensions"][trafficStage]
+
+    #Add the extension time to stageEndTime
+    stageEndTime += stageExtensionTime
+
     #Display traffic stage commencing on console
     print(f"Commencing Traffic Stage {trafficStage}")
 
@@ -63,10 +78,14 @@ def traffic_stage_change(intersectionData, changeableConditions, trafficStage):
         print(f"Pedestrian Count: {[pedCount]}")
     return intersectionData,changeableConditions, trafficStage, stageEndTime
 
+
+'''
 def thermistor_adjust(changeableConditions):
     if tempCelcius > 35:
         changeableConditions["stageLengths"][1] += 5
         changeableConditions["stageLengths"][4] += 5
+'''
+
 
 def normal_operation(board, board2, intersectionData,changeableConditions):
     """Manages the opperation of the traffic lights and polling loop

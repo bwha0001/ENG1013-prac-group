@@ -41,7 +41,9 @@ intersectionData = {"timeRecord":[], "distToVehicleRecord1":[], #regular distanc
                     'overheightRecord' : [], # overhight sensor 
                     "pedCountRecord":[], 
                     "pedPresentRecord":[], 
-                    "speedRecord" :[]}
+                    "speedRecord" :[],
+                    "lightRecord":[],
+                    "tempRecord":[]}
 
 pollingRate = 2
 # This needs to be updated during the meeting once everyone is confirmed with pins
@@ -64,6 +66,7 @@ changeableConditions = {
         "normalOverride":3
         },
     'ardinoPins7seg': [],
+
     'stageLengths':{
         1:30,
         2:3,
@@ -78,14 +81,36 @@ changeableConditions = {
     "lockOutLength": 120, #Locked out for 2 mins
     "accessTime": 60, #testing at 1 min #180 #time able to access maintence mode 3 mins(access time in seconds)
     
+    #Light and temp changes TODO decide what is editable parameters and what is set
+
+    "circutConditions":{
+        "tempResistor": 1000,
+        "lightResistor": 1000
+    },
+    "dayNightTrigger": "", #TODO esablish light value
+    "nightStageLengths":{
+        1:45, #Stage 1 changes to 45 seconds
+        2:3, 
+        3:3, 
+        4:10, #Stage 4 changes to 10 seconds
+        5:3,
+        6:3},
+    "tempTrigger": 35,
+    "tempStageExtensions": {
+        1:5, #extend stage 1 by 5 seconds
+        2:0,
+        3:0,
+        4:5, #extend stage 5 by 5 seconds
+        5:0,
+        6:0},
+    
     #changeable conditions for maintenance mode
     'pollingRate' : pollingRate,
     "overHeight" : 60,
     "extensionTime" : 3,
     "extensionTrigger":3,
-    "plotLength" : 20
-
-}
+    "plotLength" : 20,
+    }
 
 #set arduino pins for main board
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainRed"])

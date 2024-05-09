@@ -17,5 +17,13 @@ def temperature(thermRes):
     elif thermRes<=4.59:
         #tempCelcius = -7.015*mth.log((0.00284784)*(-100+500/tempVoltage))
         tempCelcius = -7.071 * mth.log(thermRes) + 41.128
+    return tempCelcius
 
+def temp_read(board, changeableConditions, intersectionData):
+    #TODO analog read then other function calls
+    voltage = board.analog_read(changeableConditions["arduinoPins"]["temperaturePin"])
+    thermRes = thermistor_resistance(resistance, voltage)
+    #TODO which resistance is this refering to, the other resistor in tbe circut not LDR?
+    tempCelcius = temperature(thermRes)
+    intersectionData['temperatureRecord'].append(tempCelcius)
     return tempCelcius
