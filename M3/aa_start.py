@@ -63,8 +63,9 @@ changeableConditions = {
         "triggerPin2":4,
         "echoPin2":5,
         "echoPinOverHeight":13, # random number until pin map finalised
-        "normalOverride":3
-        "tempraturePin": 
+        "normalOverride":3,
+        "temperaturePin":0,
+        "ldrPin":1 
         },
     'ardinoPins7seg': [],
 
@@ -85,8 +86,8 @@ changeableConditions = {
     #Light and temp changes TODO decide what is editable parameters and what is set
 
     "circutConditions":{
-        "tempResistor": 1000,
-        "lightResistor": 1000
+        "tempResistorOhms": 1000,
+        "lightResistorOhms": 1000
     },
     "dayNightTrigger": "", #TODO esablish light value
     "nightStageLengths":{
@@ -113,7 +114,7 @@ changeableConditions = {
     "plotLength" : 20,
     }
 
-#set arduino pins for main board
+#set arduino pins for main board, lights
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainRed"])
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainYellow"])
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainGreen"])
@@ -130,7 +131,12 @@ board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestria
 board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"])
 board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin2"], changeableConditions["arduinoPins"]["echoPin2"])
 
-#first reading causing errors,
+#set up pin for themister
+board.set_pin_mode_analog_input(changeableConditions["arduinoPins"]["temperaturePin"])
+#set up pin for LDR
+board.set_pin_mode_analog_input(changeableConditions["arduinoPins"]["ldrPin"])
+
+#first reading causing errors, complete and ditch inital reads
 
 board.set_pin_mode_analog_input(changeableConditions['arduinoPins']['normalOverride'])
 
