@@ -64,6 +64,7 @@ changeableConditions = {
         "echoPin2":5,
         "echoPinOverHeight":13, # random number until pin map finalised
         "normalOverride":3
+        "tempraturePin": 
         },
     'ardinoPins7seg': [],
 

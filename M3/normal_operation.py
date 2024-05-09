@@ -17,7 +17,7 @@ import temperature_handling as temp
 
     # print(f"Test line button data: {changeableConditions['pedsPresent']}, {changeableConditions['lastButtonPress']}")
 
-def traffic_stage_change(intersectionData, changeableConditions, trafficStage):
+def traffic_stage_change(board, intersectionData, changeableConditions, trafficStage):
     """_summary_
 
     Args:
@@ -59,7 +59,7 @@ def traffic_stage_change(intersectionData, changeableConditions, trafficStage):
     #Take reading from themistor and ldr
     #funtion calls
     currentLight = "placeholder for function"
-    currentTemp = temp.temp_read()
+    currentTemp = temp.temp_read(board, changeableConditions, intersectionData)
     #if current temprature is above the temprature for triggering add to the extension time
     if currentTemp == changeableConditions["tempTrigger"]:
         stageExtensionTime += changeableConditions["tempStageExtensions"][trafficStage]
@@ -123,7 +123,7 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
 
     #use changeable conditions to start operation from suspended stage, restarts at stage 1
     if trafficStage == "suspended":
-        intersectionData, changeableConditions, trafficStage, stageTimeEnd = traffic_stage_change(intersectionData, changeableConditions, trafficStage)
+        intersectionData, changeableConditions, trafficStage, stageTimeEnd = traffic_stage_change(board, intersectionData, changeableConditions, trafficStage)
         #set light colours
         [mainState, sideState, pedestrianState] = lightForStage[changeableConditions["trafficStage"]]
         #output lights to arduino
