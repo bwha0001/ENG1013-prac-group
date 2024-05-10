@@ -28,7 +28,6 @@ def plotting_function(changeableConditions, intersectionData, x, y):
     #     intersectionData["speedRecord"].pop(0)
     #     # intersectionData['temperatureRecord'].pop(0)
     timeRecorded = intersectionData['timeRecord']
-    #Convert time record to number of seconds since
     pollingRate = changeableConditions['pollingRate']
     distToVehicleRecord = intersectionData['distToVehicleRecord1']
     overHeight = intersectionData["overheightRecord"]
@@ -36,12 +35,14 @@ def plotting_function(changeableConditions, intersectionData, x, y):
     speedRecord = intersectionData['speedRecord']
 
     
-    plotList = range(((len(timeRecorded)-int(plotLength))/int(pollingRate)),len(timeRecorded)-1,-1) #values from end-plotLength to end counting from the end
+    # plotList = range(((len(timeRecorded)-int(plotLength))//int(pollingRate)),len(timeRecorded)-1,-1) #values from end-plotLength to end counting from the end
+ 
+    plotList = range(len(timeRecorded)-int(plotLength)*pollingRate, len(timeRecorded)-1, pollingRate)
     plotDistToVehichleRecord = []
     plotSpeedRecord = []
     for i in plotList:
-        plotDistToVehichleRecord.append(distToVehicleRecord(i))
-        plotSpeedRecord.append(speedRecord(i))
+        plotDistToVehichleRecord.append(distToVehicleRecord[i])
+        plotSpeedRecord.append(speedRecord[i])
 
 
     # this will work but a more robust method is to just record plot Length of data as a temp rather then deleting data
@@ -70,7 +71,7 @@ def plotting_function(changeableConditions, intersectionData, x, y):
         timeSince.append(round(timeRecorded[i]-timeRecorded[-1], 2))
     
     #Plotting
-    if x.lower == 'time':
+    if x.lower() == 'time':
         unitX = '(s)'
     if y.lower() == 'distance':
         unitY = '(cm)'
