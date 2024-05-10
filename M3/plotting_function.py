@@ -33,16 +33,18 @@ def plotting_function(changeableConditions, intersectionData, x, y):
     overHeight = intersectionData["overheightRecord"]
     plotLength = changeableConditions['plotLength']
     speedRecord = intersectionData['speedRecord']
-
+    temperatureRecord = intersectionData['tempRecord']
     
     # plotList = range(((len(timeRecorded)-int(plotLength))//int(pollingRate)),len(timeRecorded)-1,-1) #values from end-plotLength to end counting from the end
  
     plotList = range(len(timeRecorded)-int(plotLength)*pollingRate, len(timeRecorded)-1, pollingRate)
     plotDistToVehichleRecord = []
     plotSpeedRecord = []
+    plotTemperatureRecord = []
     for i in plotList:
         plotDistToVehichleRecord.append(distToVehicleRecord[i])
         plotSpeedRecord.append(speedRecord[i])
+        plotTemperatureRecord.append(temperatureRecord[i])
 
 
     # this will work but a more robust method is to just record plot Length of data as a temp rather then deleting data
@@ -79,9 +81,12 @@ def plotting_function(changeableConditions, intersectionData, x, y):
     elif y.lower() == 'velocity':
         unitY = 'cm/s'
         yValue = plotSpeedRecord
-    elif y.lower() == 'overHeight':
+    elif y.lower() == 'overheight':
         unitY = '(cm)'
         yValue = overHeight
+    elif y.lower() == "temperature":
+        unitY = "degrees C"
+        yValue = temperatureRecord
 
     plt.plot(timeSince,yValue)
     plt.title(f'{y} vs. {x}')
