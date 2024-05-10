@@ -84,16 +84,16 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     
     #intersectionData["speedRecord"].append(speed)
 
-    ###################
     #over height detection with a bit of ASCI art to make sure its obvious
-    if overHeightDist <changeableConditions["overHeight"]: #change over height in changeable conditions rather then just hardcode
+    if overHeightDist < changeableConditions["overHeight"]: #change over height in changeable conditions rather then just hardcode
         print("##########################################\n")
         print("WARNING, VEHICHLE OVERHEIGHT\n")
         print("##########################################\n")
-    #################### need to flash an led --> write as a function to flash an independant LED
-
-    ##############################################################################################
-    # add in a line of code to take temperature as a voltage from an analogue input
+        # trigger voltage and led's
+        board.digital_write(changeableConditions['arduinoPins']['buzzerFlashingOverHead'], 1)
+        time.sleep(0.2) ## capacitor charge time to be tested
+        board.digital_write(changeableConditions['arduinoPins']['buzzerFlashingOverHead'], 0)
+    
 
     #Take reading of current temprature then store in intersection data
     tempCelcius = temp.temperature(board, changeableConditions)

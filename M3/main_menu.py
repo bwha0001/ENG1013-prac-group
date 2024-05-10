@@ -29,7 +29,7 @@ def main_menu(board, board2, intersectionData, changeableConditions):
             modeSelection = input("Modes:\n d - Data Observation.\n n - Normal Operation Mode\n c - Maintenance Mode\n Select Mode (d,n,c): ").lower()
             try: 
                 if modeSelection == "d" or modeSelection == "D":
-                    print("Entering Data Observation Mode...")
+                    print("Entering Data Observation Mode...\n\n\n")
                     DOM.data_observation_mode(board, board2, intersectionData, changeableConditions)
                     print("\n\nCurrently in Main Menu")
                     break
@@ -42,7 +42,7 @@ def main_menu(board, board2, intersectionData, changeableConditions):
                         print("\n\nManual Override Switch activated, the switch position must be changed to enter normal operation")
                     elif int(overrideRead[0])== 0:
                         #Override switch not active, safe to enter normal operation mode
-                        print("Entering Normal Operation Mode...")
+                        print("Entering Normal Operation Mode...\n\n\n")
                         n_o.normal_operation(board, board2, intersectionData, changeableConditions)
                     else: 
                         #Error line, unexpected switch circut reading
@@ -50,7 +50,7 @@ def main_menu(board, board2, intersectionData, changeableConditions):
                     print("\n\nCurrently in Main Menu")
                     break
                 elif modeSelection == "c"  or modeSelection == "C":
-                    print("Entering Maintenance Mode...")
+                    print("Entering Maintenance Mode...\n\n\n")
                     m_m.maintenance_mode(board, board2, intersectionData, changeableConditions)
                     print("\n\nCurrently in Main Menu")
                     break

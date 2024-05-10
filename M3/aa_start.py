@@ -65,7 +65,8 @@ changeableConditions = {
         "echoPinOverHeight":13, # random number until pin map finalised
         "normalOverride":3,
         "temperaturePin":0,
-        "ldrPin":1 
+        "ldrPin":1,
+        "buzzerFlashingOverHead" : 1, #random until pin map finalised
         },
     'ardinoPins7seg': [],
 
@@ -123,6 +124,8 @@ board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideYello
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideGreen"])
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianRed"])
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
+board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["buzzerFlashingOverHead"])
+
 # Configure trigger and echo to sonar
 
 #######

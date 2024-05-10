@@ -7,6 +7,8 @@ import to_7_segment_display as to_7_seg
 import time
 import time_conversion as tc
 
+
+#TODO update overheight availible values to be used
 def maintenance_mode(board, board2, intersectionData, changeableConditions):
     '''
     Maintenance mode allows the user, with the correct PIN to edit conditons and reaction for the intersection
@@ -46,7 +48,7 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
                              "ETC":"extensionTime",
                              "ETT":"extensionTrigger",
                              "plotLength": "plotLength"} # orange light needs to hold longer
-        OHHAllowableValues = [int(d) for d in range(5,60,1)] # minimum = 5 meaning 5cm away from sensor,max = 60cm 
+        OHHAllowableValues = [int(d) for d in range(1,10,1)] # minimum overHeight closness is 1cm and max is 10cm 
         ETCAlloableValues = [3,4,5,6,7,8]
         changesRules = {"PLR":{1, 2, 3, 4 ,5},
                         "OHH": OHHAllowableValues,
