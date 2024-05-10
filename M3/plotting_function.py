@@ -8,7 +8,7 @@ import time
 
 # input ultrasonic sensor list and time list 
 # voltage to distance calculation 
-def plotting_function(changeableConditions, intersectionData, timeRecorded, distance, x, y):
+def plotting_function(changeableConditions, intersectionData, x, y):
     """
     Creates and displays graphs of data collected by sensors
     Args:
@@ -29,12 +29,14 @@ def plotting_function(changeableConditions, intersectionData, timeRecorded, dist
     #     # intersectionData['temperatureRecord'].pop(0)
     timeRecorded = intersectionData['timeRecord']
     #Convert time record to number of seconds since
-    pollingRate = intersectionData['pollingRate']
-    distToVehicleRecord = intersectionData['distToVehicleRecord']
+    pollingRate = changeableConditions['pollingRate']
+    distToVehicleRecord = intersectionData['distToVehicleRecord1']
+    overHeight = intersectionData["overheightRecord"]
     plotLength = changeableConditions['plotLength']
     speedRecord = intersectionData['speedRecord']
-    # this will work but a more robust method is to just record plot Length of data as a temp rather then deleting data
-    plotList = range(((len(timeRecorded)-plotLength)/pollingRate),len(timeRecorded)-1,-1) #values from end-plotLength to end counting from the end
+
+    
+    plotList = range(((len(timeRecorded)-int(plotLength))/int(pollingRate)),len(timeRecorded)-1,-1) #values from end-plotLength to end counting from the end
     plotDistToVehichleRecord = []
     plotSpeedRecord = []
     for i in plotList:
@@ -42,6 +44,7 @@ def plotting_function(changeableConditions, intersectionData, timeRecorded, dist
         plotSpeedRecord.append(speedRecord(i))
 
 
+    # this will work but a more robust method is to just record plot Length of data as a temp rather then deleting data
 
     # ########## leave below if collecting data points doesn't work
     # flag = True
@@ -72,9 +75,12 @@ def plotting_function(changeableConditions, intersectionData, timeRecorded, dist
     if y.lower() == 'distance':
         unitY = '(cm)'
         yValue = plotDistToVehichleRecord
-    if y.lower() == 'velocity':
+    elif y.lower() == 'velocity':
         unitY = 'cm/s'
         yValue = plotSpeedRecord
+    elif y.lower() == 'overHeight':
+        unitY = '(cm)'
+        yValue = overHeight
 
     plt.plot(timeSince,yValue)
     plt.title(f'{y} vs. {x}')

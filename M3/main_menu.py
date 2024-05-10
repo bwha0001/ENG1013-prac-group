@@ -44,11 +44,13 @@ def main_menu(board, board2, intersectionData, changeableConditions):
                         #Override switch not active, safe to enter normal operation mode
                         print("Entering Normal Operation Mode...\n\n\n")
                         n_o.normal_operation(board, board2, intersectionData, changeableConditions)
-                    else: 
-                        #Error line, unexpected switch circut reading
-                        print("How did you get here, check the position of the override switch")
-                    print("\n\nCurrently in Main Menu")
-                    break
+                    # else: 
+                    #     #Error line, unexpected switch circut reading
+                    #     print("How did you get here, check the position of the override switch")
+                    # print("\n\nCurrently in Main Menu")
+                    # break
+                    n_o.normal_operation(board, board2, intersectionData, changeableConditions)
+
                 elif modeSelection == "c"  or modeSelection == "C":
                     print("Entering Maintenance Mode...\n\n\n")
                     m_m.maintenance_mode(board, board2, intersectionData, changeableConditions)
