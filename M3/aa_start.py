@@ -49,24 +49,27 @@ pollingRate = 2
 # This needs to be updated during the meeting once everyone is confirmed with pins
 changeableConditions = {
     'arduinoPins' : {
-        "mainRed": 13,
-        "mainYellow": 12,
-        "mainGreen": 11,
-        "sideRed": 9,
-        "sideYellow": 10,
-        "sideGreen": 7,
-        "pedestrianRed": 6,
-        "pedestrianGreen": 5,
-        "pedButton":13,
-        "triggerPin":2,
-        "echoPin":3,
-        "triggerPin2":4,
-        "echoPin2":5,
-        "echoPinOverHeight":13, # random number until pin map finalised
-        "normalOverride":3,
+        #7 Segment Display
+        
+        #Traffic Lights Shift
+        "ledSer":5,
+        "ledRclk":6,
+        "ledSrclk":7,
+        "maintenceFlashing":8, #pin to trigger non-normal opperation mode flashing
+        "buzzerFlashingOverHead": 9, #activates overhight vechile alerts
+        #UltraSonic1
+        "triggerPin":10,
+        "echoPin":11,
+        #UltraSonic2
+        "triggerPin2":12,
+        "echoPin2":13,
+        #Analog pins
         "temperaturePin":0,
         "ldrPin":1,
-        "buzzerFlashingOverHead" : 1, #random until pin map finalised
+        "pedButton":2,
+        "normalOverride":3,
+
+        "echoPinOverHeight":13, #TODO is this pin required or already covered? random number until pin map finalised
         },
     'ardinoPins7seg': [],
 
@@ -88,8 +91,18 @@ changeableConditions = {
 
     "circutConditions":{
         "tempResistorOhms": 1000,
-        "lightResistorOhms": 1000
-    },
+        "lightResistorOhms": 1000,
+        "ledShiftOrder":{
+            "mainRed": 1, #QH
+            "mainYellow": 2, #QG
+            "mainGreen": 3, #QF
+            "side/PedRed": 4, #QE
+            "sideYellow": 5, #QD
+            "sideGreen": 6, #QC
+            "pedestrianGreen": 7, #QB
+            "pedestrianFlashing": 8 #QA
+            }
+        },
     "dayNightTrigger": "", #TODO esablish light value
     "nightStageLengths":{
         1:45, #Stage 1 changes to 45 seconds
