@@ -72,11 +72,13 @@ def traffic_stage_change(board, intersectionData, changeableConditions, trafficS
     print(f"Commencing Traffic Stage {trafficStage}")
 
 
-    #display pedestrian count if entered stage 3
+    #display pedestrian count if entered stage 3, reset stage 2 extended variable
     if changeableConditions["trafficStage"] == 3:
         #print message and last value in the list stored in intersection data
         pedCount = intersectionData["pedCountRecord"][-1]
         print(f"Pedestrian Count: {[pedCount]}")
+        #reset stage 2 extension for cars too close
+        changeableConditions["stage2extended"] = 0
     return intersectionData,changeableConditions, trafficStage, stageEndTime
 
 
@@ -134,22 +136,34 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
         while True:           
             #Check for Override switch
             overrideRead = board.analog_read(changeableConditions['arduinoPins']['normalOverride'])
+            #print(overrideRead)
             if overrideRead[0] == 1023:
-                #override switch active, exit normal operation mode
+                #override switch active, suspend traffic sequence, exit normal operation mode
                 trafficStage = "suspended"
+                trafficStage = changeableConditions['trafficStage'] = "suspended"
                 print("Manual Override Switch activated, exiting normal operation mode")
                 return intersectionData, changeableConditions
-            
-            ## PLACE PED BUTTON
+            elif int(overrideRead[0])== 0:
+                #Override switch not active, safe to enter normal operation mode
+                pass
+            else: 
+                #Error line, unexpected switch circut reading
+                print("\n\n!!!!Irregular override switch reading...check override switch circuit!!!!!\n")
+                print(overrideRead)
+                #For while incomplete circiuts
+                print("Remain in normal opperation mode for debugging")
+            ## PLACE PED BUTTON STAGE REDUCTION
 
             # Does the traffic stage need changing?
             if time.time()>=stageTimeEnd:              
                 #Check if the traffic stage is able to be changed if stage 2, ie next vechile isnt too close
-                if trafficStage == 2:
+                if trafficStage == 2 and changeableConditions["stage2extended"] == 0:
                     #Check for nearest vechile from ultrasonic
                     distToNextVechile = board.sonar_read(changeableConditions['arduinoPins']['triggerPin'])
                     if distToNextVechile[0] < changeableConditions["extensionTrigger"]:
                         stageTimeEnd += changeableConditions["extensionTrigger"]
+                        #record that stage 2 was extended
+                        changeableConditions["stage2extended"] = 1
                         #debugging line
                         print("stage 2 extended")
                 else:

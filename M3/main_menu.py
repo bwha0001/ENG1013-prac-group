@@ -36,20 +36,22 @@ def main_menu(board, board2, intersectionData, changeableConditions):
                 elif modeSelection == "n" or modeSelection == "N": 
                     #Check for Override switch
                     overrideRead = board.analog_read(changeableConditions['arduinoPins']['normalOverride'])
-                    print(overrideRead)
-                    if int(overrideRead[0]) == 1023:
+                    if int(overrideRead[0]) > 1000:
                         #override switch active, do not enter normal operation mode
                         print("\n\nManual Override Switch activated, the switch position must be changed to enter normal operation")
                     elif int(overrideRead[0])== 0:
                         #Override switch not active, safe to enter normal operation mode
                         print("Entering Normal Operation Mode...\n\n\n")
                         n_o.normal_operation(board, board2, intersectionData, changeableConditions)
-                    # else: 
-                    #     #Error line, unexpected switch circut reading
-                    #     print("How did you get here, check the position of the override switch")
-                    # print("\n\nCurrently in Main Menu")
-                    # break
-                    n_o.normal_operation(board, board2, intersectionData, changeableConditions)
+                    else: 
+                        #Error line, unexpected switch circut reading
+                        print("\n\n!!!!Irregular override switch reading...check override switch circuit!!!!!\n")
+                        print(overrideRead)
+                        #For while incomplete circiuts
+                        print("Entering normal opperation mode for debugging purposes")
+                        n_o.normal_operation(board, board2, intersectionData, changeableConditions)
+                    print("\n\nCurrently in Main Menu")
+                    break
 
                 elif modeSelection == "c"  or modeSelection == "C":
                     print("Entering Maintenance Mode...\n\n\n")

@@ -12,7 +12,6 @@ def light_setting_state(board, changeableConditions, mainState, sideState, pedes
     Note: sideRed and pedestrianRed opperate together
         Args:
             board: Arduino Set Up
-            board2: 2nd Arduino Set Up
             changeableConditions (dictonary): Anything related to the system that changes
             main traffic light state ('red','yellow','green','off'): state/colour of light set
             side traffic light state ('red','yellow','green','off'): state/colour of light set
@@ -115,12 +114,13 @@ def light_setting_state(board, changeableConditions, mainState, sideState, pedes
     #Send to shift register
     for i in range(0,len(toLedShift)):
         #Send to the shift(input) register
-        board.digital_pin_write(srclk,0)
         board.digital_pin_write(ser, toLedShift[i])
-        time.sleep(0.001)
+        board.digital_pin_write(srclk,0)
+        time.sleep(0.005)
         board.digital_pin_write(srclk,1)
+        time.sleep(0.005)
 
-    #send to the storage(output) register
+    board.digital_pin_write(rclk, 0)
+    time.sleep(0.005)
     board.digital_pin_write(rclk, 1)
     time.sleep(0.001)
-    board.digital_pin_write(rclk, 0)

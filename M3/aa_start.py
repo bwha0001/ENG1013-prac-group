@@ -29,8 +29,6 @@ board = pymata4.Pymata4(com_port="COM8")
 board2 = pymata4.Pymata4(com_port="COM7")
 '''
 
-
-
 #single arduino
 board = pymata4.Pymata4()
 board2 = ""
@@ -70,20 +68,14 @@ changeableConditions = {
         "normalOverride":3,
 
         "echoPinOverHeight":13, #TODO is this pin required or already covered? random number until pin map finalised
+
         },
     'ardinoPins7seg': [],
 
-    'stageLengths':{
-        1:30,
-        2:3,
-        3:3,
-        4:3,
-        5:3,
-        6:3
-    },
     'trafficStage' :"suspended",
     'pedCounterReset' : "",
-    'lockOutTime': 0,    # for maintenance mode lock out
+    "stage2extended": 0,
+    'lockOutTime': 0,    # for maintenance mode lock out, time locked out until
     "lockOutLength": 120, #Locked out for 2 mins
     "accessTime": 60, #testing at 1 min #180 #time able to access maintence mode 3 mins(access time in seconds)
     
@@ -93,17 +85,26 @@ changeableConditions = {
         "tempResistorOhms": 1000,
         "lightResistorOhms": 1000,
         "ledShiftOrder":{
-            "mainRed": 1, #QH
-            "mainYellow": 2, #QG
-            "mainGreen": 3, #QF
-            "side/PedRed": 4, #QE
-            "sideYellow": 5, #QD
-            "sideGreen": 6, #QC
-            "pedestrianGreen": 7, #QB
-            "pedestrianFlashing": 8 #QA
+            "mainRed": 0, #QH
+            "mainYellow": 1, #QG
+            "mainGreen": 2, #QF
+            "side/PedRed": 3, #QE
+            "sideYellow": 4, #QD
+            "sideGreen": 5, #QC
+            "pedestrianGreen": 6, #QB
+            "pedestrianFlashing": 7 #QA
             }
         },
-    "dayNightTrigger": "", #TODO esablish light value
+    
+    'stageLengths':{
+        1:30,
+        2:3,
+        3:3,
+        4:3,
+        5:3,
+        6:3
+    },
+    "dayNightTrigger": 2.72, #Voltage
     "nightStageLengths":{
         1:45, #Stage 1 changes to 45 seconds
         2:3, 
@@ -128,6 +129,7 @@ changeableConditions = {
     "plotLength" : 20,
     }
 
+'''
 #set arduino pins for main board, lights
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainRed"])
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainYellow"])
@@ -137,6 +139,7 @@ board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideYello
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideGreen"])
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianRed"])
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
+''' 
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["buzzerFlashingOverHead"])
 
 # Configure trigger and echo to sonar
@@ -148,18 +151,21 @@ board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], chan
 board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin2"], changeableConditions["arduinoPins"]["echoPin2"])
 board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"]) 
 board.sonar_read(changeableConditions["arduinoPins"]["triggerPin2"]) 
+
 #set up pin for themister
 board.set_pin_mode_analog_input(changeableConditions["arduinoPins"]["temperaturePin"])
 #set up pin for LDR
 board.set_pin_mode_analog_input(changeableConditions["arduinoPins"]["ldrPin"])
 
-#first reading causing errors, complete and ditch inital reads
-
+#set up pin for normal override switch
 board.set_pin_mode_analog_input(changeableConditions['arduinoPins']['normalOverride'])
+
+#first reading causing errors, complete and ditch inital reads
+board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
+board.sonar_read(changeableConditions["arduinoPins"]["triggerPin2"])
 
 main.main_menu(board, board2, intersectionData, changeableConditions)
 
 print("program ending from AA")
     # Remember to close the boards when you're done
 board.shutdown()
-board2.shutdown()

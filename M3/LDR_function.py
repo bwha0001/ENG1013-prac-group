@@ -6,7 +6,7 @@ def LDR(myBoard, changeableConditions):
 
     voltage, time = myBoard.analog_read(tempPin)
 
-    if voltage>2.72:
+    if voltage>changeableConditions["dayNightTrigger"]:
         return "night"
     else:
         return "day"
