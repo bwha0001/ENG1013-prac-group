@@ -124,3 +124,81 @@ def light_setting_state(board, changeableConditions, mainState, sideState, pedes
     time.sleep(0.005)
     board.digital_pin_write(rclk, 1)
     time.sleep(0.001)
+
+
+if __name__ == "__main__":
+    from pymata4 import pymata4
+
+    board = pymata4.Pymata4()
+
+    changeableConditions = {
+    'arduinoPins' : {
+        #7 Segment Display
+        
+        #Traffic Lights Shift
+        "ledSer":5,
+        "ledRclk":6,
+        "ledSrclk":7,
+        "maintenceFlashing":8, #pin to trigger non-normal opperation mode flashing
+        "buzzerFlashingOverHead": 9, #activates overhight vechile alerts
+        #UltraSonic1
+        "triggerPin":10,
+        "echoPin":11,
+        #UltraSonic2
+        "triggerPin2":12,
+        "echoPin2":13,
+        #Analog pins
+        "temperaturePin":0,
+        "ldrPin":1,
+        "pedButton":2,
+        "normalOverride":3,
+
+        "echoPinOverHeight":13, #TODO is this pin required or already covered? random number until pin map finalised
+
+        },
+    'ardinoPins7seg': [],
+
+    'trafficStage' :"suspended",
+    'pedCounterReset' : "",
+    "stage2extended": 0,
+    'lockOutTime': 0,    # for maintenance mode lock out, time locked out until
+    "lockOutLength": 120, #Locked out for 2 mins
+    "accessTime": 60, #testing at 1 min #180 #time able to access maintence mode 3 mins(access time in seconds)
+    
+    #Light and temp changes TODO decide what is editable parameters and what is set
+
+    "circutConditions":{
+        "tempResistorOhms": 1000,
+        "lightResistorOhms": 1000,
+        "ledShiftOrder":{
+            "mainRed": 0, #QH
+            "mainYellow": 1, #QG
+            "mainGreen": 2, #QF
+            "side/PedRed": 3, #QE
+            "sideYellow": 4, #QD
+            "sideGreen": 5, #QC
+            "pedestrianGreen": 6, #QB
+            "pedestrianFlashing": 7 #QA
+            }
+        },
+    }
+
+    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["ledSer"])
+    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["ledRclk"])
+    board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["ledSrclk"])
+
+    board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"])
+    light_setting_state(board, changeableConditions, "off","off", "off")
+    time.sleep(1)
+    light_setting_state(board, changeableConditions, "red", "yellow", "flashing")
+    time.sleep(1)
+    light_setting_state(board, changeableConditions, "red", "red", "red")
+    time.sleep(1)
+    light_setting_state(board, changeableConditions, "red", "red", "flashing")
+    time.sleep(1)
+    light_setting_state(board, changeableConditions, "yellow", "red", "red")
+    time.sleep(1)
+    light_setting_state(board, changeableConditions, "green", "red", "red")
+    time.sleep(1)
+    light_setting_state(board, changeableConditions, "off","off", "off")
+    time.sleep(1)

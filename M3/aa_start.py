@@ -140,7 +140,16 @@ board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideGreen
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianRed"])
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
 ''' 
+
+#Traffic lights output set up
+board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["ledSer"])
+board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["ledRclk"])
+board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["ledSrclk"])
+
+#Overheight altert set up
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["buzzerFlashingOverHead"])
+
+
 
 # Configure trigger and echo to sonar
 
@@ -159,10 +168,6 @@ board.set_pin_mode_analog_input(changeableConditions["arduinoPins"]["ldrPin"])
 
 #set up pin for normal override switch
 board.set_pin_mode_analog_input(changeableConditions['arduinoPins']['normalOverride'])
-
-#first reading causing errors, complete and ditch inital reads
-board.sonar_read(changeableConditions["arduinoPins"]["triggerPin"])
-board.sonar_read(changeableConditions["arduinoPins"]["triggerPin2"])
 
 main.main_menu(board, board2, intersectionData, changeableConditions)
 
