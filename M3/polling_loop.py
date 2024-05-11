@@ -8,6 +8,7 @@ import global_variables as GLOB
 import to_7_segment_display as to_7_seg
 import instentaneous_speed 
 import temperature_handling as temp
+import ldr_function as ldr
 # import AAstart as start
 
 def ped_button_callback(data):
@@ -45,7 +46,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     
     #import data from dictonary of intersectionData
     timeRecord = intersectionData['timeRecord']
-    distToVehicleRecord = intersectionData['distToVehicleRecord1']
+    distToVehicleRecord = intersectionData['distToVehicleRecord']
     overheightDist = intersectionData["overheightRecord"] #  initialising overheight sensor as well
     pedCountRecord = intersectionData['pedCountRecord']
     speedRecord = intersectionData['speedRecord']
@@ -73,9 +74,9 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     elif  trafficStage == "suspended":
         #return distToVechile and current pedestrian count from prior loop
         try:
-            return [intersectionData, changeableConditions, intersectionData['distToVehicleRecord1'], intersectionData['pedCountRecord'][-1]]
+            return [intersectionData, changeableConditions, intersectionData['distToVehicleRecord'], intersectionData['pedCountRecord'][-1]]
         except IndexError:
-            return [intersectionData, changeableConditions, intersectionData['distToVehicleRecord1'], "No Data"]
+            return [intersectionData, changeableConditions, intersectionData['distToVehicleRecord'], "No Data"]
         
     #Set loop start time
     pollingStartTime = time.time()
@@ -108,6 +109,10 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     tempCelcius = temp.temperature(board, changeableConditions)
     intersectionData["tempRecord"].append(tempCelcius)
 
+    #Take reading of current day/night status then store in intersection data
+    lightReading = ldr.ldr(board, changeableConditions)
+    intersectionData["lightRecord"].append(lightReading)
+    
     """
     **moved to being handled in the function
 
@@ -149,7 +154,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
 
     #Store record of time of readings, ultrasonic sensor reading and pedestrian count, all stored with same list index
     intersectionData['timeRecord'].append(pollingStartTime)
-    intersectionData['distToVehicleRecord1'].append(distToVehicle1)
+    intersectionData['distToVehicleRecord'].append(distToVehicle1)
     intersectionData['pedCountRecord'].append(pedCount)
     intersectionData["overheightRecord"].append(overHeightDist)
     

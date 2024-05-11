@@ -35,12 +35,13 @@ board2 = ""
 
 
 #Create a dictonary of records
-intersectionData = {"timeRecord":[], "distToVehicleRecord1":[], #regular distance sensor
+intersectionData = {"timeRecord":[], 
+                    "distToVehicleRecord":[], #regular distance sensor
                     'overheightRecord' : [], # overhight sensor 
-                    "pedCountRecord":[], 
-                    "pedPresentRecord":[], 
+                    "pedCountRecord":[], #count of pedestrian per traffic cycle
+                    "pedPresentRecord":[], #count of how many times the button has been pressed
                     "speedRecord" :[],
-                    "lightRecord":[],
+                    "lightRecord":[], # records if day or night at time of polling
                     "tempRecord":[]}
 
 pollingRate = 2
