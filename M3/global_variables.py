@@ -12,6 +12,7 @@
 
 # Define your global variables 
 pedsPresent = None
+pedSequence = None
 lastButtonPress = None
 overHeadTime1 = None
 overHeadTime2 = None
@@ -24,6 +25,7 @@ def init():
 
     """
     global pedsPresent
+    global pedSequence
     global lastButtonPress 
     global overHeadTime1
     global overHeadTime2
@@ -32,6 +34,7 @@ def init():
     # Initialize your global variables 
     pedsPresent = 0
     lastButtonPress = 0
+    pedSequence = 0
     overHeadTime1 = 0
     overHeadTime2 = 0
     

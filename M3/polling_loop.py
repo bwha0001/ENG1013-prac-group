@@ -9,8 +9,12 @@ import to_7_segment_display as to_7_seg
 import instentaneous_speed 
 import temperature_handling as temp
 import ldr_function as ldr
+import normal_operation as n_o
 # import AAstart as start
 
+
+#TODO remove once ped button activating correctly
+'''
 def ped_button_callback(data):
     """
     Callback function for pedestrian button press.
@@ -18,7 +22,8 @@ def ped_button_callback(data):
     if data[2] == 1 and time.time() > GLOB.lastButtonPress + 0.0001:
         GLOB.pedsPresent += 1
         GLOB.lastButtonPress = time.time()
- 
+'''
+
 
 def polling_loop(board, board2, intersectionData, changeableConditions):
     """
@@ -38,6 +43,10 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
         pedCount(int): number of pedestrian button presses in current iteration of the traffic sequence
 
     """    
+    #Activate pedestrian button checking
+    pedButton = changeableConditions['arduinoPins']['pedButton']
+    board.set_pin_mode_digital_input(pedButton,callback=n_o.ped_button_callback)
+
     #globals
 
     pollingRate = changeableConditions['pollingRate']
@@ -112,7 +121,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     #Take reading of current day/night status then store in intersection data
     lightReading = ldr.ldr(board, changeableConditions)
     intersectionData["lightRecord"].append(lightReading)
-    
+
     """
     **moved to being handled in the function
 
@@ -126,10 +135,6 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     #code for LDR to take light from an analogue input
     #light = board.analog_read(changeableConditions["arduinoPins"]["ldrPin"])
     #intersectionData['lightRecord'].append(light)
-
-    # pedsPresent, lastButtonPress = ped_button(pedsPresent, lastButtonPress)
-    pedButton = changeableConditions['arduinoPins']['pedButton']
-    board.set_pin_mode_digital_input(pedButton,callback=ped_button_callback)
     
     #Update pedButtonRecord to number of presses so far
     intersectionData['pedPresentRecord'].append(GLOB.pedsPresent)

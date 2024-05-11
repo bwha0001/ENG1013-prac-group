@@ -16,6 +16,16 @@ import global_variables as GLOB
 import temperature_handling as temp
 import ldr_function as ldr
 
+def ped_button_callback(data):
+    """
+    Callback function for pedestrian button press.
+    """
+    if data[2] == 1 and time.time() > GLOB.lastButtonPress + 0.0001:
+        GLOB.pedsPresent += 1
+        GLOB.pedSequence += 1
+        GLOB.lastButtonPress = time.time()
+
+
     # print(f"Test line button data: {changeableConditions['pedsPresent']}, {changeableConditions['lastButtonPress']}")
 
 def traffic_stage_change(board, intersectionData, changeableConditions, trafficStage):
@@ -89,6 +99,10 @@ def traffic_stage_change(board, intersectionData, changeableConditions, trafficS
 
     #Stage specific tests, completed based on stage entering
 
+    #Stage 1
+    if changeableConditions["trafficStage"] == 1:
+        #reset the peds presence per traffic seqence
+        GLOB.pedSequence = 0
 
     #Stage 3
 
@@ -124,7 +138,7 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
         intersectionData (dictonary): Data collected about the interesection
         changeableConditions (dictonary): Anything related to the system that changes
     """
-    # calling from the global library global_variables and assining it the initial values to be overwritted
+
     #define dictonary of traffic light colours to stage
     lightForStage = {
         1: ["green", "red", "red"],
@@ -135,13 +149,14 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
         6: ["red", "red", "red"]
         } 
 
-    # Begin normal operation
+    # Begin normal operation, display to user
     mode = 'n'
     to_7_seg.sevenSeg(board2, mode)
-    #initialise the pedestrian button
-    # board.set_pin_mode_digital_input(changeableConditions['arduinoPins']['pedButton'], callback = ped_button)
-    # pedButton = changeableConditions['arduinoPins']['pedButton']
-    # # Call the function with the_callback as the callback
+    
+    #Activate the pedestrian button checking, calculations and long term recording handled internally or by polling loop
+    pedButton = changeableConditions['arduinoPins']['pedButton']
+    board.set_pin_mode_digital_input(pedButton,callback=ped_button_callback)
+
 
     #pull traffic stage from dictonary
     trafficStage = changeableConditions['trafficStage']
@@ -156,6 +171,10 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
     
     try:
         while True:           
+            ###TODO Remove once ped button working
+            #if ped button doesn't work after entering polling loop, add activation to here
+            
+            
             #Check for Override switch
             overrideRead = board.analog_read(changeableConditions['arduinoPins']['normalOverride'])
             #print(overrideRead)
