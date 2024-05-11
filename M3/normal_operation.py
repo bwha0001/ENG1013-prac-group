@@ -14,6 +14,7 @@ import normal_operation as n_o
 import data_observation_mode as DOM
 import global_variables as GLOB
 import temperature_handling as temp
+import ldr_function as ldr
 
     # print(f"Test line button data: {changeableConditions['pedsPresent']}, {changeableConditions['lastButtonPress']}")
 
@@ -58,12 +59,21 @@ def traffic_stage_change(board, intersectionData, changeableConditions, trafficS
     stageExtensionTime = 0
     #Take reading from themistor and ldr
     #funtion calls
-    currentLight = "placeholder for function"
+    currentLight = ldr.ldr(board, changeableConditions)
     currentTemp = temp.temperature(board, changeableConditions)
     print(currentTemp)
+    print(currentLight)
     #if current temprature is above the temprature for triggering add to the extension time
     if currentTemp == changeableConditions["tempTrigger"]:
         stageExtensionTime += changeableConditions["tempStageExtensions"][trafficStage]
+        #Debugging line, TODO Remove once tested
+        print("temp extestion trigger met, time added if required")
+    #if current light level is night add to the extension time
+    if currentLight == "night":
+        #Find the extension time required by the differance in stage lengths
+        stageExtensionTime += changeableConditions["nightStageLengths"][trafficStage] - changeableConditions["stageLengths"][trafficStage]
+        print("day/night extestion trigger met, time added if required")
+        #Debugging line, TODO Remove once tested
 
     #Add the extension time to stageEndTime
     stageEndTime += stageExtensionTime

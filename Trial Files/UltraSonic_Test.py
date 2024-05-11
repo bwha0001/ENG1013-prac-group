@@ -14,8 +14,8 @@ changeableConditions = {
         "sideGreen": 7,
         "pedestrianRed": 8,
         "pedestrianGreen": 9,
-        "triggerPin":13,
-        "echoPin":12
+        "triggerPin":11,
+        "echoPin":10
         },
     'trafficStage' : 1,
     'pollingRate' : pollingRate,
