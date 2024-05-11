@@ -55,12 +55,21 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     #Traffic Stage approprite for new readings? ie Not suspended stage and enough time has passed
     #is in the correct stage to pollling to continue
     if trafficStage in {1,2,3,4,5,6}:
+        #If in a traffic stage continie to polling activities
+        pass
+
+        #TODO Remove once new location adequitelty tested
+        """
+        Moved to normal opperation
+
         if intersectionData["timeRecord"] == []:
             pass
         elif time.time() - intersectionData["timeRecord"][-1] <= pollingRate:
             return [intersectionData, changeableConditions]
         elif time.time() - intersectionData["timeRecord"][-1] >= pollingRate:
             pass
+        """
+        
     elif  trafficStage == "suspended":
         #return distToVechile and current pedestrian count from prior loop
         try:

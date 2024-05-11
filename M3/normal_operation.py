@@ -33,6 +33,7 @@ def traffic_stage_change(board, intersectionData, changeableConditions, trafficS
     """    
     
     #Process for changing traffic stage
+
     if trafficStage == "suspended" or trafficStage == 6:
         #initalise stage 1
         #reset ped counter on next poll
@@ -54,7 +55,13 @@ def traffic_stage_change(board, intersectionData, changeableConditions, trafficS
     #set stage end time to be x number of seconds from now determined by set value in changeable conditions
     #go to key of the current traffic stage in the lengths dictonary which is within changeable conditons
     stageEndTime = time.time() + changeableConditions["stageLengths"][changeableConditions["trafficStage"]]
-    
+    #Display traffic stage commencing on console
+    print(f"Commencing Traffic Stage {trafficStage}")
+
+    ######
+
+    #Stage Length edits
+
     #Extend stage if approprite based on low light or high temp
     stageExtensionTime = 0
     #Take reading from themistor and ldr
@@ -77,10 +84,13 @@ def traffic_stage_change(board, intersectionData, changeableConditions, trafficS
 
     #Add the extension time to stageEndTime
     stageEndTime += stageExtensionTime
+    
+    ######
 
-    #Display traffic stage commencing on console
-    print(f"Commencing Traffic Stage {trafficStage}")
+    #Stage specific tests, completed based on stage entering
 
+
+    #Stage 3
 
     #display pedestrian count if entered stage 3, reset stage 2 extended variable
     if changeableConditions["trafficStage"] == 3:
@@ -89,6 +99,8 @@ def traffic_stage_change(board, intersectionData, changeableConditions, trafficS
         print(f"Pedestrian Count: {[pedCount]}")
         #reset stage 2 extension for cars too close
         changeableConditions["stage2extended"] = 0
+
+    #return to normal opperating mode    
     return intersectionData,changeableConditions, trafficStage, stageEndTime
 
 
@@ -184,14 +196,18 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
                     #output lights to arduino
                     led.light_setting_state(board, changeableConditions, mainState, sideState, pedestrianState)
              
-                
-            # Run function polling loop, inputting polling rate, output of polling time, current distance and pedestrian count
-            [intersectionData, changeableConditions] = pl.polling_loop(board, board2, intersectionData, changeableConditions)
-            #Happens within function 
-                #If polling start time plus polling time taken equals the current time
-                # Display polling time on console, “Polling loop took <polling time> to complete”
-                # If polling start time plus polling time taken equals the current time
-                # Display the current distance, “The distance to the closest vehicle is <current distance> cm.”
+            #if it is approprite to poll enter polling loop
+            if intersectionData["timeRecord"] == [] or time.time() - intersectionData["timeRecord"][-1] >= changeableConditions["pollingRate"]:
+                # Run function polling loop, inputting polling rate, output of polling time, current distance and pedestrian count
+                [intersectionData, changeableConditions] = pl.polling_loop(board, board2, intersectionData, changeableConditions)
+                #Happens within function 
+                    #If polling start time plus polling time taken equals the current time
+                    # Display polling time on console, “Polling loop took <polling time> to complete”
+                    # If polling start time plus polling time taken equals the current time
+                    # Display the current distance, “The distance to the closest vehicle is <current distance> cm.”
+            elif time.time() - intersectionData["timeRecord"][-1] <= changeableConditions["pollingRate"]:
+                #not enough time has passed, do not enter polling loop
+                pass
             
             if trafficStage==3:
                 pedestrianStage3 = intersectionData['pedPresentRecord'][-1]
