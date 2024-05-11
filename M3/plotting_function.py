@@ -29,7 +29,7 @@ def plotting_function(changeableConditions, intersectionData, x, y):
     #     # intersectionData['temperatureRecord'].pop(0)
     timeRecorded = intersectionData['timeRecord']
     pollingRate = changeableConditions['pollingRate']
-    distToVehicleRecord = intersectionData['distToVehicleRecord1']
+    distToVehicleRecord = intersectionData['distToVehicleRecord']
     overHeight = intersectionData["overheightRecord"]
     plotLength = changeableConditions['plotLength']
     speedRecord = intersectionData['speedRecord']

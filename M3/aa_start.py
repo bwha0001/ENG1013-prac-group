@@ -173,5 +173,8 @@ board.set_pin_mode_analog_input(changeableConditions['arduinoPins']['normalOverr
 main.main_menu(board, board2, intersectionData, changeableConditions)
 
 print("program ending from AA")
-    # Remember to close the boards when you're done
+    #Remember to reset shift register unless you want funky things on intial start when repeatedly ending and starting
+#Switch off all lights to reset shift register
+led.light_setting_state(board, changeableConditions, "off", "off", "off")    
+    #Remember to close the boards when you're done
 board.shutdown()
