@@ -9,7 +9,8 @@ from pymata4 import pymata4
 def light_setting_state(board, changeableConditions, mainState, sideState, pedestrianState):
     """
     Used to set traffic light state to on/off/flashing(if applicable) for each LED on the Arduino
-    Note: sideRed and pedestrianRed opperate together
+    Notes: - sideRed and pedestrianRed opperate together
+           - pedestrian state flashing also opperates a buzzer
         Args:
             board: Arduino Set Up
             changeableConditions (dictonary): Anything related to the system that changes
@@ -198,7 +199,7 @@ if __name__ == "__main__":
     time.sleep(1)
     light_setting_state(board, changeableConditions, "yellow", "red", "red")
     time.sleep(1)
-    light_setting_state(board, changeableConditions, "green", "red", "red")
+    light_setting_state(board, changeableConditions, "green", "red", "flashing")
     time.sleep(1)
     light_setting_state(board, changeableConditions, "off","off", "off")
     time.sleep(1)

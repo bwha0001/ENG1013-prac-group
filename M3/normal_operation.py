@@ -187,13 +187,17 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
             elif int(overrideRead[0])== 0:
                 #Override switch not active, safe to enter normal operation mode
                 pass
-            else: 
-                #Error line, unexpected switch circut reading
-                print("\n\n!!!!Irregular override switch reading...check override switch circuit!!!!!\n")
-                print(overrideRead)
-                #For while incomplete circiuts
-                print("Remain in normal opperation mode for debugging")
-            ## PLACE PED BUTTON STAGE REDUCTION
+            #else: 
+                # #Error line, unexpected switch circut reading
+                # print("\n\n!!!!Irregular override switch reading...check override switch circuit!!!!!\n")
+                # print(overrideRead)
+                # #For while incomplete circiuts
+                # print("Remain in normal opperation mode for debugging")
+            
+            
+            ## PLACE PED BUTTON STAGE REDUCTION HERE
+
+
 
             # Does the traffic stage need changing?
             if time.time()>=stageTimeEnd:              
