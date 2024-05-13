@@ -56,7 +56,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     #import data from dictonary of intersectionData
     timeRecord = intersectionData['timeRecord']
     distToVehicleRecord = intersectionData['distToVehicleRecord']
-    overheightDist = intersectionData["overheightRecord"] #  initialising overheight sensor as well
+    overheightRecord = intersectionData["overheightRecord"] #  initialising overheight sensor as well
     pedCountRecord = intersectionData['pedCountRecord']
     speedRecord = intersectionData['speedRecord']
 
@@ -108,7 +108,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
         print("##########################################\n")
         print("WARNING, VEHICHLE OVERHEIGHT\n")
         print("##########################################\n")
-        intersectionData["overHeightRecord"][time.time()] = overHeightDist #IDK how to fucken do this
+        # intersectionData["overHeightRecord"][time.time()] = overHeightDist #IDK how to fucken do this
         # # trigger voltage and led's
         # board.digital_write(changeableConditions['arduinoPins']['buzzerFlashingOverHead'], 1)
         # time.sleep(0.2) ## capacitor charge time to be tested
@@ -159,10 +159,10 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
     
 
     #Store record of time of readings, ultrasonic sensor reading and pedestrian count, all stored with same list index
-    intersectionData['timeRecord'].append(pollingStartTime)
-    intersectionData['distToVehicleRecord'].append(distToVehicle1)
-    intersectionData['pedCountRecord'].append(pedCount)
-    intersectionData["overheightRecord"].append(overHeightDist)
+    timeRecord.append(pollingStartTime)
+    distToVehicleRecord.append(distToVehicle1)
+    pedCountRecord.append(pedCount)
+    overheightRecord.append(overHeightDist)
     
 
 #this limits data to 20 seconds, now it holds data for infinite length and adjusting pot length will be done in plotting

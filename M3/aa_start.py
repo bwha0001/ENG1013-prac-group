@@ -37,7 +37,8 @@ board2 = ""
 #Create a dictonary of records
 intersectionData = {"timeRecord":[], 
                     "distToVehicleRecord":[], #regular distance sensor
-                    'overheightRecord' : {None :None}, # overhight sensor 
+                    'overheightRecord' : [], # overhight sensor
+                    "overHeightTimeRecord" :[], 
                     "pedCountRecord":[], #count of pedestrian per traffic cycle
                     "pedPresentRecord":[], #count of how many times the button has been pressed
                     "speedRecord" :[],
@@ -169,7 +170,7 @@ board.set_pin_mode_analog_input(changeableConditions["arduinoPins"]["ldrPin"])
 
 #set up pin for normal override switch
 board.set_pin_mode_analog_input(changeableConditions['arduinoPins']['normalOverride'])
-
+board.analog_read(changeableConditions["arduinoPins"]["normalOverride"])
 main.main_menu(board, board2, intersectionData, changeableConditions)
 
 print("program ending from AA")
