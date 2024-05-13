@@ -41,10 +41,12 @@ def plotting_function(changeableConditions, intersectionData, x, y):
     plotDistToVehichleRecord = []
     plotSpeedRecord = []
     plotTemperatureRecord = []
-    for i in plotList:
+    plotOverHeightRecord = []
+    for i in range(0,len(plotList)):
         plotDistToVehichleRecord.append(distToVehicleRecord[i])
         plotSpeedRecord.append(speedRecord[i])
         plotTemperatureRecord.append(temperatureRecord[i])
+        plotOverHeightRecord.append(overHeight[i])
 
 
     # this will work but a more robust method is to just record plot Length of data as a temp rather then deleting data
@@ -83,7 +85,7 @@ def plotting_function(changeableConditions, intersectionData, x, y):
         yValue = plotSpeedRecord
     elif y.lower() == 'overheight':
         unitY = '(cm)'
-        yValue = overHeight
+        yValue = plotOverHeightRecord
     elif y.lower() == "temperature":
         unitY = "degrees C"
         yValue = temperatureRecord
