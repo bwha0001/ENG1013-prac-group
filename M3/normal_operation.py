@@ -196,7 +196,11 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
             
             
             ## PLACE PED BUTTON STAGE REDUCTION HERE
-
+            #if there is more than 5 sec left in stage 1 check if the ped button was pressed
+            if trafficStage == 1 and stageTimeEnd - time.time() > 5:
+                #if the button was pressed reduced time left to 5 seconds from current time
+                if time.time() - GLOB.lastButtonPress < 0.01:
+                    stageTimeEnd = time.time() + 5
 
 
             # Does the traffic stage need changing?
