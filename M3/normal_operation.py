@@ -187,13 +187,13 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
             elif int(overrideRead[0])== 0:
                 #Override switch not active, safe to enter normal operation mode
                 pass
-            else: 
-                #Error line, unexpected switch circut reading
-                print("\n\n!!!!Irregular override switch reading...check override switch circuit!!!!!\n")
-                print(overrideRead)
-                #For while incomplete circiuts
-                print("Remain in normal opperation mode for debugging")
-            ## PLACE PED BUTTON STAGE REDUCTION
+            # else: 
+            #     #Error line, unexpected switch circut reading
+            #     print("\n\n!!!!Irregular override switch reading...check override switch circuit!!!!!\n")
+            #     print(overrideRead)
+            #     #For while incomplete circiuts
+            #     print("Remain in normal opperation mode for debugging")
+            # ## PLACE PED BUTTON STAGE REDUCTION
 
             # Does the traffic stage need changing?
             if time.time()>=stageTimeEnd:              
@@ -238,6 +238,11 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
             #trigger light setting again (ped green flashing) if in stage 5
             if trafficStage == 5:
                 led.light_setting_state(board, changeableConditions, mainState, sideState, pedestrianState)
+            if intersectionData["overheightRecord"].keys() is not None:
+                timeValue = intersectionData["overheightRecord"].keys()
+                if time.time()-timeValue>2:
+                    board.digital_write(changeableConditions["arduinoPins"]["buzzerFlashingOverHead"], 0)
+
     except KeyboardInterrupt:
         #exit button activation
         print("Exit button activated, returning to main menu")
