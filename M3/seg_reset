@@ -1,0 +1,30 @@
+#seven segment display with a shift register
+#Authors: Kayla Robinson
+#Version: 2
+#Dates Edited: 10 May 2024
+
+from pymata4 import pymata4
+board = pymata4.Pymata4()
+import time
+
+def seg_reset(reset):
+    serPin = 8 #data pin
+    srclk = 12 #clock pin
+    rclk = 13 #also called the latch
+
+    board.set_pin_mode_digital_output(serPin)
+    board.set_pin_mode_digital_output(srclk)
+    board.set_pin_mode_digital_output(rclk)
+
+    board.digital_write(rclk, 0)
+
+    for i in range(8):
+        board.digital_write(serPin, 0)
+        board.digital_write(srclk, 1)
+        board.digital_write(srclk, 0)
+
+    board.digital_write(rclk, 1)
+    return reset
+
+time.sleep(0.5)
+board.shutdown()

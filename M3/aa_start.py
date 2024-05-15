@@ -30,7 +30,7 @@ board2 = pymata4.Pymata4(com_port="COM7")
 '''
 
 #single arduino
-board = pymata4.Pymata4(com_port="COM6")
+board = pymata4.Pymata4()
 board2 = ""
 
 
@@ -38,7 +38,7 @@ board2 = ""
 intersectionData = {"timeRecord":[], 
                     "distToVehicleRecord":[], #regular distance sensor
                     'overheightRecord' : [], # overhight sensor
-                    "overHeightTimeRecord" :[0], 
+                    "overHeightTimeRecord" :[], 
                     "pedCountRecord":[], #count of pedestrian per traffic cycle
                     "pedPresentRecord":[], #count of how many times the button has been pressed
                     "speedRecord" :[],
@@ -107,7 +107,6 @@ changeableConditions = {
         6:3
     },
     "dayNightTrigger": 2.72, #Voltage
-    "buzzerOnOff": 0,
     "nightStageLengths":{
         1:45, #Stage 1 changes to 45 seconds
         2:3, 
@@ -132,22 +131,18 @@ changeableConditions = {
     "plotLength" : 20,
     }
 
-'''
-#set arduino pins for main board, lights
-board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainRed"])
-board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainYellow"])
-board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainGreen"])
-board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideRed"])
-board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideYellow"])
-board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideGreen"])
-board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianRed"])
-board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
-''' 
+#7 Segment display set up
 
 #Traffic lights output set up
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["ledSer"])
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["ledRclk"])
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["ledSrclk"])
+#Clear shift reg
+led.light_setting_state("off", "off", "off")
+
+#Set up and start maintence lights
+board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["maintenceFlashing"])
+board.digital_pin_write(changeableConditions["arduinoPins"]["maintenceFlashing"], 1)
 
 #Overheight altert set up
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["buzzerFlashingOverHead"])
@@ -172,7 +167,12 @@ board.set_pin_mode_analog_input(changeableConditions["arduinoPins"]["ldrPin"])
 #set up pin for normal override switch
 board.set_pin_mode_analog_input(changeableConditions['arduinoPins']['normalOverride'])
 board.analog_read(changeableConditions["arduinoPins"]["normalOverride"])
+
+
+#Enter main menu, stays until exit
 main.main_menu(board, board2, intersectionData, changeableConditions)
+
+#Exited main menu, program end sequence
 
 print("program ending from AA")
     #Remember to reset shift register unless you want funky things on intial start when repeatedly ending and starting
