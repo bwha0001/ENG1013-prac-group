@@ -30,7 +30,7 @@ board2 = pymata4.Pymata4(com_port="COM7")
 '''
 
 #single arduino
-board = pymata4.Pymata4()
+board = pymata4.Pymata4(com_port="COM6")
 board2 = ""
 
 
@@ -38,7 +38,7 @@ board2 = ""
 intersectionData = {"timeRecord":[], 
                     "distToVehicleRecord":[], #regular distance sensor
                     'overheightRecord' : [], # overhight sensor
-                    "overHeightTimeRecord" :[], 
+                    "overHeightTimeRecord" :[0], 
                     "pedCountRecord":[], #count of pedestrian per traffic cycle
                     "pedPresentRecord":[], #count of how many times the button has been pressed
                     "speedRecord" :[],
@@ -107,6 +107,7 @@ changeableConditions = {
         6:3
     },
     "dayNightTrigger": 2.72, #Voltage
+    "buzzerOnOff": 0,
     "nightStageLengths":{
         1:45, #Stage 1 changes to 45 seconds
         2:3, 

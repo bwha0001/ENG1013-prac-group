@@ -50,7 +50,7 @@ def data_observation_mode(board, board2, intersectionData, changeableConditions)
         plotLength = changeableConditions["plotLength"]
         if changeableConditions['pollingRate'] * len(distToVehicleRecord) >= plotLength:
 #test line            print("complete function plot triggered") #testing statememnt
-                plotting_function.plotting_function(changeableConditions, intersectionData, 'time', 'distance')
+                # plotting_function.plotting_function(changeableConditions, intersectionData, 'time', 'distance')
                 plotting_function.plotting_function(changeableConditions, intersectionData, 'time', 'velocity')
                 plotting_function.plotting_function(changeableConditions, intersectionData, 'time', 'overHeight')
                 plotting_function.plotting_function(changeableConditions, intersectionData, 'time', 'temperature')
