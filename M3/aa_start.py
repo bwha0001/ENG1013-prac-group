@@ -131,22 +131,16 @@ changeableConditions = {
     "plotLength" : 20,
     }
 
-'''
-#set arduino pins for main board, lights
-board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainRed"])
-board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainYellow"])
-board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["mainGreen"])
-board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideRed"])
-board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideYellow"])
-board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["sideGreen"])
-board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianRed"])
-board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["pedestrianGreen"])
-''' 
+#7 Segment display set up
 
 #Traffic lights output set up
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["ledSer"])
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["ledRclk"])
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["ledSrclk"])
+
+#Set up and start maintence lights
+board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["maintenceFlashing"])
+board.digital_pin_write(changeableConditions["arduinoPins"]["maintenceFlashing"], 1)
 
 #Overheight altert set up
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["buzzerFlashingOverHead"])
@@ -171,7 +165,12 @@ board.set_pin_mode_analog_input(changeableConditions["arduinoPins"]["ldrPin"])
 #set up pin for normal override switch
 board.set_pin_mode_analog_input(changeableConditions['arduinoPins']['normalOverride'])
 board.analog_read(changeableConditions["arduinoPins"]["normalOverride"])
+
+
+#Enter main menu, stays until exit
 main.main_menu(board, board2, intersectionData, changeableConditions)
+
+#Exited main menu, program end sequence
 
 print("program ending from AA")
     #Remember to reset shift register unless you want funky things on intial start when repeatedly ending and starting

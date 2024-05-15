@@ -42,6 +42,8 @@ def main_menu(board, board2, intersectionData, changeableConditions):
                         elif int(overrideRead[0])== 0:
                             #Override switch not active, safe to enter normal operation mode
                             print("Entering Normal Operation Mode...\n\n\n")
+                            #Switch off maintence lights
+                            board.digital_pin_write(changeableConditions["arduinoPins"]["maintenceFlashing"], 0)
                             n_o.normal_operation(board, board2, intersectionData, changeableConditions)
                         else: 
                             #Error line, unexpected switch circut reading
@@ -51,6 +53,8 @@ def main_menu(board, board2, intersectionData, changeableConditions):
                             print("Entering normal opperation mode for debugging purposes")
                             n_o.normal_operation(board, board2, intersectionData, changeableConditions)
                         print("\n\nCurrently in Main Menu")
+                        #Switch on maintence lights
+                        board.digital_pin_write(changeableConditions["arduinoPins"]["maintenceFlashing"], 1)
                         break
 
                     elif modeSelection == "c"  or modeSelection == "C":
