@@ -246,6 +246,11 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
             #trigger light setting again (ped green flashing) if in stage 5
             if trafficStage == 5:
                 led.light_setting_state(board, changeableConditions, mainState, sideState, pedestrianState)
+            
+            # turning off buzzer which is turned on in polling loop when displaying the warning
+            if time.time() - intersectionData["overHeightTimeRecord"][-1]>=2.5 and changeableConditions["buzzerOnOff"] == 1:
+                changeableConditions["buzzerOnOff"] = 0
+                board.digital_write(changeableConditions["arduinoPins"]["buzzerFlashingOverHead"],changeableConditions["buzzerOnOff"])
     except KeyboardInterrupt:
         #exit button activation
         print("Exit button activated, returning to main menu")

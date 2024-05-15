@@ -68,17 +68,17 @@ def main_menu(board, board2, intersectionData, changeableConditions):
 
             while True:
                 programQuit = input("Would you like to quit the program? (Y/N) ")
-                if programQuit == "N" or programQuit == 'n': 
+                if programQuit.lower() == "n":# or programQuit == 'n': 
                     break 
-                elif programQuit == "Y" or programQuit == 'y':
+                elif programQuit.lower() == "y": #or programQuit == 'y':
                     print("Closing program...")
                     break
                 else:
                     print("Invalid Input. Options available as 'Y' to continue to main menu and 'N' to end program.") 
             
-            if programQuit == "N" or programQuit == "n":
+            if programQuit.lower() == "n":
                 pass
-            elif programQuit == "Y" or programQuit == "y":
+            elif programQuit.lower() == "y": 
                 return
     except KeyboardInterrupt:
         #Ensuring main menu can withstand same quit as other modes
