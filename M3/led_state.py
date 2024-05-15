@@ -11,6 +11,7 @@ def light_setting_state(board, changeableConditions, mainState, sideState, pedes
     Used to set traffic light state to on/off/flashing(if applicable) for each LED on the Arduino
     Notes: - sideRed and pedestrianRed opperate together
            - pedestrian state flashing also opperates a buzzer
+           - if yellow lights flashing, that is not controled here, refer to diagrams for the maintence flasshing pin
         Args:
             board: Arduino Set Up
             changeableConditions (dictonary): Anything related to the system that changes
