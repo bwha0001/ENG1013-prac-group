@@ -121,7 +121,7 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
                 continue
 
             #Change option
-            changeToConditon = input(f"Enter alternation to {changesCodes[optionCode]}:")
+            changeToConditon = input(f"Enter alternation to {changesCodes[optionCode]}:").upper()
             try:
                 if int(changeToConditon) in changesRules[optionCode]:
                     changeableConditions[changesToVaribles[optionCode]] = int(changeToConditon) #updates dictionary with new value
@@ -147,7 +147,7 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
             #Change another conditon? given time out not occoured
             while time.time()<= accessEndTime:
                 #Ask if want to continue to make changes or quit
-                contInput = input("Would you like to continue making changes to conditions? (Y/N): ")
+                contInput = input("Would you like to continue making changes to conditions? (Y/N): ").upper()
                 if contInput in {"Y","N"}:
                     break
                 else:
