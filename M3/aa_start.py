@@ -178,4 +178,5 @@ print("program ending from AA")
 #Switch off all lights to reset shift register
 led.light_setting_state(board, changeableConditions, "off", "off", "off")    
     #Remember to close the boards when you're done
+time.sleep(3)
 board.shutdown()
