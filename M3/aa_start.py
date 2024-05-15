@@ -138,7 +138,7 @@ board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["ledSer"])
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["ledRclk"])
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["ledSrclk"])
 #Clear shift reg
-led.light_setting_state("off", "off", "off")
+led.light_setting_state(board, changeableConditions, "off", "off", "off")
 
 #Set up and start maintence lights
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["maintenceFlashing"])

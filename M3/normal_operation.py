@@ -248,7 +248,7 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
                 led.light_setting_state(board, changeableConditions, mainState, sideState, pedestrianState)
     except KeyboardInterrupt:
         #exit button activation
-        print("Exit button activated, returning to main menu")
+        print("Exit button activated, returning to main menu\n\n\n\n\n")
 
     return intersectionData, changeableConditions
         

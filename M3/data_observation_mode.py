@@ -62,5 +62,5 @@ def data_observation_mode(board, board2, intersectionData, changeableConditions)
             print("There is not 20 seconds of data, please return to normal operation mode to collect more data.\n To exit this mode enter ctrl + c in command window")    
     except KeyboardInterrupt:
         #exit button activation
-        print("Exit button activated, returning to main menu")
+        print("Exit button activated, returning to main menu\n\n\n\n\n")
 
