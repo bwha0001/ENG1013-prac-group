@@ -41,27 +41,23 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
                         "OHH": "Over head height", 
                         "ETC" : "Extension time for car",
                         "ETT":"Distance for nearest vechile to extend yellow",
-                        "PLT": "Plot length time",
-                        "LDR": "change night time threshold"}
+                        "PLT": "Plot length time"}
 
         changesToVaribles = {"PLR":"pollingRate",
                              "OHH": "overHeight",
                              "ETC":"extensionTime",
                              "ETT":"extensionTrigger",
-                             "PLT": "plotLength", 
-                             "LDR": "dayNightTrigger"} # orange light needs to hold longer
+                             "PLT": "plotLength"} # orange light needs to hold longer
         
         OHHAllowableValues = [int(d) for d in range(1,10,1)] # minimum overHeight closness is 1cm and max is 10cm 
         ETCAlloableValues = [3,4,5,6,7,8]
         PLTAllowableValues = [int(d) for d in range(20,80,10)]
-        LDRAllowableValues = [x/10 for x in range(25,50,1)]
         
         
         changesRules = {"PLR": [1, 2, 3, 4 ,5],
                         "OHH": OHHAllowableValues,
                         "ETC": ETCAlloableValues,
-                        "PLT": PLTAllowableValues,
-                        "LDR": LDRAllowableValues
+                        "PLT": PLTAllowableValues
                         }
         #Suspend polling loop, set mode infomation
         changeableConditions["trafficStage"] = "suspended"

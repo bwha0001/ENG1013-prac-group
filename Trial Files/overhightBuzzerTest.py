@@ -4,7 +4,7 @@ import time, threading
 
 
 board = pymata4.Pymata4()
-pin = 7
+pin = 8
 board.set_pin_mode_digital_output(pin)
 print("on")
 board.digital_write(pin,1)

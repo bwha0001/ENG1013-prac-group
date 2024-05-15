@@ -108,11 +108,7 @@ def polling_loop(board, board2, intersectionData, changeableConditions):
         print("##########################################\n")
         print("WARNING, VEHICHLE OVERHEIGHT\n")
         print("##########################################\n")
-        
-        # Turning buzzer on to alert overheight
-        changeableConditions["buzzerOnOff"] = 1
-        board.digital_write(changeableConditions["arduinoPins"]["buzzerFlashingOverHead"], changeableConditions["buzzerOnOff"])
-        intersectionData["overHeightRecord"].append(time.time())
+        # intersectionData["overHeightRecord"][time.time()] = overHeightDist #IDK how to fucken do this
         # # trigger voltage and led's
         # board.digital_write(changeableConditions['arduinoPins']['buzzerFlashingOverHead'], 1)
         # time.sleep(0.2) ## capacitor charge time to be tested
