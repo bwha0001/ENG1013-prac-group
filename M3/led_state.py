@@ -126,8 +126,6 @@ def light_setting_state(board, changeableConditions, mainState, sideState, pedes
     board.digital_pin_write(rclk, 1)
     time.sleep(0.001)
 
-    #TODO Debugging line
-    print(toLedShift)
 
 if __name__ == "__main__":
     from pymata4 import pymata4
@@ -192,17 +190,7 @@ if __name__ == "__main__":
 
     board.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"])
     light_setting_state(board, changeableConditions, "off","off", "off")
-    time.sleep(5)
-    light_setting_state(board, changeableConditions, "red", "red", "red")
-    time.sleep(5)
-    light_setting_state(board, changeableConditions, "yellow", "red", "red")
-    time.sleep(5)
-    light_setting_state(board, changeableConditions, "green", "green", "green")
-    time.sleep(5)
-
-    board.shutdown()
-    '''
-        time.sleep(1)
+    time.sleep(1)
     light_setting_state(board, changeableConditions, "red", "yellow", "flashing")
     time.sleep(1)
     light_setting_state(board, changeableConditions, "red", "red", "red")
@@ -215,4 +203,3 @@ if __name__ == "__main__":
     time.sleep(1)
     light_setting_state(board, changeableConditions, "off","off", "off")
     time.sleep(1)
-    '''
