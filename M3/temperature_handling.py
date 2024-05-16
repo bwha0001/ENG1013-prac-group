@@ -41,13 +41,15 @@ import math as mth
 
 def temp_calculation(voltage):
     #insert code
-    resistance = ((5 *100)/voltage) -100 # fix this in a second
-    eqn1 = -7.017*mth.log(resistance) + 41.128
-    eqn2 = -21.21*mth.log(resistance) + 72.203
-    if voltage>2.14: # arbitary value     
-        temperature = -eqn1
-    else:
-        temperature = -eqn2
+    # resistance = ((5 *100)/voltage) -100 # fix this in a second
+    resistance = (5*10) -(100*voltage) #using a 10k resistor and restistor is in ohm
+    temperature = -21.21*mth.log(resistance)+72.203
+    # eqn1 = -7.017*mth.log(resistance) + 41.128
+    # eqn2 = -21.21*mth.log(resistance) + 72.203
+    # if voltage>2.14: # arbitary value     
+    #     temperature = -eqn1
+    # else:
+    #     temperature = -eqn2
     return temperature
 
 
