@@ -1,99 +1,59 @@
-#Plotting Data
-#Author: Jenny
-#Last Edit: 10 April 2024
-#Version: 2
 
-import matplotlib.pyplot as plt
-import time
+from matplotlib import pyplot as plt
+import numpy as np
+import math
 
-# input ultrasonic sensor list and time list 
-# voltage to distance calculation 
 def plotting_function(changeableConditions, intersectionData, x, y):
-    """
-    Creates and displays graphs of data collected by sensors
-    Args:
-        timeRecorded (list): list of floats of time that readings were taken
-        distance (list): list of floats of distance to next vechile readings
-    """
+    try:
+        # Load in all lists
+        timeRecorded = intersectionData['timeRecord']
+        pollingRate = changeableConditions['pollingRate']
+        distToVehicleRecord = intersectionData['distToVehicleRecord']
+        overHeight = intersectionData["overheightRecord"]
+        plotLength = changeableConditions['plotLength']
+        speedRecord = intersectionData['speedRecord']
+        temperatureRecord = intersectionData['tempRecord']
+        
+        # Calculate the number of points to show in the plot
+        points_to_show = max(plotLength, len(timeRecorded) * pollingRate)
 
-# TODO handle values to length from changeable conditions
-    #this limits data to 20 seconds, now it holds data for infinite length and adjusting pot length will be done in plotting
-    # #Check if all lists have more readings than should be the case for 20 seconds, remove earliest reading to bring back to 20 sec
-    # if len(timeRecord)>(20/pollingRate) and len(distToVehicleRecord)>(20/pollingRate) and len(pedCountRecord)>(20/pollingRate):
-    #     #Remove first item in each of the lists
-    #     #aliasing back to dictionaries
-    #     timeRecord.pop(0)
-    #     distToVehicleRecord.pop(0)
-    #     pedCountRecord.pop(0)
-    #     intersectionData["speedRecord"].pop(0)
-    #     # intersectionData['temperatureRecord'].pop(0)
-    timeRecorded = intersectionData['timeRecord']
-    pollingRate = changeableConditions['pollingRate']
-    distToVehicleRecord = intersectionData['distToVehicleRecord']
-    overHeight = intersectionData["overheightRecord"]
-    plotLength = changeableConditions['plotLength']
-    speedRecord = intersectionData['speedRecord']
-    temperatureRecord = intersectionData['tempRecord']
-    
-    # plotList = range(((len(timeRecorded)-int(plotLength))//int(pollingRate)),len(timeRecorded)-1,-1) #values from end-plotLength to end counting from the end
- 
-    plotList = range(0,plotLength, -pollingRate)
-    plotDistToVehichleRecord = []
-    plotSpeedRecord = []
-    plotTemperatureRecord = []
-    plotOverHeightRecord = []
-    # for i in range(len(plotList)-plotLength,len(plotList), -1):
-    for i in plotList:
-        plotDistToVehichleRecord.append(distToVehicleRecord[i])
-        plotSpeedRecord.append(speedRecord[i])
-        plotTemperatureRecord.append(temperatureRecord[i])
-        plotOverHeightRecord.append(overHeight[i])
+        # Getting values ready for y values
+        plotDistToVehicleRecord = distToVehicleRecord[-(points_to_show + 1):]
+        plotOverHeightRecord = overHeight[-(points_to_show + 1):]
+        plotSpeedRecord = speedRecord[-(points_to_show + 1):]
+        plotTemperatureRecord = temperatureRecord[-(points_to_show + 1):]
 
+        # x values
+        plotTime = timeRecorded[-(points_to_show + 1):]
 
-    # this will work but a more robust method is to just record plot Length of data as a temp rather then deleting data
+        # Ensure x and y arrays have the same length
+        xValue = plotTime[:min(plotLength, len(plotTime))]
 
-    # ########## leave below if collecting data points doesn't work
-    # flag = True
-    # while flag:
-    #     if len(timeRecorded)>(plotLength/pollingRate): 
-    #         timeRecorded.pop(0)
-    #     if len(distToVehicleRecord)>(plotLength/pollingRate):
-    #         distToVehicleRecord.pop(0)
-    #     if len(pedCountRecord)>(plotLength/pollingRate):
-    #         pedCountRecord.pop(0)
-    #     if len(speedRecord)>(plotLength/pollingRate):
-    #         velocity.pop(0)
-    #     #if len(temperatureRecord)> (plotLength/pollingRate):    
-    #     # intersectionData['temperatureRecord'].pop(0)
-    #     if len(timeRecorded)<(plotLength/pollingRate) and  len(distToVehicleRecord)<(plotLength/pollingRate) and len(pedCountRecord)>(plotLength/pollingRate) and len(speedRecord)>(plotLength/pollingRate):
-    #         flag = False
+        # Plotting
+        if y.lower() == 'distance':
+            unitY = '(cm)'
+            yValue = plotDistToVehicleRecord[:len(xValue)]
+        elif y.lower() == 'velocity' or "speed":
+            unitY = 'cm/s'
+            yValue = plotSpeedRecord[:len(xValue)]
+        elif y.lower() == 'overheight':
+            unitY = '(cm)'
+            yValue = plotOverHeightRecord[:len(xValue)]
+        elif y.lower() == "temperature":
+            unitY = "degrees C"
+            yValue = plotTemperatureRecord[:len(xValue)]
 
-    ##########
+        plt.plot(xValue, yValue)
+        
+        ax = plt.gca()
+        # ax.set_ylim(ax.get_ylim()[::-1])
+        ax.set_xlim(ax.get_xlim()[::-1])
 
-    timeSince = []
-    # for i in range(len(plotList)-plotLength, len(plotList), -1): # making this run to 20 would force 20 seconds of data to 
-    for i in plotList:
-        # get around the bug where you go in and out of mode without running polling loop to manage distance
-        timeSince.append(round(timeRecorded[i]-timeRecorded[-1], 2))
-    
-    #Plotting
-    if x.lower() == 'time':
-        unitX = '(s)'
-    if y.lower() == 'distance':
-        unitY = '(cm)'
-        yValue = plotDistToVehichleRecord
-    elif y.lower() == 'velocity':
-        unitY = 'cm/s'
-        yValue = plotSpeedRecord
-    elif y.lower() == 'overheight':
-        unitY = '(cm)'
-        yValue = plotOverHeightRecord
-    elif y.lower() == "temperature":
-        unitY = "degrees C"
-        yValue = plotTemperatureRecord
+        plt.title(f'{y} vs. {x}')
+        plt.xlabel(f"{x} (s)")
+        plt.ylabel(f"{y} {unitY}")
+        plt.show()
+    except Exception as e:
+        print(f"Error: {e}")
 
-    plt.plot(timeSince,yValue)
-    plt.title(f'{y} vs. {x}')
-    plt.xlabel(f"{x} {unitX}")
-    plt.ylabel(f"{y} {unitY}")
-    plt.show()
+  
