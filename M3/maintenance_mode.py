@@ -164,7 +164,7 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
         
     except KeyboardInterrupt:
         #exit button activation
-        print("Exit button activated, returning to main menu")
+        print("\n\nExit button activated, returning to main menu\n\n\n\n")
         return intersectionData, changeableConditions
     
 

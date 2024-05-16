@@ -106,7 +106,8 @@ changeableConditions = {
         5:3,
         6:3
     },
-    "dayNightTrigger": 2.72, #Voltage
+    "dayNightTrigger": 2.9, #Voltage
+    "buzzerOnOff" : 0,
     "nightStageLengths":{
         1:45, #Stage 1 changes to 45 seconds
         2:3, 

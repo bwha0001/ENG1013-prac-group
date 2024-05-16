@@ -37,12 +37,13 @@ def plotting_function(changeableConditions, intersectionData, x, y):
     
     # plotList = range(((len(timeRecorded)-int(plotLength))//int(pollingRate)),len(timeRecorded)-1,-1) #values from end-plotLength to end counting from the end
  
-    plotList = range(len(timeRecorded)-int(plotLength)*pollingRate, len(timeRecorded)-1, pollingRate)
+    plotList = range(0,plotLength, -pollingRate)
     plotDistToVehichleRecord = []
     plotSpeedRecord = []
     plotTemperatureRecord = []
     plotOverHeightRecord = []
-    for i in range(0,len(plotList)):
+    # for i in range(len(plotList)-plotLength,len(plotList), -1):
+    for i in plotList:
         plotDistToVehichleRecord.append(distToVehicleRecord[i])
         plotSpeedRecord.append(speedRecord[i])
         plotTemperatureRecord.append(temperatureRecord[i])
@@ -70,7 +71,8 @@ def plotting_function(changeableConditions, intersectionData, x, y):
     ##########
 
     timeSince = []
-    for i in range(0, len(plotList), 1): # making this run to 20 would force 20 seconds of data to 
+    # for i in range(len(plotList)-plotLength, len(plotList), -1): # making this run to 20 would force 20 seconds of data to 
+    for i in plotList:
         # get around the bug where you go in and out of mode without running polling loop to manage distance
         timeSince.append(round(timeRecorded[i]-timeRecorded[-1], 2))
     
@@ -88,7 +90,7 @@ def plotting_function(changeableConditions, intersectionData, x, y):
         yValue = plotOverHeightRecord
     elif y.lower() == "temperature":
         unitY = "degrees C"
-        yValue = temperatureRecord
+        yValue = plotTemperatureRecord
 
     plt.plot(timeSince,yValue)
     plt.title(f'{y} vs. {x}')

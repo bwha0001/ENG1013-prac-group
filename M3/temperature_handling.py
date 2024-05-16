@@ -44,7 +44,7 @@ def temp_calculation(voltage):
     resistance = ((5 *100)/voltage) -100 # fix this in a second
     eqn1 = -7.017*mth.log(resistance) + 41.128
     eqn2 = -21.21*mth.log(resistance) + 72.203
-    if voltage>4.59: # arbitary value     
+    if voltage>2.14: # arbitary value     
         temperature = -eqn1
     else:
         temperature = -eqn2
@@ -54,7 +54,7 @@ def temp_calculation(voltage):
 def temperature(myBoard, changeableConditions):
     tempPin = changeableConditions["arduinoPins"]["temperaturePin"]
     voltage, time = myBoard.analog_read(tempPin)
-    trueVoltage = 5/1023 * voltage
+    trueVoltage =  0.0049 * voltage
     temp = temp_calculation(trueVoltage)
     return temp
     
