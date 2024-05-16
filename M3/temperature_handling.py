@@ -58,6 +58,7 @@ def temperature(myBoard, changeableConditions):
     voltage, time = myBoard.analog_read(tempPin)
     trueVoltage =  0.0049 * voltage
     temp = temp_calculation(trueVoltage)
+    print(f"debugging purposes, temperature is: {temp}")
     return temp
     
 
