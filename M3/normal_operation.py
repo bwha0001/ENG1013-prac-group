@@ -244,8 +244,8 @@ def normal_operation(board, board2, intersectionData,changeableConditions):
 
             #Due to need to continue flashing while polling loop still runs
             #trigger light setting again (ped green flashing) if in stage 5
-            if trafficStage == 5:
-                led.light_setting_state(board, changeableConditions, mainState, sideState, pedestrianState)
+            #if trafficStage == 5:
+                #led.light_setting_state(board, changeableConditions, mainState, sideState, pedestrianState)
             if time.time() - intersectionData["overheightRecord"][-1]>=2 and changeableConditions["buzzerOnOff"] == 1:
                 changeableConditions["buzzerOnOff"] = 0
                 board.digital_write(changeableConditions["arduinoPins"]["buzzerFlashingOverHead"], changeableConditions["buzzerOnOff"])

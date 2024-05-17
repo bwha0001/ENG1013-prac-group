@@ -7,6 +7,7 @@ import normal_operation as n_o
 import maintenance_mode as m_m
 import data_observation_mode as DOM
 import led_state as led
+import time
 
 def main_menu(board, board2, intersectionData, changeableConditions):
     """ 
@@ -36,14 +37,15 @@ def main_menu(board, board2, intersectionData, changeableConditions):
                     elif modeSelection == "n" or modeSelection == "N": 
                         #Check for Override switch
                         overrideRead = board.analog_read(changeableConditions['arduinoPins']['normalOverride'])
-                        if int(overrideRead[0]) > 1000:
+                        if int(overrideRead[0]) > 800:
                             #override switch active, do not enter normal operation mode
                             print("\n\nManual Override Switch activated, the switch position must be changed to enter normal operation")
-                        elif int(overrideRead[0])== 0:
+                        elif int(overrideRead[0])==0:
                             #Override switch not active, safe to enter normal operation mode
-                            print("Entering Normal Operation Mode...\n\n\n")
                             #Switch off maintence lights
                             board.digital_pin_write(changeableConditions["arduinoPins"]["maintenceFlashing"], 0)
+                            time.sleep(0.05)
+                            print("Entering Normal Operation Mode...\n\n\n")
                             n_o.normal_operation(board, board2, intersectionData, changeableConditions)
                         else: 
                             #Error line, unexpected switch circut reading

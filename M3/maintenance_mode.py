@@ -103,7 +103,7 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
                 values = list(changesCodes.values())
                 for i in range(0,len(changesCodes)):
                     print(f"{keys[i]} for {values[i]}\n")
-                optionCode  = input("Enter Condition to edit: ")
+                optionCode  = input("Enter Condition to edit: ").upper()
 
             # #Check that option to edit is valid
             # if optionCode in changesCodes.keys():

@@ -124,7 +124,8 @@ changeableConditions = {
         5:0,
         6:0},
     
-    #changeable conditions for maintenance mode
+    #changeable conditions for maintenance modem
+
     'pollingRate' : pollingRate,
     "overHeight" : 60,
     "extensionTime" : 3,
@@ -139,6 +140,7 @@ board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["ledSer"])
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["ledRclk"])
 board.set_pin_mode_digital_output(changeableConditions["arduinoPins"]["ledSrclk"])
 #Clear shift reg
+
 led.light_setting_state(board, changeableConditions, "off", "off", "off")
 
 #Set up and start maintence lights
@@ -178,6 +180,7 @@ main.main_menu(board, board2, intersectionData, changeableConditions)
 print("program ending from AA")
     #Remember to reset shift register unless you want funky things on intial start when repeatedly ending and starting
 #Switch off all lights to reset shift register
-led.light_setting_state(board, changeableConditions, "off", "off", "off")    
-    #Remember to close the boards when you're done
+led.light_setting_state(board, changeableConditions, "off", "off", "off")
+board.digital_pin_write(changeableConditions["arduinoPins"]["maintenceFlashing"], 0)    
+#Remember to close the boards when you're done
 board.shutdown()
