@@ -37,7 +37,7 @@ board2 = ""
 #Create a dictonary of records
 intersectionData = {"timeRecord":[], 
                     "distToVehicleRecord":[], #regular distance sensor
-                    'overheightRecord' : [], # overhight sensor
+                    'overheightRecord' : [0], # overhight sensor
                     "overHeightTimeRecord" :[], 
                     "pedCountRecord":[], #count of pedestrian per traffic cycle
                     "pedPresentRecord":[], #count of how many times the button has been pressed

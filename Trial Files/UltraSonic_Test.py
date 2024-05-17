@@ -39,9 +39,9 @@ board.set_pin_mode_pwm_output(changeableConditions["arduinoPins"]["pedestrianGre
 # Configure pin to sonar
 
 def the_callback(data):
-    print(f'distance in cm {data[DISTANCE_CM]}')
+    print(f'distance in cm {data[2]}')
 
-def sonar(myBoard, changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"]):
+def reading(myBoard, changeableConditions):
     myBoard.set_pin_mode_sonar(changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], the_callback)
 
     while True:
@@ -55,7 +55,7 @@ def sonar(myBoard, changeableConditions["arduinoPins"]["triggerPin"], changeable
 
 board = pymata4.Pymata4()
 try:
-    sonar(board, changeableConditions["arduinoPins"]["triggerPin"], changeableConditions["arduinoPins"]["echoPin"], the_callback)
+    reading(board, changeableConditions, the_callback)
     board.shutdown()
 except (KeyboardInterrupt, RuntimeError):
     board.shutdown()

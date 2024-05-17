@@ -139,7 +139,7 @@ def maintenance_mode(board, board2, intersectionData, changeableConditions):
                 continue
 
 ### TODO ### Get rid of while loops that won't trigger timeout
-
+            contInput = ""
             #Change another conditon? given time out not occoured
             while time.time()<= accessEndTime:
                 #Ask if want to continue to make changes or quit
